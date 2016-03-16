@@ -1,0 +1,33 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+ext {
+    //////////////////////////////////////////////////
+    // VERSIONS
+
+    // Libraries
+
+    kotlinVersion = '1.0.0'
+    rxJavaVersion = '1.1.1'
+
+    //////////////////////////////////////////////////
+    // DEPENDENCIES
+
+    // Third-party
+
+    kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    kotlinTestLib = "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}"
+    rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+}
