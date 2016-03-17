@@ -7,20 +7,17 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
-
 ext {
     //////////////////////////////////////////////////
     // VERSIONS
 
     // Libraries
 
+    daggerVersion = '2.0.2'
     javaxInjectVersion = '1'
     kotlinVersion = '1.0.1'
+    rxAndroidVersion = '1.1.0'
+    rxBindingVersion = '0.4.0'
     rxJavaVersion = '1.1.1'
 
     //////////////////////////////////////////////////
@@ -28,8 +25,14 @@ ext {
 
     // Third-party
 
+    dagger = "com.google.dagger:dagger:${daggerVersion}"
+    daggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
     javaxInject = "javax.inject:javax.inject:${javaxInjectVersion}"
     kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
     kotlinTestLib = "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}"
+    rxAndroid = "io.reactivex:rxandroid:${rxAndroidVersion}"
+    rxBinding = "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}"
+    rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
+    rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
     rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
 }
