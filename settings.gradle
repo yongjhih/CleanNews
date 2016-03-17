@@ -1,4 +1,5 @@
 include ':core'
 include ':app'
 include ':presentation'
+include ':data'
 include ':android'

@@ -1,9 +1,10 @@
-package clean.news.gateway
+package clean.news.repository.item
 
 import clean.news.entity.Item
+import clean.news.repository.Repository
 import rx.Observable
 
-interface ItemGateway {
+interface ItemRepository : Repository<Item, Long> {
 	fun getTopStories(): Observable<List<Item>>
 
 	fun getNewStories(): Observable<List<Item>>
@@ -13,6 +14,4 @@ interface ItemGateway {
 	fun getShowStories(): Observable<List<Item>>
 
 	fun getJobStories(): Observable<List<Item>>
-
-	fun getItem(id: Long): Observable<Item>
 }
