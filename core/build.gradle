@@ -5,15 +5,15 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 sourceSets {
-    main {
-        java.srcDirs += 'src/main/kotlin'
-    }
-    test {
-        java.srcDirs += 'src/test/kotlin'
-    }
+	main {
+		java.srcDirs += 'src/main/kotlin'
+	}
+	test {
+		java.srcDirs += 'src/test/kotlin'
+	}
 }
 
 dependencies {
-    compile kotlinStdLib
-    compile kotlinTestLib
+	compile kotlinStdLib
+	compile kotlinTestLib
 }
