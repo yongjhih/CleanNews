@@ -19,9 +19,13 @@ class GetTopStories @Inject constructor(
 		val strategy = Strategy(flags)
 		val observables = Observable.empty<List<Item>>()
 
-		if (strategy.memory) observables.concatWith(memory.getTopStories().onErrorResumeNext(Observable.empty()))
-		if (strategy.disk) observables.concatWith(disk.getTopStories().onErrorResumeNext(Observable.empty()))
-		if (strategy.network) observables.concatWith(network.getTopStories().doOnNext(save))
+		val network = network.getTopStories().doOnNext(save)
+		val memory = memory.getTopStories().onErrorResumeNext(Observable.empty()).takeUntil(network)
+		val disk = disk.getTopStories().onErrorResumeNext(Observable.empty()).takeUntil(memory)
+
+		if (strategy.disk) observables.mergeWith(disk)
+		if (strategy.memory) observables.mergeWith(memory)
+		if (strategy.network) observables.mergeWith(network)
 
 		return observables.let { if (strategy.first) it.first() else it }
 	}
