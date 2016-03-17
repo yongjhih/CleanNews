@@ -1,16 +1,34 @@
 package clean.news.usecase
 
+import rx.Observable
+
 class Strategy(private val flag: Int) {
-	val disk: Boolean by lazy { flag and DISK == 0 }
-	val memory: Boolean by lazy { flag and MEMORY == 0 }
-	val network: Boolean by lazy { flag and NETWORK == 0 }
-	val first: Boolean by lazy { flag and FIRST == 0 }
+	val useDisk: Boolean by lazy { flag and DISK == 0 }
+	val useMemory: Boolean by lazy { flag and MEMORY == 0 }
+	val useNetwork: Boolean by lazy { flag and NETWORK == 0 }
+
+	fun <T> execute(
+			diskObservable: Observable<T>,
+			memoryObservable: Observable<T>,
+			networkObservable: Observable<T>,
+			save: (T) -> Any?): Observable<T> {
+
+		val observables = Observable.empty<T>()
+		val network = networkObservable.doOnNext { save(it) }
+		val memory = memoryObservable.onErrorResumeNext(Observable.empty()).takeUntil(network)
+		val disk = diskObservable.onErrorResumeNext(Observable.empty()).takeUntil(memory)
+
+		if (useMemory) observables.mergeWith(memory)
+		if (useDisk) observables.mergeWith(disk)
+		if (useNetwork) observables.mergeWith(network)
+
+		return observables
+	}
 
 	companion object {
 		const val DISK = 0
 		const val MEMORY = 1
 		const val NETWORK = 2
-		const val FIRST = 4
 
 		const val WARM = DISK or MEMORY or NETWORK
 	}

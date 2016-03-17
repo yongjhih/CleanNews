@@ -11,12 +11,13 @@ class SaveItem(
 		private val disk: ItemDiskRepository,
 		private val memory: ItemMemoryRepository) : RxUseCase1<Item, Boolean> {
 
+	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun execute(item: Item, flags: Int): Observable<Boolean> {
 		val strategy = Strategy(flags)
 		val observable = Observable.empty<Boolean>()
 
-		if (strategy.disk) observable.mergeWith(disk.save(item))
-		if (strategy.memory) observable.mergeWith(memory.save(item))
+		if (strategy.useDisk) observable.mergeWith(disk.save(item))
+		if (strategy.useMemory) observable.mergeWith(memory.save(item))
 
 		return observable
 	}

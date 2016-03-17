@@ -7,7 +7,6 @@ import clean.news.repository.item.ItemNetworkRepository
 import clean.news.usecase.RxUseCase1
 import clean.news.usecase.Strategy
 import rx.Observable
-import rx.functions.Action1
 import javax.inject.Inject
 
 class GetItemById @Inject constructor(
@@ -19,16 +18,15 @@ class GetItemById @Inject constructor(
 	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun execute(id: Long, flags: Int): Observable<Item> {
 		val strategy = Strategy(flags)
-		val observables = Observable.empty<Item>()
 
-		if (strategy.memory) observables.concatWith(memory.getById(id).onErrorResumeNext(Observable.empty()))
-		if (strategy.disk) observables.concatWith(disk.getById(id).onErrorResumeNext(Observable.empty()))
-		if (strategy.network) observables.concatWith(network.getById(id).doOnNext(save))
-
-		return observables.let { if (strategy.first) it.first() else it }
+		return strategy.execute(
+				disk.getById(id),
+				memory.getById(id),
+				network.getById(id),
+				save)
 	}
 
-	private val save = Action1 { item: Item ->
+	private val save = { item: Item ->
 		saveItem.execute(item).subscribe()
 	}
 }
