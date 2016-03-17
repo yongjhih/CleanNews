@@ -1,10 +1,10 @@
 package clean.news.model
 
-import clean.news.usecase.item.GetColdTopStories
+import clean.news.usecase.item.GetTopStories
 import javax.inject.Inject
 
 class ItemListViewModel @Inject constructor(
-		private val getColdTopStories: GetColdTopStories) {
+		private val getTopStories: GetTopStories) {
 
-	val items = getColdTopStories.execute()
+	val items = getTopStories.execute()
 }
