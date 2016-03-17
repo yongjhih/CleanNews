@@ -5,15 +5,30 @@ import clean.news.repository.item.ItemDiskRepository
 import clean.news.repository.item.ItemMemoryRepository
 import clean.news.repository.item.ItemNetworkRepository
 import clean.news.usecase.RxUseCase
+import clean.news.usecase.Strategy
 import rx.Observable
 import javax.inject.Inject
 
 class GetJobStories @Inject constructor(
 		private val disk: ItemDiskRepository,
 		private val memory: ItemMemoryRepository,
-		private val network: ItemNetworkRepository) : RxUseCase<List<Item>> {
+		private val network: ItemNetworkRepository,
+		private val saveItem: SaveItem) : RxUseCase<List<Item>> {
 
 	override fun execute(flags: Int): Observable<List<Item>> {
-		return network.getJobStories()
+		val strategy = Strategy(flags)
+		val observables = Observable.empty<List<Item>>()
+
+		if (strategy.memory) observables.concatWith(memory.getJobStories().onErrorResumeNext(Observable.empty()))
+		if (strategy.disk) observables.concatWith(disk.getJobStories().onErrorResumeNext(Observable.empty()))
+		if (strategy.network) observables.concatWith(network.getJobStories().doOnNext(save))
+
+		return observables.let { if (strategy.first) it.first() else it }
+	}
+
+	private val save = { items: List<Item> ->
+		items.forEach {
+			saveItem.execute(it).subscribe()
+		}
 	}
 }
