@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.0'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.0.1'
     }
 }
 
@@ -19,7 +19,8 @@ ext {
 
     // Libraries
 
-    kotlinVersion = '1.0.0'
+    javaxInjectVersion = '1'
+    kotlinVersion = '1.0.1'
     rxJavaVersion = '1.1.1'
 
     //////////////////////////////////////////////////
@@ -27,6 +28,7 @@ ext {
 
     // Third-party
 
+    javaxInject = "javax.inject:javax.inject:${javaxInjectVersion}"
     kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
     kotlinTestLib = "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}"
     rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
