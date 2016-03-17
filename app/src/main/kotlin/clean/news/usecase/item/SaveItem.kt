@@ -15,8 +15,8 @@ class SaveItem(
 		val strategy = Strategy(flags)
 		val observable = Observable.empty<Boolean>()
 
-		if (strategy.useDisk) observable.mergeWith(disk.save(item))
-		if (strategy.useMemory) observable.mergeWith(memory.save(item))
+		if (strategy.disk) observable.mergeWith(disk.save(item))
+		if (strategy.memory) observable.mergeWith(memory.save(item))
 
 		return observable
 	}
