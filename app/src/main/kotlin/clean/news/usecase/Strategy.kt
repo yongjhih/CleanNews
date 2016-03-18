@@ -3,9 +3,9 @@ package clean.news.usecase
 import rx.Observable
 
 class Strategy(private val flag: Int) {
-	val useDisk: Boolean by lazy { flag and DISK == 0 }
-	val useMemory: Boolean by lazy { flag and MEMORY == 0 }
-	val useNetwork: Boolean by lazy { flag and NETWORK == 0 }
+	val useDisk: Boolean by lazy { flag and DISK != 0 }
+	val useMemory: Boolean by lazy { flag and MEMORY != 0 }
+	val useNetwork: Boolean by lazy { flag and NETWORK != 0 }
 
 	fun <T> execute(
 			diskObservable: Observable<T>,
