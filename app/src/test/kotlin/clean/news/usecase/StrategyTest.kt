@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit.SECONDS
 
 class StrategyTest {
 	@Test
-	fun testWarm() {
+	fun warmMemoryThenDiskThenNetwork() {
 		val (disk, memory, network, scheduler) = createMockObservableSet(DISK or MEMORY or NETWORK)
 		val strategy = Strategy(Strategy.WARM)
 		val observable = strategy.execute(disk, memory, network) {}
@@ -23,6 +23,19 @@ class StrategyTest {
 
 		scheduler.advanceTimeBy(networkDelay, SECONDS)
 		subscriber.assertValues(memoryValue, networkValue)
+	}
+
+	@Test
+	fun warmDiskThenNetwork() {
+		val (disk, memory, network, scheduler) = createMockObservableSet(DISK or NETWORK)
+		val strategy = Strategy(Strategy.WARM)
+		val observable = strategy.execute(disk, memory, network) {}
+		val subscriber = TestSubscriber.create<Int>()
+
+		observable.subscribe(subscriber)
+
+		scheduler.advanceTimeBy(networkDelay, SECONDS)
+		subscriber.assertValues(diskValue, networkValue)
 	}
 
 	private fun createMockObservableSet(

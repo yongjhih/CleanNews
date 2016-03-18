@@ -15,8 +15,8 @@ class Strategy(private val flag: Int) {
 
 		val observables = mutableListOf<Observable<T>>()
 		val network = networkObservable.doOnNext { save(it) }
-		val memory = memoryObservable.onErrorResumeNext(Observable.empty()).takeUntil(network)
-		val disk = diskObservable.onErrorResumeNext(Observable.empty()).takeUntil(memory)
+		val memory = memoryObservable.single().onErrorResumeNext(Observable.never()).takeUntil(network)
+		val disk = diskObservable.single().onErrorResumeNext(Observable.never()).takeUntil(memory)
 
 		if (useMemory) observables.add(memory)
 		if (useDisk) observables.add(disk)
@@ -26,9 +26,9 @@ class Strategy(private val flag: Int) {
 	}
 
 	companion object {
-		const val DISK = 0
-		const val MEMORY = 1
-		const val NETWORK = 2
+		const val DISK = 1
+		const val MEMORY = 2
+		const val NETWORK = 4
 
 		const val WARM = DISK or MEMORY or NETWORK
 	}
