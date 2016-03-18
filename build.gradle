@@ -21,7 +21,7 @@ ext {
 
 	// Android
 
-	androidBuildToolsVersion = '23.0.2'
+	androidBuildToolsVersion = '23.0.1'
 	androidCompileSdkVersion = 23
 	androidMinSdkVersion = 15
 	androidTargetSdkVersion = 23
@@ -36,6 +36,12 @@ ext {
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
 	rxJavaVersion = '1.1.1'
+
+	// Testing
+
+	assertJVersion = '1.7.1'
+	jUnitVersion = '4.12'
+	mockitoVersion = '1.10.5'
 
 	//////////////////////////////////////////////////
 	// DEPENDENCIES
@@ -62,4 +68,10 @@ ext {
 	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
 	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
 	rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+
+	// Testing
+
+	assertJ = "org.assertj:assertj-core:${assertJVersion}"
+	jUnit = "junit:junit:${jUnitVersion}"
+	mockito = "org.mockito:mockito-core:${mockitoVersion}"
 }
