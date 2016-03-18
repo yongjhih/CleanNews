@@ -19,6 +19,13 @@ ext {
 	//////////////////////////////////////////////////
 	// VERSIONS
 
+	// Android
+
+	androidBuildToolsVersion = '23.0.2'
+	androidCompileSdkVersion = 23
+	androidMinSdkVersion = 15
+	androidTargetSdkVersion = 23
+
 	// Libraries
 
 	androidSupportVersion = '23.1.1'
