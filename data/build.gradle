@@ -35,5 +35,7 @@ dependencies {
 	compile javaxInject
 	compile kotlinStdLib
 	compile kotlinTestLib
+	compile retrofit
+	compile retrofitConverterMoshi
 	compile rxJava
 }

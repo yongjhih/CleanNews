@@ -16,7 +16,7 @@ data class Item(
 		val score: Int,
 		val title: String,
 		val parts: List<Long>,
-		val descendants: List<Long>) {
+		val descendants: Int) {
 
 	enum class Type {
 		JOB, STORY, COMMENT, POLL, POLLOPT
