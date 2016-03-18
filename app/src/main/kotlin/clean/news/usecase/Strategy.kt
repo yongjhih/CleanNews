@@ -13,16 +13,16 @@ class Strategy(private val flag: Int) {
 			networkObservable: Observable<T>,
 			save: (T) -> Any?): Observable<T> {
 
-		val observables = Observable.empty<T>()
+		val observables = mutableListOf<Observable<T>>()
 		val network = networkObservable.doOnNext { save(it) }
 		val memory = memoryObservable.onErrorResumeNext(Observable.empty()).takeUntil(network)
 		val disk = diskObservable.onErrorResumeNext(Observable.empty()).takeUntil(memory)
 
-		if (useMemory) observables.mergeWith(memory)
-		if (useDisk) observables.mergeWith(disk)
-		if (useNetwork) observables.mergeWith(network)
+		if (useMemory) observables.add(memory)
+		if (useDisk) observables.add(disk)
+		if (useNetwork) observables.add(network)
 
-		return observables
+		return Observable.merge(observables)
 	}
 
 	companion object {
