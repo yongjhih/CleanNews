@@ -26,6 +26,8 @@ ext {
 	androidMinSdkVersion = 15
 	androidTargetSdkVersion = 23
 
+	// Desktop
+
 	// Libraries
 
 	androidSupportVersion = '23.1.1'
@@ -53,6 +55,8 @@ ext {
 	androidSupportAppCompat = "com.android.support:appcompat-v7:${androidSupportVersion}"
 	androidSupportDesign = "com.android.support:design:${androidSupportVersion}"
 	androidSupportRecyclerView = "com.android.support:recyclerview-v7:${androidSupportVersion}"
+
+	// Desktop
 
 	// Third-party
 
