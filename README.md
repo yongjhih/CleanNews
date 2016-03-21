@@ -2,3 +2,27 @@
 
 # CleanNews
 Hacker News client written with Clean Architecture and Reactive Presentation Model.
+
+## Project structure
+
+#### Core
+* Entities and business logic
+
+#### App
+* Application logic
+* Repository interfaces
+
+#### Data
+* Repository implementations
+
+#### Presentation
+* Presentation models
+* Navigation interfaces
+
+#### Android
+* Views
+* Navigation implementaions
+
+#### Desktop
+* Views
+* Navigation implementaions
