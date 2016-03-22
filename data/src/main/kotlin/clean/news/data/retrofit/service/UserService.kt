@@ -1,4 +1,4 @@
-package clean.news.retrofit.service
+package clean.news.data.retrofit.service
 
 import clean.news.entity.User
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package clean.news.sqlite
+package clean.news.data.sqlite
 
 import clean.news.entity.User
 import clean.news.repository.user.UserDiskRepository

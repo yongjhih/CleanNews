@@ -1,8 +1,8 @@
-package clean.news.retrofit
+package clean.news.data.retrofit
 
 import clean.news.entity.User
 import clean.news.repository.user.UserNetworkRepository
-import clean.news.retrofit.service.UserService
+import clean.news.data.retrofit.service.UserService
 import rx.Observable
 import javax.inject.Inject
 

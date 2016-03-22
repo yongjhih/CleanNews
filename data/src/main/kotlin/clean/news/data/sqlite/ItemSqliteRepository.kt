@@ -1,4 +1,4 @@
-package clean.news.sqlite
+package clean.news.data.sqlite
 
 import clean.news.entity.Item
 import clean.news.repository.item.ItemDiskRepository

@@ -1,4 +1,4 @@
-package clean.news.lru
+package clean.news.data.lru
 
 import android.util.LruCache
 import clean.news.entity.Item

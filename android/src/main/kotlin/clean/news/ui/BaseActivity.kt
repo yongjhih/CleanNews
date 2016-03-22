@@ -1,24 +1,23 @@
-package clean.news
+package clean.news.ui
 
 import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
+import clean.news.R.layout
 import clean.news.flow.DaggerServices
-import clean.news.ui.main.MainScreen
-import flow.Direction
+import clean.news.flow.SceneDispatcher
 import flow.Flow
-import flow.KeyChanger
 import flow.KeyDispatcher
-import flow.State
-import flow.TraversalCallback
 
-class MainActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
+	abstract fun getDefaultKey(): Any
+
 	override fun attachBaseContext(newBase: Context?) {
 		val flowContext = Flow.configure(newBase, this)
 				.addServicesFactory(DaggerServices())
-				.defaultKey(MainScreen())
-				.dispatcher(KeyDispatcher.configure(this, Changer()).build())
+				.defaultKey(getDefaultKey())
+				.dispatcher(KeyDispatcher.configure(this, SceneDispatcher(this)).build())
 				.install()
 
 		super.attachBaseContext(flowContext)
@@ -26,13 +25,12 @@ class MainActivity : AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
 		super.onCreate(savedInstanceState, persistentState)
+		setContentView(layout.activity_base)
 	}
 
-	private class Changer : KeyChanger() {
-		override fun changeKey(outgoingState: State?, incomingState: State?, direction: Direction?,
-				incomingContexts: MutableMap<Any, Context>?, callback: TraversalCallback?) {
-			throw UnsupportedOperationException()
+	override fun onBackPressed() {
+		if (!Flow.get(this).goBack()) {
+			super.onBackPressed()
 		}
-
 	}
 }

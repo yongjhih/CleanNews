@@ -1,8 +1,8 @@
-package clean.news.retrofit
+package clean.news.data.retrofit
 
 import clean.news.entity.Item
 import clean.news.repository.item.ItemNetworkRepository
-import clean.news.retrofit.service.ItemService
+import clean.news.data.retrofit.service.ItemService
 import rx.Observable
 import javax.inject.Inject
 
