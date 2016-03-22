@@ -29,13 +29,23 @@ dependencies {
 	compile project(':app')
 	compile project(':presentation')
 
+	kapt daggerCompiler
+
+	provided javaxAnnotation
+
 	compile androidSupport
 	compile androidSupportAppCompat
 	compile androidSupportDesign
 	compile androidSupportRecyclerView
+	compile dagger
+	compile flow
 	compile javaxInject
 	compile kotlinStdLib
 	compile kotlinTestLib
 	compile rxAndroid
 	compile rxJava
+}
+
+kapt {
+	generateStubs = true
 }

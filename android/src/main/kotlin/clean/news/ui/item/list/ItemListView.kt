@@ -1,4 +1,4 @@
-package clean.news.ui.view
+package clean.news.ui.item.list
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -19,6 +19,7 @@ class ItemListView : RecyclerView {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
+
 	}
 
 	override fun onAttachedToWindow() {

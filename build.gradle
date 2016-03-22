@@ -32,6 +32,8 @@ ext {
 
 	androidSupportVersion = '23.1.1'
 	daggerVersion = '2.0.2'
+	flowVersion = '1.0.0-alpha'
+	javaxAnnotationVersion = '10.0-b28'
 	javaxInjectVersion = '1'
 	kotlinVersion = '1.0.1'
 	retrofitVersion = '2.0.0'
@@ -62,6 +64,8 @@ ext {
 
 	dagger = "com.google.dagger:dagger:${daggerVersion}"
 	daggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
+	flow = "com.squareup.flow:flow:${flowVersion}"
+	javaxAnnotation = "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
 	javaxInject = "javax.inject:javax.inject:${javaxInjectVersion}"
 	kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
 	kotlinTestLib = "org.jetbrains.kotlin:kotlin-test:${kotlinVersion}"
