@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import clean.news.adapter.ItemAdapter.AbsItem
 import clean.news.adapter.ItemAdapter.AbsViewHolder
-import clean.news.entity.Item
-import clean.news.entity.Item.Type
+import clean.news.core.entity.Item
+import clean.news.core.entity.Item.Type
 
 class ItemAdapter : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 	private val items = mutableListOf<AbsItem>()

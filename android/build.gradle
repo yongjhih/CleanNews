@@ -17,10 +17,9 @@ android {
 		main.java.srcDirs += 'src/main/kotlin'
 	}
 
-	android {
-		lintOptions {
-			abortOnError false
-		}
+	lintOptions {
+		disable 'InvalidPackage'
+		abortOnError false
 	}
 }
 
@@ -28,6 +27,7 @@ dependencies {
 	compile project(':core')
 	compile project(':app')
 	compile project(':presentation')
+	compile project(':data')
 
 	kapt daggerCompiler
 
@@ -41,7 +41,6 @@ dependencies {
 	compile flow
 	compile javaxInject
 	compile kotlinStdLib
-	compile kotlinTestLib
 	compile rxAndroid
 	compile rxJava
 }

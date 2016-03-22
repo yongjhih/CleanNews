@@ -1,8 +1,8 @@
 package clean.news.data.lru
 
 import android.util.LruCache
-import clean.news.entity.User
-import clean.news.repository.user.UserMemoryRepository
+import clean.news.app.repository.user.UserMemoryRepository
+import clean.news.core.entity.User
 import rx.Observable
 
 class UserLruRepository : UserMemoryRepository {
@@ -16,6 +16,7 @@ class UserLruRepository : UserMemoryRepository {
 		return Observable.just(lru[id])
 	}
 
+	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun save(user: User): Observable<Boolean> {
 		lru.put(user.id, user)
 		return Observable.just(true)

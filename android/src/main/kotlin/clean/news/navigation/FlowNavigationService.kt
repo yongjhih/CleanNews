@@ -1,6 +1,7 @@
 package clean.news.navigation
 
 import android.content.Context
+import clean.news.presentation.navigation.NavigationService
 import flow.Direction
 import flow.Flow
 import flow.History

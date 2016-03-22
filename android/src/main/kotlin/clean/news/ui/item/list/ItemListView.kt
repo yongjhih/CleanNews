@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
-import clean.news.model.ItemListViewModel
+import clean.news.presentation.model.ItemListViewModel
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject

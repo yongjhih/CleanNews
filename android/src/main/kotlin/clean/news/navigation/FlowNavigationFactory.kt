@@ -1,5 +1,6 @@
 package clean.news.navigation
 
+import clean.news.presentation.navigation.NavigationFactory
 import clean.news.ui.item.detail.ItemDetailScreen
 import clean.news.ui.item.list.ItemListScreen
 import clean.news.ui.item.url.UrlScreen

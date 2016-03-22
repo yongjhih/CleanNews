@@ -1,6 +1,6 @@
 package clean.news.data.retrofit.service
 
-import clean.news.entity.Item
+import clean.news.core.entity.Item
 import retrofit2.http.GET
 import retrofit2.http.Path
 import rx.Observable

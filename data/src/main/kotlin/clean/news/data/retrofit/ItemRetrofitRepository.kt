@@ -1,7 +1,7 @@
 package clean.news.data.retrofit
 
-import clean.news.entity.Item
-import clean.news.repository.item.ItemNetworkRepository
+import clean.news.app.repository.item.ItemNetworkRepository
+import clean.news.core.entity.Item
 import clean.news.data.retrofit.service.ItemService
 import rx.Observable
 import javax.inject.Inject
@@ -39,6 +39,7 @@ class ItemRetrofitRepository @Inject constructor(
 		return itemService.getById(id)
 	}
 
+	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun save(item: Item): Observable<Boolean> {
 		throw UnsupportedOperationException("Cannot save items to network.")
 	}

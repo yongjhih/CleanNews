@@ -21,9 +21,9 @@ class SceneDispatcher(private val activity: Activity) : KeyChanger() {
 			callback: TraversalCallback) {
 
 		val destination = incomingState.getKey<HasLayout>()
-		val context = incomingContexts[destination]
 		val layout = destination.getLayoutResId()
-		val frame = activity.findViewById(R.id.container) as ViewGroup
+		val context = incomingContexts[destination]
+		val frame = activity.findViewById(R.id.app_container) as ViewGroup
 		val incomingView = LayoutInflater.from(context).inflate(layout, frame, false)
 
 		outgoingState?.save(frame.getChildAt(0))

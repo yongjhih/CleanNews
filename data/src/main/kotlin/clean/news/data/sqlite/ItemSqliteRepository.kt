@@ -1,7 +1,7 @@
 package clean.news.data.sqlite
 
-import clean.news.entity.Item
-import clean.news.repository.item.ItemDiskRepository
+import clean.news.app.repository.item.ItemDiskRepository
+import clean.news.core.entity.Item
 import rx.Observable
 
 class ItemSqliteRepository : ItemDiskRepository {
@@ -33,7 +33,8 @@ class ItemSqliteRepository : ItemDiskRepository {
 		throw UnsupportedOperationException()
 	}
 
-	override fun save(t: Item): Observable<Boolean> {
+	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
+	override fun save(item: Item): Observable<Boolean> {
 		throw UnsupportedOperationException()
 	}
 }

@@ -15,6 +15,5 @@ dependencies {
 
 	compile javaxInject
 	compile kotlinStdLib
-	compile kotlinTestLib
 	compile rxJava
 }

@@ -2,8 +2,8 @@ package clean.news.inject.module
 
 import clean.news.navigation.FlowNavigationFactory
 import clean.news.navigation.FlowNavigationService
-import clean.news.navigation.NavigationFactory
-import clean.news.navigation.NavigationService
+import clean.news.presentation.navigation.NavigationFactory
+import clean.news.presentation.navigation.NavigationService
 import dagger.Module
 import dagger.Provides
 

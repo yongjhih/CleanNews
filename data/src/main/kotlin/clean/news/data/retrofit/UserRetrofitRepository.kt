@@ -1,7 +1,7 @@
 package clean.news.data.retrofit
 
-import clean.news.entity.User
-import clean.news.repository.user.UserNetworkRepository
+import clean.news.app.repository.user.UserNetworkRepository
+import clean.news.core.entity.User
 import clean.news.data.retrofit.service.UserService
 import rx.Observable
 import javax.inject.Inject
@@ -17,6 +17,7 @@ class UserRetrofitRepository @Inject constructor(
 		return userService.getById(id)
 	}
 
+	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun save(user: User): Observable<Boolean> {
 		throw UnsupportedOperationException("Cannot save a user to the network API.")
 	}
