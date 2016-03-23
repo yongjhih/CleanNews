@@ -8,6 +8,7 @@ import clean.news.app.usecase.item.GetTopStories
 import clean.news.core.entity.Item
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
+import rx.subjects.PublishSubject
 import javax.inject.Inject
 
 class ItemListViewModel @Inject constructor(
@@ -20,11 +21,19 @@ class ItemListViewModel @Inject constructor(
 		private val getAskStories: GetAskStories,
 		private val getJobStories: GetJobStories) {
 
+	val itemSelections = PublishSubject.create<Long>()
+
 	val items = when (listType) {
 		Item.ListType.TOP -> getTopStories.execute()
 		Item.ListType.NEW -> getNewStories.execute()
 		Item.ListType.SHOW -> getShowStories.execute()
 		Item.ListType.ASK -> getAskStories.execute()
 		Item.ListType.JOBS -> getJobStories.execute()
+	}
+
+	init {
+		itemSelections.subscribe {
+			navigationService.goTo(navigationFactory.itemDetail(it))
+		}
 	}
 }

@@ -36,6 +36,8 @@ class ItemListView : RecyclerView {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
+		adapter.itemClickListener = { model.itemSelections.onNext(it) }
+
 		model.items
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe { adapter.setItems(it) }

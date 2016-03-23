@@ -1,6 +1,8 @@
 package clean.news.ui.item.detail
 
+import clean.news.R
 import clean.news.flow.WithComponent
+import clean.news.flow.WithLayout
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
@@ -9,8 +11,10 @@ import dagger.Subcomponent
 import flow.ClassKey
 import flow.TreeKey
 
-class ItemDetailScreen(private val id: Long) : ClassKey(), TreeKey, ItemDetailKey, WithComponent<MainComponent> {
+class ItemDetailScreen(private val id: Long) : ClassKey(), TreeKey, ItemDetailKey, WithLayout, WithComponent<MainComponent> {
 	override fun getParentKey() = MainScreen()
+
+	override fun getLayoutResId() = R.layout.item_detail_view
 
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(id))
 

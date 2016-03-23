@@ -15,6 +15,8 @@ class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem
 	private val inflater = LayoutInflater.from(context)
 	private val items = mutableListOf<AbsItem>()
 
+	var itemClickListener: ((Long) -> Any?)? = null
+
 	fun setItems(items: List<Item>) {
 		this.items.clear()
 		this.items.addAll(items.map {
@@ -53,7 +55,12 @@ class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem
 
 	// View holders
 
-	private class StoryViewHolder(view: View) : AbsViewHolder<AbsItem>(view)
+	private inner class StoryViewHolder(view: View) : AbsViewHolder<AbsItem>(view) {
+		override fun bind(position: Int, item: AbsItem) {
+			super.bind(position, item)
+			itemView.setOnClickListener { itemClickListener?.invoke(item.item.id) }
+		}
+	}
 
 	// Abstract inner classes
 
