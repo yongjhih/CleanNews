@@ -6,15 +6,15 @@ import rx.Observable
 
 class UserSqliteRepository : UserDiskRepository {
 	override fun getAll(): Observable<List<User>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getById(id: String): Observable<User> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun save(user: User): Observable<Boolean> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 }

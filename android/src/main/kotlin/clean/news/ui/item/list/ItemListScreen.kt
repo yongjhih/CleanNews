@@ -3,8 +3,6 @@ package clean.news.ui.item.list
 import clean.news.R
 import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
-import clean.news.presentation.inject.ClassScope
-import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.ui.main.MainScreen.MainComponent
 import dagger.Module
 import dagger.Subcomponent
@@ -15,7 +13,6 @@ class ItemListScreen(val type: String) : ClassKey(), WithLayout, WithComponent<M
 
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemListModule())
 
-	@ClassScope(ItemListViewModel::class)
 	@Subcomponent(modules = arrayOf(ItemListModule::class))
 	interface ItemListComponent {
 		fun inject(itemListView: ItemListView)

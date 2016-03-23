@@ -6,35 +6,35 @@ import rx.Observable
 
 class ItemSqliteRepository : ItemDiskRepository {
 	override fun getTopStories(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getNewStories(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getAskStories(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getShowStories(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getJobStories(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getAll(): Observable<List<Item>> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	override fun getById(id: Long): Observable<Item> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 
 	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 	override fun save(item: Item): Observable<Boolean> {
-		throw UnsupportedOperationException()
+		return Observable.empty()
 	}
 }

@@ -42,6 +42,11 @@ dependencies {
 	compile javaxInject
 	compile kotlinStdLib
 	compile kotterKnife
+	compile okHttpLoggingInterceptor
+	compile retrofit
+	compile retrofitAdapterRxJava
+	compile retrofitConverterMoshi
+	compile retrofit
 	compile rxAndroid
 	compile rxJava
 }

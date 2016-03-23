@@ -1,8 +1,6 @@
 package clean.news.ui.item.detail
 
 import clean.news.flow.WithComponent
-import clean.news.presentation.inject.ClassScope
-import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
@@ -16,7 +14,6 @@ class ItemDetailScreen(private val id: Long) : ClassKey(), TreeKey, ItemDetailKe
 
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(id))
 
-	@ClassScope(ItemDetailViewModel::class)
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
 	interface ItemDetailComponent
 

@@ -1,14 +1,18 @@
 package clean.news.adapter
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import clean.news.R
 import clean.news.adapter.ItemAdapter.AbsItem
 import clean.news.adapter.ItemAdapter.AbsViewHolder
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.Type
 
-class ItemAdapter : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
+class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
+	private val inflater = LayoutInflater.from(context)
 	private val items = mutableListOf<AbsItem>()
 
 	fun setItems(items: List<Item>) {
@@ -26,9 +30,9 @@ class ItemAdapter : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 		viewHolder.bind(position, items[position])
 	}
 
-	override fun onCreateViewHolder(viewHolder: ViewGroup, position: Int): AbsViewHolder<AbsItem> {
-		// TODO: inflate view holder
-		throw UnsupportedOperationException()
+	override fun onCreateViewHolder(parent: ViewGroup, position: Int): AbsViewHolder<AbsItem> {
+		val view = inflater.inflate(R.layout.item_view, parent, false)
+		return StoryViewHolder(view)
 	}
 
 	override fun getItemCount(): Int {
@@ -49,9 +53,7 @@ class ItemAdapter : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 
 	// View holders
 
-	private class StoryViewHolder(view: View) : AbsViewHolder<AbsItem>(view) {
-
-	}
+	private class StoryViewHolder(view: View) : AbsViewHolder<AbsItem>(view)
 
 	// Abstract inner classes
 
@@ -61,6 +63,10 @@ class ItemAdapter : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 
 	abstract class AbsViewHolder<T : AbsItem>(view: View) : RecyclerView.ViewHolder(view) {
 		open fun bind(position: Int, item: T) {
+			if (itemView is Binder<*> && itemView.bindType() == Item::class.java) {
+				@Suppress("UNCHECKED_CAST")
+				(itemView as Binder<Item>).bind(item.item)
+			}
 		}
 	}
 

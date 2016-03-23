@@ -4,8 +4,7 @@ import clean.news.R
 import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
 import clean.news.inject.component.ApplicationComponent
-import clean.news.presentation.inject.ClassScope
-import clean.news.presentation.model.main.MainViewModel
+import clean.news.presentation.inject.ActivityScope
 import clean.news.presentation.navigation.NavigationFactory.MainKey
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailModule
@@ -19,7 +18,7 @@ class MainScreen : ClassKey(), MainKey, WithLayout, WithComponent<ApplicationCom
 
 	override fun createComponent(parent: ApplicationComponent) = parent.mainComponent()
 
-	@ClassScope(MainViewModel::class)
+	@ActivityScope
 	@Subcomponent
 	interface MainComponent {
 		fun inject(mainView: MainView)
