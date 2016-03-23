@@ -21,4 +21,8 @@ data class Item(
 	enum class Type {
 		JOB, STORY, COMMENT, POLL, POLLOPT
 	}
+
+	enum class ListType {
+		TOP, NEW, SHOW, ASK, JOBS
+	}
 }

@@ -5,17 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import clean.news.R
+import clean.news.core.entity.Item
 import clean.news.ui.item.list.ItemListScreen
 
 class ItemListPagerAdapter(context: Context) : ViewStatePagerAdapter() {
 	private val inflater = LayoutInflater.from(context)
 
 	private val items = arrayListOf(
-			ItemListScreen("Top"),
-			ItemListScreen("New"),
-			ItemListScreen("Show"),
-			ItemListScreen("Ask"),
-			ItemListScreen("Jobs")
+			ItemListScreen(Item.ListType.TOP),
+			ItemListScreen(Item.ListType.NEW),
+			ItemListScreen(Item.ListType.SHOW),
+			ItemListScreen(Item.ListType.ASK),
+			ItemListScreen(Item.ListType.JOBS)
 	)
 
 	override fun createView(container: ViewGroup, position: Int): View {
@@ -24,8 +25,14 @@ class ItemListPagerAdapter(context: Context) : ViewStatePagerAdapter() {
 		return view
 	}
 
+	override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+		super.destroyItem(container, position, obj)
+		val view = obj as View
+		container.removeView(view)
+	}
+
 	override fun getPageTitle(position: Int): CharSequence? {
-		return items[position].type
+		return items[position].getTitle()
 	}
 
 	override fun getCount(): Int {
