@@ -1,5 +1,5 @@
 package clean.news.flow
 
-interface  HasLayout {
+interface WithLayout {
 	fun getLayoutResId(): Int
 }

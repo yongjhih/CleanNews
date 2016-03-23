@@ -41,6 +41,7 @@ dependencies {
 	compile flow
 	compile javaxInject
 	compile kotlinStdLib
+	compile kotterKnife
 	compile rxAndroid
 	compile rxJava
 }

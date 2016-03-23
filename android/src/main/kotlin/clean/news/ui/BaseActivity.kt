@@ -3,8 +3,9 @@ package clean.news.ui
 import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import clean.news.CleanNewsApplication
 import clean.news.R
-import clean.news.flow.DaggerServices
+import clean.news.flow.ComponentService
 import clean.news.flow.SceneDispatcher
 import flow.Flow
 import flow.KeyDispatcher
@@ -12,9 +13,10 @@ import flow.KeyDispatcher
 abstract class BaseActivity : AppCompatActivity() {
 	abstract fun getDefaultKey(): Any
 
-	override fun attachBaseContext(newBase: Context?) {
+	override fun attachBaseContext(newBase: Context) {
+		val applicationComponent = CleanNewsApplication.get(newBase).component()
 		val context = Flow.configure(newBase, this)
-				.addServicesFactory(DaggerServices())
+				.addServicesFactory(ComponentService(applicationComponent))
 				.dispatcher(KeyDispatcher.configure(this, SceneDispatcher(this)).build())
 				.defaultKey(getDefaultKey())
 				.install()

@@ -20,7 +20,7 @@ class SceneDispatcher(private val activity: Activity) : KeyChanger() {
 			incomingContexts: MutableMap<Any, Context>,
 			callback: TraversalCallback) {
 
-		val destination = incomingState.getKey<HasLayout>()
+		val destination = incomingState.getKey<WithLayout>()
 		val layout = destination.getLayoutResId()
 		val context = incomingContexts[destination]
 		val frame = activity.findViewById(R.id.app_container) as ViewGroup

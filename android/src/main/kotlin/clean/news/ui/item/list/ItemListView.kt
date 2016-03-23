@@ -4,7 +4,10 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
-import clean.news.presentation.model.ItemListViewModel
+import clean.news.flow.ComponentService
+import clean.news.presentation.model.item.ItemListViewModel
+import clean.news.ui.item.list.ItemListScreen.ItemListComponent
+import flow.Flow
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
@@ -19,7 +22,7 @@ class ItemListView : RecyclerView {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
-
+		Flow.getService<ItemListComponent>(ComponentService.NAME, context)?.inject(this)
 	}
 
 	override fun onAttachedToWindow() {

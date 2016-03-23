@@ -1,10 +1,26 @@
 package clean.news.ui.item.list
 
-import clean.news.presentation.navigation.NavigationFactory.ItemListKey
-import clean.news.ui.main.MainScreen
+import clean.news.R
+import clean.news.flow.WithComponent
+import clean.news.flow.WithLayout
+import clean.news.presentation.inject.ClassScope
+import clean.news.presentation.model.item.ItemListViewModel
+import clean.news.ui.main.MainScreen.MainComponent
+import dagger.Module
+import dagger.Subcomponent
 import flow.ClassKey
-import flow.TreeKey
 
-class ItemListScreen : ClassKey(), TreeKey, ItemListKey {
-	override fun getParentKey() = MainScreen()
+class ItemListScreen(val type: String) : ClassKey(), WithLayout, WithComponent<MainComponent> {
+	override fun getLayoutResId() = R.layout.item_list_view
+
+	override fun createComponent(parent: MainComponent) = parent.plus(ItemListModule())
+
+	@ClassScope(ItemListViewModel::class)
+	@Subcomponent(modules = arrayOf(ItemListModule::class))
+	interface ItemListComponent {
+		fun inject(itemListView: ItemListView)
+	}
+
+	@Module
+	class ItemListModule
 }

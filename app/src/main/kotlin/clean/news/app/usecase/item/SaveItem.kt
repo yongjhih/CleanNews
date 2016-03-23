@@ -6,8 +6,9 @@ import clean.news.app.usecase.RxUseCase1
 import clean.news.app.usecase.Strategy
 import clean.news.core.entity.Item
 import rx.Observable
+import javax.inject.Inject
 
-class SaveItem(
+class SaveItem @Inject constructor(
 		private val disk: ItemDiskRepository,
 		private val memory: ItemMemoryRepository) : RxUseCase1<Item, Boolean> {
 

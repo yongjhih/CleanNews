@@ -3,15 +3,11 @@ package clean.news.presentation.navigation
 interface NavigationFactory {
 	interface MainKey
 
-	interface ItemListKey
-
 	interface ItemDetailKey
 
 	interface UrlKey
 
-	fun mainKey(): MainKey
-
-	fun itemList(): ItemListKey
+	fun main(): MainKey
 
 	fun itemDetail(id: Long): ItemDetailKey
 
