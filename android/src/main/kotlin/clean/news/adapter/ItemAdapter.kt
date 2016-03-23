@@ -63,9 +63,9 @@ class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem
 
 	abstract class AbsViewHolder<T : AbsItem>(view: View) : RecyclerView.ViewHolder(view) {
 		open fun bind(position: Int, item: T) {
-			if (itemView is Binder<*> && itemView.bindType() == Item::class.java) {
+			if (itemView is Bindable<*> && itemView.bindType() == Item::class.java) {
 				@Suppress("UNCHECKED_CAST")
-				(itemView as Binder<Item>).bind(item.item)
+				(itemView as Bindable<Item>).bind(item.item)
 			}
 		}
 	}

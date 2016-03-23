@@ -6,10 +6,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
-import clean.news.adapter.Binder
+import clean.news.adapter.Bindable
 import clean.news.core.entity.Item
 
-class ItemView : RelativeLayout, Binder<Item> {
+class ItemView : RelativeLayout, Bindable<Item> {
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
 
 	@JvmOverloads
