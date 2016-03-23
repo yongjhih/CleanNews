@@ -5,7 +5,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
-import clean.news.core.entity.Item
 import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
@@ -24,12 +23,14 @@ class ItemListView : RecyclerView {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
-		Flow.getService<MainComponent>(ComponentService.NAME, context)
-				?.plus(ItemListModule(Item.ListType.TOP))
-				?.inject(this)
-
 		layoutManager = LinearLayoutManager(context)
 		adapter = ItemAdapter(context)
+	}
+
+	fun inject(module: ItemListModule) {
+		Flow.getService<MainComponent>(ComponentService.NAME, context)
+				?.plus(module)
+				?.inject(this)
 	}
 
 	override fun onAttachedToWindow() {

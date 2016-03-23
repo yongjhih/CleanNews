@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import clean.news.R
 import clean.news.core.entity.Item
 import clean.news.ui.item.list.ItemListScreen
+import clean.news.ui.item.list.ItemListView
 
 class ItemListPagerAdapter(context: Context) : ViewStatePagerAdapter() {
 	private val inflater = LayoutInflater.from(context)
@@ -20,7 +21,8 @@ class ItemListPagerAdapter(context: Context) : ViewStatePagerAdapter() {
 	)
 
 	override fun createView(container: ViewGroup, position: Int): View {
-		val view = inflater.inflate(R.layout.item_list_view, container, false)
+		val view = inflater.inflate(R.layout.item_list_view, container, false) as ItemListView
+		view.inject(ItemListScreen.ItemListModule(items[position].listType)) // TODO: this feels wrong
 		container.addView(view)
 		return view
 	}

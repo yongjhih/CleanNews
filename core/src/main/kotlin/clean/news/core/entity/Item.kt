@@ -12,9 +12,9 @@ data class Item(
 		val dead: Boolean,
 		val parent: Long,
 		val kids: List<Long>,
-		val url: String,
-		val score: Int,
-		val title: String,
+		val url: String?,
+		val score: Int?,
+		val title: String?,
 		val parts: List<Long>,
 		val descendants: Int) {
 

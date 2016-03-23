@@ -10,7 +10,7 @@ import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
 
-class ItemListScreen(private val listType: Item.ListType) : ClassKey(), WithLayout, WithComponent<MainComponent> {
+class ItemListScreen(val listType: Item.ListType) : ClassKey(), WithLayout, WithComponent<MainComponent> {
 	fun getTitle(): String {
 		return listType.name
 	}
