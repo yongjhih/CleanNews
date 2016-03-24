@@ -2,6 +2,7 @@ buildscript {
 	ext.kotlinVersion = '1.0.1'
 	repositories {
 		jcenter()
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:1.5.0'
@@ -45,6 +46,7 @@ ext {
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
 	rxJavaVersion = '1.1.1'
+	rxJoinVersion = '1.0.0-SNAPSHOT'
 
 	// Testing
 
@@ -79,11 +81,13 @@ ext {
 	retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
 	retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
 	retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-	rxAndroid = "io.reactivex:rxandroid:$rxAndroidVersion"
-	rxBinding = "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
-	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:$rxBindingVersion"
-	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:$rxBindingVersion"
-	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
+	rxAndroid = "io.reactivex:rxandroid:${rxAndroidVersion}"
+	rxBinding = "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}"
+	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
+	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
+	rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+	rxJoin = "ai.notion:rxjoin:${rxJoinVersion}"
+	rxJoinCompiler = "ai.notion:rxjoin-compiler:${rxJoinVersion}"
 
 	// Testing
 
