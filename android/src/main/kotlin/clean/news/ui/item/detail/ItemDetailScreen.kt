@@ -7,6 +7,7 @@ import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
 import dagger.Module
+import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
 import flow.TreeKey
@@ -28,8 +29,13 @@ class ItemDetailScreen(val id: Long) : ClassKey(),
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(id))
 
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
-	interface ItemDetailComponent
+	interface ItemDetailComponent {
+		fun inject(view: ItemDetailView)
+	}
 
 	@Module
-	class ItemDetailModule(val id: Long)
+	class ItemDetailModule(val id: Long) {
+		@Provides
+		fun itemId(): Long = id
+	}
 }
