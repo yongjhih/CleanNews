@@ -25,7 +25,7 @@ ext {
 
 	androidBuildToolsVersion = '23.0.1'
 	androidCompileSdkVersion = 23
-	androidMinSdkVersion = 15
+	androidMinSdkVersion = 16
 	androidTargetSdkVersion = 23
 
 	// Desktop

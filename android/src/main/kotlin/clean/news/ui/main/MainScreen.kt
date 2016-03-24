@@ -10,6 +10,8 @@ import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailModule
 import clean.news.ui.item.list.ItemListScreen.ItemListComponent
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
+import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
+import clean.news.ui.item.url.ItemUrlScreen.ItemUrlModule
 import dagger.Subcomponent
 import flow.ClassKey
 import nz.bradcampbell.paperparcel.PaperParcel
@@ -29,5 +31,7 @@ class MainScreen : ClassKey(), MainKey, WithLayout, WithComponent<ApplicationCom
 		fun plus(itemListModule: ItemListModule): ItemListComponent
 
 		fun plus(itemDetailModule: ItemDetailModule): ItemDetailComponent
+
+		fun plus(itemUrlModule: ItemUrlModule): ItemUrlComponent
 	}
 }

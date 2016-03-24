@@ -21,7 +21,8 @@ class ItemListViewModel @Inject constructor(
 		private val getAskStories: GetAskStories,
 		private val getJobStories: GetJobStories) {
 
-	val itemSelections = PublishSubject.create<Long>()
+	val itemUrlSelections = PublishSubject.create<String>()
+	val itemDetailSelections = PublishSubject.create<Long>()
 
 	val items = when (listType) {
 		Item.ListType.TOP -> getTopStories.execute()
@@ -32,7 +33,11 @@ class ItemListViewModel @Inject constructor(
 	}
 
 	init {
-		itemSelections.subscribe {
+		itemUrlSelections.subscribe() {
+			navigationService.goTo(navigationFactory.url(it))
+		}
+
+		itemDetailSelections.subscribe {
 			navigationService.goTo(navigationFactory.itemDetail(it))
 		}
 	}

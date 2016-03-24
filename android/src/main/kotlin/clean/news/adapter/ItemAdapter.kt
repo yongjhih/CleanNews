@@ -10,12 +10,14 @@ import clean.news.adapter.ItemAdapter.AbsItem
 import clean.news.adapter.ItemAdapter.AbsViewHolder
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.Type
+import clean.news.ui.item.list.ItemView
 
 class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 	private val inflater = LayoutInflater.from(context)
 	private val items = mutableListOf<AbsItem>()
 
-	var itemClickListener: ((Long) -> Any?)? = null
+	var itemUrlClickListener: ((String) -> Any?)? = null
+	var itemDetailClickListener: ((Long) -> Any?)? = null
 
 	fun setItems(items: List<Item>) {
 		this.items.clear()
@@ -58,7 +60,10 @@ class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem
 	private inner class StoryViewHolder(view: View) : AbsViewHolder<AbsItem>(view) {
 		override fun bind(position: Int, item: AbsItem) {
 			super.bind(position, item)
-			itemView.setOnClickListener { itemClickListener?.invoke(item.item.id) }
+			if (itemView is ItemView) {
+				itemView.urlClickListener = itemUrlClickListener
+				itemView.detailsClickListener = itemDetailClickListener
+			}
 		}
 	}
 

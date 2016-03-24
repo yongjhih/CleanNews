@@ -2,15 +2,54 @@
 <clean.news.ui.item.list.ItemView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
-		android:layout_height="48dp"
-		android:padding="16dp"
+		android:layout_height="wrap_content"
+		tools:layout_height="72dp"
 		>
+
+	<ImageView
+			android:id="@+id/details_button"
+			android:layout_width="48dp"
+			android:layout_height="match_parent"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentRight="true"
+			android:layout_centerVertical="true"
+			android:background="?attr/selectableItemBackground"
+			android:padding="12dp"
+			android:src="@drawable/ic_forum_black_24dp"
+			/>
 
 	<TextView
 			android:id="@+id/title_text_view"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			tools:text="Title"
+			android:layout_marginLeft="16dp"
+			android:layout_marginStart="16dp"
+			android:layout_marginTop="16dp"
+			android:layout_toLeftOf="@+id/details_button"
+			android:layout_toStartOf="@+id/details_button"
+			tools:text="This is the Title of the Article"
+			style="@style/TextAppearance.AppCompat.Subhead"
+			/>
+
+	<TextView
+			android:id="@+id/author_text_view"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignLeft="@+id/title_text_view"
+			android:layout_alignStart="@+id/title_text_view"
+			android:layout_below="@+id/title_text_view"
+			android:layout_marginBottom="16dp"
+			android:layout_toLeftOf="@+id/details_button"
+			android:layout_toStartOf="@+id/details_button"
+			tools:text="author"
+			style="@style/TextAppearance.AppCompat.Caption"
+			/>
+
+	<View
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_alignParentBottom="true"
+			android:background="#24000000"
 			/>
 
 </clean.news.ui.item.list.ItemView>
