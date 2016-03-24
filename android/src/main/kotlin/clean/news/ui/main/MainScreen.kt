@@ -12,8 +12,11 @@ import clean.news.ui.item.list.ItemListScreen.ItemListComponent
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
 import dagger.Subcomponent
 import flow.ClassKey
+import nz.bradcampbell.paperparcel.PaperParcel
+import nz.bradcampbell.paperparcel.PaperParcelable
 
-class MainScreen : ClassKey(), MainKey, WithLayout, WithComponent<ApplicationComponent> {
+@PaperParcel
+class MainScreen : ClassKey(), MainKey, WithLayout, WithComponent<ApplicationComponent>, PaperParcelable {
 	override fun getLayoutResId() = R.layout.main_view
 
 	override fun createComponent(parent: ApplicationComponent) = parent.mainComponent()

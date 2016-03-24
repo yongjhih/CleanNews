@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import clean.news.CleanNewsApplication
 import clean.news.R
+import clean.news.flow.PaperKeyParceler
 import clean.news.flow.ComponentService
 import clean.news.flow.SceneDispatcher
 import clean.news.inject.component.ApplicationComponent
@@ -22,6 +23,7 @@ abstract class BaseActivity : AppCompatActivity() {
 		val context = Flow.configure(newBase, this)
 				.addServicesFactory(ComponentService(applicationComponent))
 				.dispatcher(KeyDispatcher.configure(this, SceneDispatcher(this)).build())
+				.keyParceler(PaperKeyParceler())
 				.defaultKey(getDefaultKey())
 				.install()
 

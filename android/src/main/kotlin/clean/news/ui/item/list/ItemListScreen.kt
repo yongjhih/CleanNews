@@ -9,8 +9,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
+import nz.bradcampbell.paperparcel.PaperParcel
+import nz.bradcampbell.paperparcel.PaperParcelable
 
-class ItemListScreen(val listType: Item.ListType) : ClassKey(), WithLayout, WithComponent<MainComponent> {
+@PaperParcel
+class ItemListScreen(val listType: Item.ListType) : ClassKey(),
+		WithLayout,
+		WithComponent<MainComponent>,
+		PaperParcelable {
+
 	fun getTitle(): String {
 		return listType.name
 	}

@@ -10,8 +10,17 @@ import dagger.Module
 import dagger.Subcomponent
 import flow.ClassKey
 import flow.TreeKey
+import nz.bradcampbell.paperparcel.PaperParcel
+import nz.bradcampbell.paperparcel.PaperParcelable
 
-class ItemDetailScreen(private val id: Long) : ClassKey(), TreeKey, ItemDetailKey, WithLayout, WithComponent<MainComponent> {
+@PaperParcel
+class ItemDetailScreen(val id: Long) : ClassKey(),
+		TreeKey,
+		ItemDetailKey,
+		WithLayout,
+		WithComponent<MainComponent>,
+		PaperParcelable {
+
 	override fun getParentKey() = MainScreen()
 
 	override fun getLayoutResId() = R.layout.item_detail_view

@@ -13,6 +13,7 @@ allprojects {
 	repositories {
 		jcenter()
 		maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+		maven { url 'https://jitpack.io' }
 	}
 }
 
@@ -39,6 +40,7 @@ ext {
 	kotlinVersion = '1.0.1'
 	kotterKnifeVersion = '0.1.0-SNAPSHOT'
 	okHttpVersion = '3.2.0'
+	paperParcelVersion = '1.0.0-beta8'
 	retrofitVersion = '2.0.0'
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
@@ -55,36 +57,37 @@ ext {
 
 	// Android
 
-	androidSupport = "com.android.support:support-v4:${androidSupportVersion}"
-	androidSupportAnnotations = "com.android.support:support-annotations:${androidSupportVersion}"
-	androidSupportAppCompat = "com.android.support:appcompat-v7:${androidSupportVersion}"
-	androidSupportDesign = "com.android.support:design:${androidSupportVersion}"
-	androidSupportRecyclerView = "com.android.support:recyclerview-v7:${androidSupportVersion}"
+	androidSupport = "com.android.support:support-v4:$androidSupportVersion"
+	androidSupportAnnotations = "com.android.support:support-annotations:$androidSupportVersion"
+	androidSupportAppCompat = "com.android.support:appcompat-v7:$androidSupportVersion"
+	androidSupportDesign = "com.android.support:design:$androidSupportVersion"
+	androidSupportRecyclerView = "com.android.support:recyclerview-v7:$androidSupportVersion"
 
 	// Desktop
 
 	// Third-party
-
-	dagger = "com.google.dagger:dagger:${daggerVersion}"
-	daggerCompiler = "com.google.dagger:dagger-compiler:${daggerVersion}"
-	flow = "com.squareup.flow:flow:${flowVersion}"
-	javaxAnnotation = "org.glassfish:javax.annotation:${javaxAnnotationVersion}"
-	javaxInject = "javax.inject:javax.inject:${javaxInjectVersion}"
-	kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
-	kotterKnife = "com.jakewharton:kotterknife:${kotterKnifeVersion}"
-	okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}"
+	dagger = "com.google.dagger:dagger:$daggerVersion"
+	daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
+	flow = "com.squareup.flow:flow:$flowVersion"
+	javaxAnnotation = "org.glassfish:javax.annotation:$javaxAnnotationVersion"
+	javaxInject = "javax.inject:javax.inject:$javaxInjectVersion"
+	kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+	kotterKnife = "com.jakewharton:kotterknife:$kotterKnifeVersion"
+	okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+	paperParcel = "com.github.grandstaish.paperparcel:paperparcel-kotlin:$paperParcelVersion"
+	paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"
 	retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
 	retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
 	retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-	rxAndroid = "io.reactivex:rxandroid:${rxAndroidVersion}"
-	rxBinding = "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}"
-	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
-	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
-	rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+	rxAndroid = "io.reactivex:rxandroid:$rxAndroidVersion"
+	rxBinding = "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
+	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:$rxBindingVersion"
+	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:$rxBindingVersion"
+	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
 
 	// Testing
 
-	assertJ = "org.assertj:assertj-core:${assertJVersion}"
-	jUnit = "junit:junit:${jUnitVersion}"
-	mockito = "org.mockito:mockito-core:${mockitoVersion}"
+	assertJ = "org.assertj:assertj-core:$assertJVersion"
+	jUnit = "junit:junit:$jUnitVersion"
+	mockito = "org.mockito:mockito-core:$mockitoVersion"
 }
