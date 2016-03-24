@@ -20,6 +20,7 @@ class SceneDispatcher(private val activity: Activity) : KeyChanger() {
 			incomingContexts: MutableMap<Any, Context>,
 			callback: TraversalCallback) {
 
+		val origin = outgoingState?.getKey<WithLayout>()
 		val destination = incomingState.getKey<WithLayout>()
 		val layout = destination.getLayoutResId()
 		val context = incomingContexts[destination]
@@ -28,8 +29,19 @@ class SceneDispatcher(private val activity: Activity) : KeyChanger() {
 
 		outgoingState?.save(frame.getChildAt(0))
 
-		val transition = if (outgoingState != null) AutoTransition() else null
 		val scene = Scene(frame, incomingView)
+		val transition = if (destination is WithTransition) {
+			destination.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction)
+		}
+		else if (origin is WithTransition) {
+			origin.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction)
+		}
+		else if (outgoingState != null) {
+			AutoTransition()
+		}
+		else {
+			null
+		}
 
 		TransitionManager.go(scene, transition)
 		incomingState.restore(incomingView)
