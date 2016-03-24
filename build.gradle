@@ -86,8 +86,8 @@ ext {
 	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
 	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
 	rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
+	rxJoin = "ai.notion:rxjoin:${rxJoinVersion}"
 	rxJoinCompiler = "ai.notion:rxjoin-compiler:${rxJoinVersion}"
-	rxJoinCore = "ai.notion:rxjoin:${rxJoinVersion}"
 
 	// Testing
 

@@ -16,5 +16,5 @@ dependencies {
 	compile javaxInject
 	compile kotlinStdLib
 	compile rxJava
-	compile rxJoinCore
+	compile rxJoin
 }
