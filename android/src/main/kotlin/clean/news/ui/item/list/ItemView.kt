@@ -16,25 +16,24 @@ class ItemView : RelativeLayout, Bindable<Item> {
 	private val detailsButton: ImageView by bindView(R.id.details_button)
 
 	var urlClickListener: ((String) -> Any?)? = null
-	var detailsClickListener: ((Long) -> Any?)? = null
+	var detailsClickListener: ((Item) -> Any?)? = null
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
 	}
 
-	override fun bind(data: Item) {
-		val id = data.id
-		val url = data.url
+	override fun bind(item: Item) {
+		val url = item.url
 
-		titleTextView.text = data.title
-		authorTextView.text = data.by
-		detailsButton.setOnClickListener { detailsClickListener?.invoke(id) }
+		titleTextView.text = item.title
+		authorTextView.text = item.by
+		detailsButton.setOnClickListener { detailsClickListener?.invoke(item) }
 
 		setOnClickListener {
 			if (url != null) {
 				urlClickListener?.invoke(url)
 			} else {
-				detailsClickListener?.invoke(id)
+				detailsClickListener?.invoke(item)
 			}
 		}
 	}

@@ -11,19 +11,16 @@ import flow.Flow
 import javax.inject.Inject
 
 class ItemDetailView : RecyclerView {
-
 	@Inject
 	lateinit var model: ItemDetailViewModel
 
 	@JvmOverloads
-	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context,
-			attrs, defStyle) {
-		Flow.getService<ItemDetailComponent>(ComponentService.NAME, context)
-				?.inject(this)
+	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
+		Flow.getService<ItemDetailComponent>(ComponentService.NAME, context)?.inject(this)
 	}
 
 	override fun onFinishInflate() {
 		super.onFinishInflate()
-		Toast.makeText(context, "Detail id: ${model.id}", 300).show()
+		Toast.makeText(context, "Detail id: ${model.item.id}", 300).show()
 	}
 }

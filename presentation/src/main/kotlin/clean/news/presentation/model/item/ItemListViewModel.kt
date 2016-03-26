@@ -26,7 +26,7 @@ class ItemListViewModel @Inject constructor(
 	val TAG = ItemListViewModel::class.java.simpleName
 
 	val itemUrlSelections = PublishSubject.create<String>()
-	val itemDetailSelections = PublishSubject.create<Long>()
+	val itemDetailSelections = PublishSubject.create<Item>()
 
 	val items = when (listType) {
 		Item.ListType.TOP -> getTopStories.execute()
