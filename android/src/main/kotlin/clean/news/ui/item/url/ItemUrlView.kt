@@ -11,12 +11,14 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
+import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
 import clean.news.core.entity.Item
 import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemUrlViewModel
 import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
+import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
@@ -24,9 +26,11 @@ class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
 	lateinit var model: ItemUrlViewModel
 
 	private val toolbar: Toolbar by bindView(R.id.toolbar)
-
+	private val titleTextView: TextView by bindView(R.id.title_text_view)
 	private val progressBar: ProgressBar by bindView(R.id.progress_bar)
 	private val webView: WebView by bindView(R.id.web_view)
+
+	private val subscriptions = CompositeSubscription()
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -36,12 +40,13 @@ class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 		model.item.subscribe { item: Item ->
-			toolbar.title = item.title
+			titleTextView.text = item.title
 			webView.loadUrl(item.url)
-		}
+		}.apply { subscriptions.add(this) }
 	}
 
 	override fun onDetachedFromWindow() {
+		subscriptions.unsubscribe()
 		super.onDetachedFromWindow()
 	}
 
