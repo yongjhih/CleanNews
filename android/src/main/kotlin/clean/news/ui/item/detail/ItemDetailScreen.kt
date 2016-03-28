@@ -37,6 +37,6 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 	@Module
 	class ItemDetailModule(private val item: Item) {
 		@Provides
-		fun item(): Item = item
+		fun detailItem(): Item = item
 	}
 }

@@ -37,6 +37,6 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 	@Module
 	class ItemUrlModule(private val item: Item) {
 		@Provides
-		fun item(): Item = item
+		fun urlItem(): Item = item
 	}
 }
