@@ -16,8 +16,8 @@ class ItemAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem
 	private val inflater = LayoutInflater.from(context)
 	private val items = mutableListOf<AbsItem>()
 
-	var itemUrlClickListener: ((String) -> Any?)? = null
-	var itemDetailClickListener: ((Long) -> Any?)? = null
+	var itemUrlClickListener: ((Item) -> Any?)? = null
+	var itemDetailClickListener: ((Item) -> Any?)? = null
 
 	fun setItems(items: List<Item>) {
 		this.items.clear()

@@ -7,18 +7,18 @@ import rx.Observable
 import rx.subjects.PublishSubject
 import javax.inject.Inject
 
-class ItemDetailViewModel @Inject constructor(
+class ItemUrlViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
 		item: Item) {
 
 	val backClicks = PublishSubject.create<Void>()
-	val urlClicks = PublishSubject.create<Void>()
+	val detailClicks = PublishSubject.create<Void>()
 
 	val item = Observable.just(item)
 
 	init {
 		backClicks.subscribe { navService.goBack() }
-		urlClicks.subscribe { navService.replaceTo(navFactory.url(item)) }
+		detailClicks.subscribe { navService.replaceTo(navFactory.itemDetail(item)) }
 	}
 }

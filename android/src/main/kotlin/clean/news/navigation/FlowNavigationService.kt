@@ -18,6 +18,10 @@ class FlowNavigationService : NavigationService {
 		getFlow().set(newTop)
 	}
 
+	override fun replaceTo(newTop: Any) {
+		getFlow().replaceTop(newTop, Direction.REPLACE)
+	}
+
 	override fun resetTo(newTop: Any) {
 		getFlow().setHistory(History.single(newTop), Direction.REPLACE)
 	}

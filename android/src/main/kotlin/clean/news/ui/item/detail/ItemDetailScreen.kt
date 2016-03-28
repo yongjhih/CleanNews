@@ -1,8 +1,11 @@
 package clean.news.ui.item.detail
 
+import android.transition.ChangeBounds
 import clean.news.R
+import clean.news.core.entity.Item
 import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
+import clean.news.flow.WithTransition
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
@@ -10,15 +13,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
+import flow.Direction
 import flow.TreeKey
 import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemDetailScreen(val id: Long) : ClassKey(),
+class ItemDetailScreen(val item: Item) : ClassKey(),
 		TreeKey,
 		ItemDetailKey,
 		WithLayout,
+		WithTransition,
 		WithComponent<MainComponent>,
 		PaperParcelable {
 
@@ -26,7 +31,9 @@ class ItemDetailScreen(val id: Long) : ClassKey(),
 
 	override fun getLayoutResId() = R.layout.item_detail_view
 
-	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(id))
+	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds()
+
+	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(item))
 
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
 	interface ItemDetailComponent {
@@ -34,8 +41,8 @@ class ItemDetailScreen(val id: Long) : ClassKey(),
 	}
 
 	@Module
-	class ItemDetailModule(val id: Long) {
+	class ItemDetailModule(private val item: Item) {
 		@Provides
-		fun itemId(): Long = id
+		fun detailItem(): Item = item
 	}
 }

@@ -1,15 +1,17 @@
 package clean.news.presentation.navigation
 
+import clean.news.core.entity.Item
+
 interface NavigationFactory {
 	interface MainKey
 
 	interface ItemDetailKey
 
-	interface UrlKey
+	interface ItemUrlKey
 
 	fun main(): MainKey
 
-	fun itemDetail(id: Long): ItemDetailKey
+	fun itemDetail(item: Item): ItemDetailKey
 
-	fun url(url: String): UrlKey
+	fun url(item: Item): ItemUrlKey
 }

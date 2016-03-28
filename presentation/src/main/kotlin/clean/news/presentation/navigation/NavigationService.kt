@@ -5,5 +5,7 @@ interface NavigationService {
 
 	fun goTo(newTop: Any)
 
+	fun replaceTo(newTop: Any)
+
 	fun resetTo(newTop: Any)
 }

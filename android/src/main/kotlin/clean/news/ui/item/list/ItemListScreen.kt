@@ -34,8 +34,6 @@ class ItemListScreen(val listType: Item.ListType) : ClassKey(),
 	@Module
 	class ItemListModule(private val listType: Item.ListType) {
 		@Provides
-		fun listType(): Item.ListType {
-			return listType
-		}
+		fun listType(): Item.ListType = listType
 	}
 }

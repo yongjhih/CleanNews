@@ -1,35 +1,48 @@
 package clean.news.ui.item.url
 
+import android.transition.ChangeBounds
 import clean.news.R
+import clean.news.core.entity.Item
 import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
-import clean.news.presentation.navigation.NavigationFactory.UrlKey
+import clean.news.flow.WithTransition
+import clean.news.presentation.navigation.NavigationFactory.ItemUrlKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
 import dagger.Module
+import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
+import flow.Direction
 import flow.TreeKey
 import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemUrlScreen(val url: String) : ClassKey(),
+class ItemUrlScreen(val item: Item) : ClassKey(),
 		TreeKey,
-		UrlKey,
+		ItemUrlKey,
 		WithLayout,
+		WithTransition,
 		WithComponent<MainComponent>,
 		PaperParcelable {
 
+	override fun getParentKey() = MainScreen()
+
 	override fun getLayoutResId() = R.layout.item_url_view
 
-	override fun createComponent(parent: MainComponent) = parent.plus(ItemUrlModule(url))
+	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds()
 
-	override fun getParentKey(): Any = MainScreen()
+	override fun createComponent(parent: MainComponent) = parent.plus(ItemUrlModule(item))
 
 	@Subcomponent(modules = arrayOf(ItemUrlModule::class))
-	interface ItemUrlComponent
+	interface ItemUrlComponent {
+		fun inject(view: ItemUrlView)
+	}
 
 	@Module
-	class ItemUrlModule(val url: String)
+	class ItemUrlModule(private val item: Item) {
+		@Provides
+		fun urlItem(): Item = item
+	}
 }
