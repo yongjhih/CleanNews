@@ -11,5 +11,5 @@ class FlowNavigationFactory : NavigationFactory {
 
 	override fun itemDetail(item: Item) = ItemDetailScreen(item)
 
-	override fun url(url: String) = ItemUrlScreen(url)
+	override fun url(item: Item) = ItemUrlScreen(item)
 }

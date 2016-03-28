@@ -15,7 +15,7 @@ class ItemView : RelativeLayout, Bindable<Item> {
 	private val authorTextView: TextView by bindView(R.id.author_text_view)
 	private val detailsButton: ImageView by bindView(R.id.details_button)
 
-	var urlClickListener: ((String) -> Any?)? = null
+	var urlClickListener: ((Item) -> Any?)? = null
 	var detailsClickListener: ((Item) -> Any?)? = null
 
 	@JvmOverloads
@@ -23,15 +23,13 @@ class ItemView : RelativeLayout, Bindable<Item> {
 	}
 
 	override fun bind(item: Item) {
-		val url = item.url
-
 		titleTextView.text = item.title
 		authorTextView.text = item.by
 		detailsButton.setOnClickListener { detailsClickListener?.invoke(item) }
 
 		setOnClickListener {
-			if (url != null) {
-				urlClickListener?.invoke(url)
+			if (item.url != null) {
+				urlClickListener?.invoke(item)
 			} else {
 				detailsClickListener?.invoke(item)
 			}

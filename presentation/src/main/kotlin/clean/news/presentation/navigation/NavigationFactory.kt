@@ -7,11 +7,11 @@ interface NavigationFactory {
 
 	interface ItemDetailKey
 
-	interface UrlKey
+	interface ItemUrlKey
 
 	fun main(): MainKey
 
 	fun itemDetail(item: Item): ItemDetailKey
 
-	fun url(url: String): UrlKey
+	fun url(item: Item): ItemUrlKey
 }
