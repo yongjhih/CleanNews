@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<clean.news.ui.item.url.ItemUrlView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
-		android:orientation="vertical"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
+		android:orientation="vertical"
 		>
 
 	<android.support.design.widget.AppBarLayout
@@ -18,16 +18,23 @@
 				android:layout_height="wrap_content"
 				app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 				app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-				app:title="@string/app_name"
 				/>
 
 	</android.support.design.widget.AppBarLayout>
 
-	<TextView
+	<WebView
+			android:id="@+id/web_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:gravity="center"
-			android:text="Item Url View"
+			android:layout_below="@+id/app_bar"
 			/>
 
-</LinearLayout>
+	<ProgressBar
+			android:id="@+id/progress_bar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@+id/app_bar"
+			style="?android:attr/progressBarStyleHorizontal"
+			/>
+
+</clean.news.ui.item.url.ItemUrlView>
