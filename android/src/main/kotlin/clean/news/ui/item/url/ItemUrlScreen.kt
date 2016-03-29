@@ -31,7 +31,7 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 
 	override fun getLayoutResId() = R.layout.item_url_view
 
-	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds()
+	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds().setDuration(200)
 
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemUrlModule(item))
 
