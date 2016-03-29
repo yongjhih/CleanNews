@@ -10,4 +10,10 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="Widget.AppCompat.ProgressBar.Horizontal.WebView" parent="Widget.AppCompat.ProgressBar.Horizontal">
+		<item name="android:progressDrawable">@drawable/progress_horizontal_material</item>
+		<item name="android:minHeight">@dimen/progress_bar_height_material</item>
+		<item name="android:maxHeight">@dimen/progress_bar_height_material</item>
+	</style>
+
 </resources>
