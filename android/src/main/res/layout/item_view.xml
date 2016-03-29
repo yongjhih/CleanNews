@@ -3,6 +3,7 @@
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:minHeight="72dp"
 		tools:layout_height="72dp"
 		>
 
@@ -27,6 +28,7 @@
 			android:layout_marginTop="16dp"
 			android:layout_toLeftOf="@+id/details_button"
 			android:layout_toStartOf="@+id/details_button"
+			android:maxLines="2"
 			tools:text="This is the Title of the Article"
 			style="@style/TextAppearance.AppCompat.Subhead"
 			/>
