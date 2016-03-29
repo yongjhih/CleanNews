@@ -42,6 +42,7 @@ ext {
 	kotterKnifeVersion = '0.1.0-SNAPSHOT'
 	okHttpVersion = '3.2.0'
 	paperParcelVersion = '1.0.0-beta8'
+	phraseVersion = '1.1.0'
 	retrofitVersion = '2.0.0'
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
@@ -78,16 +79,17 @@ ext {
 	okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 	paperParcel = "com.github.grandstaish.paperparcel:paperparcel-kotlin:$paperParcelVersion"
 	paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"
+	phrase = "com.squareup.phrase:phrase:$phraseVersion"
 	retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
 	retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
 	retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-	rxAndroid = "io.reactivex:rxandroid:${rxAndroidVersion}"
-	rxBinding = "com.jakewharton.rxbinding:rxbinding:${rxBindingVersion}"
-	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:${rxBindingVersion}"
-	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:${rxBindingVersion}"
-	rxJava = "io.reactivex:rxjava:${rxJavaVersion}"
-	rxJoin = "ai.notion:rxjoin:${rxJoinVersion}"
-	rxJoinCompiler = "ai.notion:rxjoin-compiler:${rxJoinVersion}"
+	rxAndroid = "io.reactivex:rxandroid:$rxAndroidVersion"
+	rxBinding = "com.jakewharton.rxbinding:rxbinding:$rxBindingVersion"
+	rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design:$rxBindingVersion"
+	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4:$rxBindingVersion"
+	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
+	rxJoin = "ai.notion:rxjoin:$rxJoinVersion"
+	rxJoinCompiler = "ai.notion:rxjoin-compiler:$rxJoinVersion"
 
 	// Testing
 
