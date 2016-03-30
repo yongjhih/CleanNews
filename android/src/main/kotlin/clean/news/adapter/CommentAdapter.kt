@@ -20,17 +20,41 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 	private val treeMap = mutableMapOf<Long, Node>()
 
 	fun setItems(items: List<Item>) {
-		this.items.clear()
-		this.items.addAll(items.map {
-			when (it.type) {
-				Type.COMMENT -> CommentItem(it)
-				else -> CommentItem(it)
+		// Create indexes
+		val oldIds = this.items.map { it.item.id }
+		val newIds = items.map { it.id }
+		val newItemMap = items.associateBy { it.id }
+
+		// Delete old entries
+		this.items.removeAll { it.item.id !in newIds }
+		// Update existing entries
+		this.items.filter { it.item.id in newIds }.forEach { it.item = newItemMap[it.item.id]!! }
+		// Add new entries
+		this.items.addAll(items
+				.filter { it.id !in oldIds }
+				.map {
+					when (it.type) {
+						Type.COMMENT -> CommentItem(it)
+						else -> CommentItem(it)
+					}
+				})
+
+		// Create tree and tree map
+		val newTreeMap = createTreeMap(createTree(items))
+
+		// Update collapsed values with old values
+		for ((id, item) in newTreeMap) {
+			val oldNode = treeMap[id]
+			if (oldNode != null) {
+				item.collapsed = oldNode.collapsed
 			}
-		})
+		}
 
+		// Update tree map
 		treeMap.clear()
-		createTreeMap(createTree(this.items), treeMap)
+		treeMap.putAll(newTreeMap)
 
+		// Update views
 		notifyDataSetChanged()
 	}
 
@@ -55,18 +79,20 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 
 	// TODO: find an optimized version of this
 
-	private fun createTreeMap(item: Node, map: MutableMap<Long, Node>) {
-		map.put(item.data.item.id, item)
-		item.children?.map { createTreeMap(it, map) }
+	private fun createTreeMap(item: Node, map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
+		return map.apply {
+			put(item.data.id, item)
+			item.children?.map { createTreeMap(it, this) }
+		}
 	}
 
-	private fun createTree(items: List<AbsItem>): Node {
-		return createNode(items.first(), null, items.associateBy { it.item.id })
+	private fun createTree(items: List<Item>): Node {
+		return createNode(items.first(), null, items.associateBy { it.id })
 	}
 
-	private fun createNode(item: AbsItem, parent: Node?, items: Map<Long, AbsItem>): Node {
+	private fun createNode(item: Item, parent: Node?, items: Map<Long, Item>): Node {
 		return Node(item, parent).apply {
-			children = item.item.kids?.map { items[it]?.let { createNode(it, this, items) } }?.filterNotNull()
+			children = item.kids?.map { items[it]?.let { createNode(it, this, items) } }?.filterNotNull()
 		}
 	}
 
@@ -87,18 +113,12 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 			if (node != null) {
 				val commentItemView = itemView as CommentItemView
 				val parentCollapsed = node.isParentCollapsed()
-				val collapsed = node.collapsed
 
 				commentItemView.setVisible(!parentCollapsed)
-				commentItemView.setCollapsed(parentCollapsed || collapsed)
-				commentItemView.setOnClickListener {
-					node.collapsed = false
+				commentItemView.setCollapsed(parentCollapsed || node.collapsed)
+				commentItemView.setCollapseClickListener {
+					node.collapsed = !node.collapsed
 					notifyDataSetChanged()
-				}
-				commentItemView.setOnLongClickListener {
-					node.collapsed = !collapsed
-					notifyDataSetChanged()
-					true
 				}
 			}
 		}
@@ -106,7 +126,7 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 
 	// Abstract inner classes
 
-	abstract class AbsItem(val item: Item) {
+	abstract class AbsItem(var item: Item) {
 		abstract fun getType(): Int
 	}
 
@@ -121,8 +141,8 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 
 	// Tree implementation
 
-	private class Node(
-			var data: AbsItem,
+	class Node(
+			var data: Item,
 			var parent: Node?,
 			var children: List<Node>? = null,
 			var collapsed: Boolean = false) {
