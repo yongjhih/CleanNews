@@ -18,6 +18,7 @@ class CommentItemView : RelativeLayout, Bindable<Item> {
 	private val indentMarkerView: View by bindView(R.id.indent_marker_view)
 	private val textView: TextView by bindView(R.id.text_view)
 	private val bylineTextView: TextView by bindView(R.id.byline_text_view)
+	private val dividerView: View by bindView(R.id.divider_view)
 
 	private val indentWidth: Int
 	private val indentColors: IntArray
@@ -51,16 +52,16 @@ class CommentItemView : RelativeLayout, Bindable<Item> {
 				.format()
 
 		textView.text = item.text?.let { Html.fromHtml(item.text) }
+	}
 
-		setOnLongClickListener {
-			if (textView.visibility != View.VISIBLE) {
-				textView.visibility = View.VISIBLE
-			}
-			else {
-				textView.visibility = View.GONE
-			}
-			true
-		}
+	fun setCollapsed(collapsed: Boolean) {
+		textView.visibility = if (collapsed) GONE else VISIBLE
+	}
+
+	fun setVisible(visible: Boolean) {
+		bylineTextView.visibility = if (visible) VISIBLE else GONE
+		textView.visibility = if (visible) VISIBLE else GONE
+		dividerView.visibility = if (visible) VISIBLE else GONE
 	}
 
 	override fun bindType(): Class<Item> {

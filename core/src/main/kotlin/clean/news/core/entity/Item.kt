@@ -19,8 +19,6 @@ data class Item(
 		val descendants: Int?,
 		val level: Int = 0) {
 
-	val hasParent = parent != null
-
 	enum class Type(val canComment: Boolean) {
 		JOB(false), STORY(true), COMMENT(true), POLL(true), POLLOPT(true)
 	}

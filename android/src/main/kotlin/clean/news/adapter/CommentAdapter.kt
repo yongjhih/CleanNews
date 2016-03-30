@@ -10,11 +10,14 @@ import clean.news.adapter.CommentAdapter.AbsItem
 import clean.news.adapter.CommentAdapter.AbsViewHolder
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.Type
+import clean.news.ui.item.list.CommentItemView
 
 
 class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
 	private val inflater = LayoutInflater.from(context)
 	private val items = mutableListOf<AbsItem>()
+
+	private val treeMap = mutableMapOf<Long, Node>()
 
 	fun setItems(items: List<Item>) {
 		this.items.clear()
@@ -24,6 +27,10 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 				else -> CommentItem(it)
 			}
 		})
+
+		treeMap.clear()
+		createTreeMap(createTree(this.items), treeMap)
+
 		notifyDataSetChanged()
 	}
 
@@ -32,8 +39,8 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, position: Int): AbsViewHolder<AbsItem> {
-		val view = inflater.inflate(R.layout.comment_item_view, parent, false)
-		return CommentViewHolder(view)
+		val view = inflater.inflate(R.layout.comment_item_view, parent, false) as CommentItemView
+		return CommentViewHolder(view) as AbsViewHolder<AbsItem>
 	}
 
 	override fun getItemCount(): Int {
@@ -42,6 +49,25 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 
 	override fun getItemViewType(position: Int): Int {
 		return items[position].getType()
+	}
+
+	// Private functions
+
+	// TODO: find an optimized version of this
+
+	private fun createTreeMap(item: Node, map: MutableMap<Long, Node>) {
+		map.put(item.data.item.id, item)
+		item.children?.map { createTreeMap(it, map) }
+	}
+
+	private fun createTree(items: List<AbsItem>): Node {
+		return createNode(items.first(), null, items.associateBy { it.item.id })
+	}
+
+	private fun createNode(item: AbsItem, parent: Node?, items: Map<Long, AbsItem>): Node {
+		return Node(item, parent).apply {
+			children = item.item.kids?.map { items[it]?.let { createNode(it, this, items) } }?.filterNotNull()
+		}
 	}
 
 	// Adapter items
@@ -54,7 +80,29 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 
 	// View holders
 
-	private inner class CommentViewHolder(view: View) : AbsViewHolder<AbsItem>(view)
+	private inner class CommentViewHolder(view: CommentItemView) : AbsViewHolder<CommentItem>(view) {
+		override fun bind(position: Int, item: CommentItem) {
+			super.bind(position, item)
+			val node = treeMap[item.item.id]
+			if (node != null) {
+				val commentItemView = itemView as CommentItemView
+				val parentCollapsed = node.isParentCollapsed()
+				val collapsed = node.collapsed
+
+				commentItemView.setVisible(!parentCollapsed)
+				commentItemView.setCollapsed(parentCollapsed || collapsed)
+				commentItemView.setOnClickListener {
+					node.collapsed = false
+					notifyDataSetChanged()
+				}
+				commentItemView.setOnLongClickListener {
+					node.collapsed = !collapsed
+					notifyDataSetChanged()
+					true
+				}
+			}
+		}
+	}
 
 	// Abstract inner classes
 
@@ -68,6 +116,23 @@ class CommentAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsI
 				@Suppress("UNCHECKED_CAST")
 				(itemView as Bindable<Item>).bind(item.item)
 			}
+		}
+	}
+
+	// Tree implementation
+
+	private class Node(
+			var data: AbsItem,
+			var parent: Node?,
+			var children: List<Node>? = null,
+			var collapsed: Boolean = false) {
+
+		fun isParentCollapsed(): Boolean {
+			return parent?.isBranchCollapsed() ?: false
+		}
+
+		fun isBranchCollapsed(): Boolean {
+			return collapsed || (parent?.isBranchCollapsed() ?: false)
 		}
 	}
 
