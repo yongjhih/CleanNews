@@ -7,7 +7,7 @@ import clean.news.util.AndroidLogger
 import dagger.Module
 import dagger.Provides
 
-@Module
+@Module(includes = arrayOf(DataModule::class, PresentationModule::class))
 class ApplicationModule(private val application: Application) {
 	@Provides
 	@ApplicationScope

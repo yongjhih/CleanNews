@@ -14,7 +14,7 @@ class Strategy(private val flag: Int) {
 			save: (T) -> Any?): Observable<T> {
 
 		val observables = mutableListOf<Observable<T>>()
-		val network = networkObservable.doOnNext { save(it) }
+		val network = networkObservable.doOnNext { if (it != null) save(it) }
 		val memory = memoryObservable.single().onErrorResumeNext(Observable.never()).takeUntil(network)
 		val disk = diskObservable.single().onErrorResumeNext(Observable.never()).takeUntil(memory)
 

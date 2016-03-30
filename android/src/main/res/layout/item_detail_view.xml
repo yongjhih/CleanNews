@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <clean.news.ui.item.detail.ItemDetailView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		>
@@ -25,6 +24,8 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="12dp"
+					android:layout_marginEnd="16dp"
+					android:layout_marginRight="16dp"
 					android:layout_marginTop="12dp"
 					style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
 					/>
@@ -33,16 +34,11 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<TextView
-			android:id="@+id/byline_text_view"
+	<android.support.v7.widget.RecyclerView
+			android:id="@+id/comment_recycler_view"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_below="@+id/app_bar"
-			android:layout_margin="16dp"
-			android:layout_toLeftOf="@+id/details_button"
-			android:layout_toStartOf="@+id/details_button"
-			tools:text="100 points by author 5 minutes ago"
-			style="@style/TextAppearance.AppCompat.Caption"
+			android:layout_height="match_parent"
+			android:layout_below="@id/app_bar"
 			/>
 
 </clean.news.ui.item.detail.ItemDetailView>

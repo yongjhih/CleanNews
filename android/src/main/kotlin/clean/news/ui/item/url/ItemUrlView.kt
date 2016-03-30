@@ -40,6 +40,7 @@ class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 		model.item.subscribe { item: Item ->
+			toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment
 			titleTextView.text = item.title
 			webView.loadUrl(item.url)
 		}.apply { subscriptions.add(this) }

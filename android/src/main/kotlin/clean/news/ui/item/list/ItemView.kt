@@ -15,6 +15,7 @@ import com.squareup.phrase.Phrase
 class ItemView : RelativeLayout, Bindable<Item> {
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
 	private val bylineTextView: TextView by bindView(R.id.byline_text_view)
+	private val commentsTextView: TextView by bindView(R.id.comments_text_view)
 	private val detailsButton: ImageView by bindView(R.id.details_button)
 
 	var urlClickListener: ((Item) -> Any?)? = null
@@ -27,8 +28,18 @@ class ItemView : RelativeLayout, Bindable<Item> {
 	override fun bind(item: Item) {
 		titleTextView.text = item.title
 
+		if (item.type == Item.Type.JOB) {
+			commentsTextView.visibility = GONE
+			detailsButton.visibility = GONE
+		}
+		else {
+			commentsTextView.text = "${item.descendants}"
+			commentsTextView.visibility = VISIBLE
+			detailsButton.visibility = VISIBLE
+		}
+
 		val timeText = DateUtils.getRelativeTimeSpanString(item.time.time)
-		if (item.type != Item.Type.JOB) {
+		if (item.type.canComment) {
 			bylineTextView.text = Phrase.from(resources.getQuantityString(R.plurals.byline_template, item.score!!))
 					.put("score", item.score!!)
 					.put("by", item.by)

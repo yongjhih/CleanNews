@@ -3,6 +3,7 @@
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:background="@android:color/white"
 		android:minHeight="72dp"
 		tools:layout_height="72dp"
 		>
@@ -17,6 +18,24 @@
 			android:background="?attr/selectableItemBackground"
 			android:padding="12dp"
 			android:src="@drawable/ic_forum_black_30_24dp"
+			/>
+
+	<TextView
+			android:id="@+id/comments_text_view"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignEnd="@id/details_button"
+			android:layout_alignLeft="@id/details_button"
+			android:layout_alignRight="@id/details_button"
+			android:layout_alignStart="@id/details_button"
+			android:layout_centerVertical="true"
+			android:gravity="center"
+			android:paddingBottom="9dp"
+			android:paddingEnd="6dp"
+			android:paddingRight="6dp"
+			android:textColor="@android:color/white"
+			android:textSize="6dp"
+			tools:text="10"
 			/>
 
 	<TextView

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<string name="desc_item_details">Comments</string>
+
 	<plurals name="byline_template">
 		<item quantity="one">{score} point by {by} {time}</item>
 		<item quantity="other">{score} points by {by} {time}</item>
