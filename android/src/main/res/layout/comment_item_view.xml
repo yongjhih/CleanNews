@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clean.news.ui.item.list.CommentItemView xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@android:color/white"
+		>
+
+	<View
+			android:id="@+id/indent_view"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@+id/divider_view"
+			android:layout_alignParentTop="true"
+			android:background="#EEEEEE"
+			tools:layout_width="16dp"
+			/>
+	<View
+			android:id="@+id/indent_marker_view"
+			android:layout_width="@dimen/comment_indent_width"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@id/indent_view"
+			android:layout_alignTop="@id/indent_view"
+			android:layout_toEndOf="@id/indent_view"
+			android:layout_toRightOf="@id/indent_view"
+			/>
+
+	<TextView
+			android:id="@+id/byline_text_view"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignLeft="@id/indent_marker_view"
+			android:layout_alignStart="@id/indent_marker_view"
+			android:layout_margin="16dp"
+			android:layout_marginBottom="16dp"
+			tools:text="100 points by author 5 minutes ago"
+			style="@style/TextAppearance.AppCompat.Caption"
+			/>
+
+	<TextView
+			android:id="@+id/text_view"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignEnd="@id/byline_text_view"
+			android:layout_alignLeft="@id/byline_text_view"
+			android:layout_alignRight="@id/byline_text_view"
+			android:layout_alignStart="@id/byline_text_view"
+			android:layout_below="@id/byline_text_view"
+			android:layout_marginBottom="16dp"
+			tools:text="Cras felis odio, pellentesque eget neque at, varius tempus ex. Sed eget mattis dui. Mauris ac efficitur justo. Nullam pulvinar posuere sapien, in accumsan justo tempor at. In vehicula consequat nibh a ornare. Etiam mattis, nunc et tincidunt eleifend, est orci tempus nisi, id viverra purus dolor gravida ipsum. Nulla elementum arcu id mi ultricies cursus. Curabitur sed eros vitae ipsum tempor facilisis."
+			style="@style/TextAppearance.AppCompat.Body1"
+			/>
+
+	<View
+			android:id="@+id/divider_view"
+			android:layout_width="match_parent"
+			android:layout_height="1dp"
+			android:layout_below="@id/text_view"
+			android:layout_toEndOf="@id/indent_marker_view"
+			android:layout_toRightOf="@id/indent_marker_view"
+			android:background="#24000000"
+			/>
+
+</clean.news.ui.item.list.CommentItemView>

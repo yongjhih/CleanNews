@@ -30,7 +30,7 @@ class MainScreen : ClassKey(),
 
 	override fun getLayoutResId() = R.layout.main_view
 
-	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds()
+	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds().setDuration(200)
 
 	override fun createComponent(parent: ApplicationComponent) = parent.mainComponent()
 

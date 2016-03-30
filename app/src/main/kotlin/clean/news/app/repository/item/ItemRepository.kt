@@ -14,4 +14,6 @@ interface ItemRepository : Repository<Item, Long> {
 	fun getShowStories(): Observable<List<Item>>
 
 	fun getJobStories(): Observable<List<Item>>
+
+	fun getComments(item: Item): Observable<List<Item>>
 }

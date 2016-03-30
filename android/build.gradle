@@ -45,6 +45,7 @@ dependencies {
 	compile kotterKnife
 	compile okHttpLoggingInterceptor
 	compile paperParcel
+	compile phrase
 	compile retrofit
 	compile retrofitAdapterRxJava
 	compile retrofitConverterMoshi

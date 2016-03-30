@@ -23,6 +23,7 @@
 					android:id="@+id/title_text_view"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
+					android:ellipsize="end"
 					android:lines="1"
 					style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
 					/>
@@ -43,7 +44,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@+id/app_bar"
-			style="?android:attr/progressBarStyleHorizontal"
+			style="@style/Widget.AppCompat.ProgressBar.Horizontal.WebView"
 			/>
 
 </clean.news.ui.item.url.ItemUrlView>

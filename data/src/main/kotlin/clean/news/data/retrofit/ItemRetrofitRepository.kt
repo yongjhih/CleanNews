@@ -31,6 +31,12 @@ class ItemRetrofitRepository @Inject constructor(
 		return streamItems(itemService.getJobStories())
 	}
 
+	override fun getComments(item: Item): Observable<List<Item>> {
+		return getCommentsObservable(item)
+				.buffer(BUFFER)
+				.scan { prev: List<Item>, next: List<Item> -> prev + next }
+	}
+
 	override fun getAll(): Observable<List<Item>> {
 		throw UnsupportedOperationException("Cannot get all items from network.")
 	}
@@ -44,10 +50,28 @@ class ItemRetrofitRepository @Inject constructor(
 		throw UnsupportedOperationException("Cannot save items to network.")
 	}
 
+	// Private functions
+
+	private fun getCommentsObservable(item: Item, level: Int = 0): Observable<Item> {
+		val kids = item.kids
+		if (kids == null || kids.isEmpty()) {
+			return Observable.just(item)
+		}
+
+		val childObservable = Observable.from(item.kids.orEmpty())
+				.concatMapEager { getById(it) }
+				.map { it.copy(level = level) }
+				.filter { it.deleted != true }
+				.concatMapEager { getCommentsObservable(it, level + 1) }
+
+		return Observable.just(item)
+				.concatWith(childObservable)
+	}
+
 	private fun streamItems(itemIdResponse: Observable<List<Long>>): Observable<List<Item>> {
 		return itemIdResponse
 				.flatMapIterable { it }
-				.flatMap { itemService.getById(it) }
+				.concatMapEager { itemService.getById(it) }
 				.buffer(BUFFER)
 				.scan { prev: List<Item>, next: List<Item> -> prev + next }
 	}

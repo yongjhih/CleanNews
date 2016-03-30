@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<array name="comment_indent_colors">
+		<item>#FFF44336</item>
+		<item>#FF3F51B5</item>
+		<item>#FF009688</item>
+		<item>#FFFFEB3B</item>
+		<item>#FF795548</item>
+		<item>#FF673AB7</item>
+		<item>#FF00BCD4</item>
+		<item>#FFCDDC39</item>
+		<item>#FFFF5722</item>
+		<item>#FF9C27B0</item>
+		<item>#FF03A9F4</item>
+	</array>
+
+</resources>

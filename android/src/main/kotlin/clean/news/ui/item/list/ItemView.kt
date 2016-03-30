@@ -1,6 +1,7 @@
 package clean.news.ui.item.list
 
 import android.content.Context
+import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -9,10 +10,12 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.Bindable
 import clean.news.core.entity.Item
+import com.squareup.phrase.Phrase
 
 class ItemView : RelativeLayout, Bindable<Item> {
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
-	private val authorTextView: TextView by bindView(R.id.author_text_view)
+	private val bylineTextView: TextView by bindView(R.id.byline_text_view)
+	private val commentsTextView: TextView by bindView(R.id.comments_text_view)
 	private val detailsButton: ImageView by bindView(R.id.details_button)
 
 	var urlClickListener: ((Item) -> Any?)? = null
@@ -24,13 +27,36 @@ class ItemView : RelativeLayout, Bindable<Item> {
 
 	override fun bind(item: Item) {
 		titleTextView.text = item.title
-		authorTextView.text = item.by
+
+		if (item.type == Item.Type.JOB) {
+			commentsTextView.visibility = GONE
+			detailsButton.visibility = GONE
+		}
+		else {
+			commentsTextView.text = "${item.descendants}"
+			commentsTextView.visibility = VISIBLE
+			detailsButton.visibility = VISIBLE
+		}
+
+		val timeText = DateUtils.getRelativeTimeSpanString(item.time.time)
+		if (item.type.canComment) {
+			bylineTextView.text = Phrase.from(resources.getQuantityString(R.plurals.byline_template, item.score!!))
+					.put("score", item.score!!)
+					.put("by", item.by)
+					.put("time", timeText)
+					.format()
+		}
+		else {
+			bylineTextView.text = timeText
+		}
+
 		detailsButton.setOnClickListener { detailsClickListener?.invoke(item) }
 
 		setOnClickListener {
 			if (item.url != null) {
 				urlClickListener?.invoke(item)
-			} else {
+			}
+			else {
 				detailsClickListener?.invoke(item)
 			}
 		}
