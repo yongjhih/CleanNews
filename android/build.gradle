@@ -51,6 +51,10 @@ dependencies {
 	compile retrofitConverterMoshi
 	compile retrofit
 	compile rxAndroid
+	compile rxBinding
+	compile rxBindingDesign
+	compile rxBindingSupportV4
+	compile rxBindingAppCompatV7
 	compile rxJava
 	provided rxJoinCompiler
 	compile rxJoin

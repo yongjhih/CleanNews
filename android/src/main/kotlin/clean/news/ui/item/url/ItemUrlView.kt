@@ -2,9 +2,7 @@ package clean.news.ui.item.url
 
 import android.content.Context
 import android.support.v7.widget.Toolbar
-import android.support.v7.widget.Toolbar.OnMenuItemClickListener
 import android.util.AttributeSet
-import android.view.MenuItem
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -17,11 +15,14 @@ import clean.news.R
 import clean.news.core.entity.Item
 import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemUrlViewModel
+import clean.news.presentation.model.item.ItemUrlViewModel.Sources
 import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
+import com.jakewharton.rxbinding.support.v7.widget.itemClicks
+import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
+class ItemUrlView : RelativeLayout {
 	@Inject
 	lateinit var model: ItemUrlViewModel
 
@@ -37,27 +38,11 @@ class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
 		ComponentService.getService<ItemUrlComponent>(context)?.inject(this)
 	}
 
-	override fun onAttachedToWindow() {
-		super.onAttachedToWindow()
-		model.item.subscribe { item: Item ->
-			toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment
-			titleTextView.text = item.title
-			webView.loadUrl(item.url)
-		}.apply { subscriptions.add(this) }
-	}
-
-	override fun onDetachedFromWindow() {
-		subscriptions.unsubscribe()
-		super.onDetachedFromWindow()
-	}
-
 	override fun onFinishInflate() {
 		super.onFinishInflate()
 
 		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha)
-		toolbar.setNavigationOnClickListener { model.backClicks.onNext(null) }
 		toolbar.inflateMenu(R.menu.item_url_view)
-		toolbar.setOnMenuItemClickListener(this)
 
 		webView.setWebChromeClient(LoadingWebChromeClient(progressBar))
 		webView.setWebViewClient(WebViewClient()) // handle redirects in-app
@@ -66,14 +51,32 @@ class ItemUrlView : RelativeLayout, OnMenuItemClickListener {
 		}
 	}
 
-	override fun onMenuItemClick(item: MenuItem): Boolean {
-		when (item.itemId) {
-			R.id.item_details -> {
-				model.detailClicks.onNext(null)
-				return true
-			}
+	override fun onAttachedToWindow() {
+		super.onAttachedToWindow()
+
+		val sinks = model.onAttach(Sources(
+				toolbar.navigationClicks(),
+				toolbar.itemClicks()
+						.filter { it.itemId == R.id.item_details }
+						.map { Unit }
+		))
+
+		sinks.item.subscribe(itemSubscriber).apply { subscriptions.add(this) }
+	}
+
+	override fun onDetachedFromWindow() {
+		subscriptions.unsubscribe()
+		model.onDetach()
+		super.onDetachedFromWindow()
+	}
+
+	private val itemSubscriber = { item: Item ->
+		toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment
+		titleTextView.text = item.title
+
+		if (item.url != webView.url) {
+			webView.loadUrl(item.url)
 		}
-		return false
 	}
 
 	private class LoadingWebChromeClient(private val progressBar: ProgressBar) : WebChromeClient() {
