@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
+import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemUrlViewModel
@@ -61,7 +62,7 @@ class ItemUrlView : RelativeLayout {
 						.map { Unit }
 		))
 
-		sinks.item.subscribe(itemSubscriber).apply { subscriptions.add(this) }
+		sinks.item.subscribe(itemSubscriber).addTo(subscriptions)
 	}
 
 	override fun onDetachedFromWindow() {

@@ -1,5 +1,6 @@
 package clean.news.presentation.model.item
 
+import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.presentation.model.Model
 import clean.news.presentation.model.item.ItemUrlViewModel.Sinks
@@ -20,11 +21,11 @@ class ItemUrlViewModel @Inject constructor(
 	override fun onAttach(sources: Sources): Sinks {
 		sources.backClicks
 				.subscribe { navService.goBack() }
-				.apply { subscriptions.add(this) }
+				.addTo(subscriptions)
 
 		sources.detailClicks
 				.subscribe { navService.replaceTo(navFactory.itemDetail(item)) }
-				.apply { subscriptions.add(this) }
+				.addTo(subscriptions)
 
 		return Sinks(
 				Observable.just(item)
