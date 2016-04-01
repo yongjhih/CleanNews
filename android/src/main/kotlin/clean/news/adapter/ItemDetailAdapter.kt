@@ -16,8 +16,13 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	private val inflater = LayoutInflater.from(context)
 
 	private var tree = Node.EMPTY
-	private var treeList = listOf<AbsItem>()
+	private var treeList = mutableListOf<AbsItem>()
 	private var treeMap = mapOf<Long, Node>()
+
+	private val loadingItem = LoadingItem()
+	private var loading = false
+
+	// Public functions
 
 	fun setItems(items: List<Item>) {
 		tree = createTree(items.map { createItem(it) })
@@ -29,6 +34,12 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		notifyDataSetChanged()
 	}
 
+	fun setLoading(loading: Boolean) {
+		if (this.loading != loading) {
+			this.loading = loading
+		}
+	}
+
 	// Overrides
 
 	override fun onBindViewHolder(viewHolder: AbsViewHolder<AbsItem>, position: Int) {
@@ -36,8 +47,18 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, position: Int): AbsViewHolder<AbsItem> {
-		val view = inflater.inflate(R.layout.comment_item_view, parent, false) as CommentItemView
-		return CommentViewHolder(view) as AbsViewHolder<AbsItem>
+		val type = getItemViewType(position)
+		@Suppress("UNCHECKED_CAST")
+		return when (type) {
+			TYPE_STORY_ITEM,
+			TYPE_COMMENT_ITEM -> {
+				CommentViewHolder(inflater.inflate(R.layout.comment_item_view, parent, false) as CommentItemView)
+			}
+			TYPE_LOADING_ITEM -> {
+				LoadingViewHolder(inflater.inflate(R.layout.loading_view, parent, false))
+			}
+			else -> throw IllegalStateException("Cannot create view of type $type.")
+		} as AbsViewHolder<AbsItem>
 	}
 
 	override fun getItemCount(): Int {
@@ -57,22 +78,22 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	private fun buildCaches() {
-		treeList = tree.getList().map { it.data }
+		treeList = tree.getList().map { it.data }.toMutableList()
 		treeMap = tree.getMap()
 	}
 
-	private fun createItem(item: Item): AbsItem {
+	private fun createItem(item: Item): ItemItem {
 		return when (item.type) {
 			Item.Type.STORY -> CommentItem(item) // TODO: Story Item
 			else -> CommentItem(item)
 		}
 	}
 
-	private fun createTree(items: List<AbsItem>): Node {
+	private fun createTree(items: List<ItemItem>): Node {
 		return createNode(items.first(), null, items.associateBy { it.item.id })
 	}
 
-	private fun createNode(item: AbsItem, parent: Node?, items: Map<Long, AbsItem>): Node {
+	private fun createNode(item: ItemItem, parent: Node?, items: Map<Long, ItemItem>): Node {
 		return Node(item, parent).apply {
 			children = item.item.kids?.map { items[it]?.let { createNode(it, this, items) } }?.filterNotNull()
 		}
@@ -80,13 +101,23 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	// Adapter items
 
-	private class CommentItem(item: Item) : AbsItem(item) {
+	private class StoryItem(item: Item) : ItemItem(item) {
+		override fun getType() = TYPE_STORY_ITEM
+	}
+
+	private class CommentItem(item: Item) : ItemItem(item) {
 		override fun getType() = TYPE_COMMENT_ITEM
+	}
+
+	private class LoadingItem() : AbsItem() {
+		override fun getType() = TYPE_LOADING_ITEM
 	}
 
 	// View holders
 
-	private inner class CommentViewHolder(view: CommentItemView) : AbsViewHolder<CommentItem>(view) {
+	private class StoryViewHolder(view: View) : ItemViewHolder<StoryItem>(view)
+
+	private inner class CommentViewHolder(view: CommentItemView) : ItemViewHolder<CommentItem>(view) {
 		override fun bind(position: Int, item: CommentItem) {
 			super.bind(position, item)
 			val node = treeMap[item.item.id]
@@ -99,20 +130,24 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		}
 	}
 
+	private class LoadingViewHolder(view: View) : AbsViewHolder<LoadingItem>(view)
+
 	// Abstract inner classes
 
-	abstract class AbsItem(var item: Item) {
-		abstract fun getType(): Int
-
+	abstract class ItemItem(var item: Item) : AbsItem() {
 		companion object {
-			val EMPTY = object : AbsItem(Item.EMPTY) {
+			val EMPTY = object : ItemItem(Item.EMPTY) {
 				override fun getType() = -1
 			}
 		}
 	}
 
-	abstract class AbsViewHolder<T : AbsItem>(view: View) : RecyclerView.ViewHolder(view) {
-		open fun bind(position: Int, item: T) {
+	abstract class AbsItem() {
+		abstract fun getType(): Int
+	}
+
+	abstract class ItemViewHolder<T : ItemItem>(view: View) : AbsViewHolder<T>(view) {
+		override fun bind(position: Int, item: T) {
 			if (itemView is Bindable<*> && itemView.bindType() == Item::class.java) {
 				@Suppress("UNCHECKED_CAST")
 				(itemView as Bindable<Item>).bind(item.item)
@@ -120,10 +155,15 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		}
 	}
 
+	abstract class AbsViewHolder<T : AbsItem>(view: View) : RecyclerView.ViewHolder(view) {
+		open fun bind(position: Int, item: T) {
+		}
+	}
+
 	// Tree implementation
 
 	private class Node(
-			var data: AbsItem,
+			var data: ItemItem,
 			var parent: Node?,
 			var children: List<Node>? = null,
 			var collapsed: Boolean = false) {
@@ -147,12 +187,13 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		}
 
 		companion object {
-			val EMPTY = Node(AbsItem.EMPTY, null)
+			val EMPTY = Node(ItemItem.EMPTY, null)
 		}
 	}
 
 	companion object {
 		private const val TYPE_STORY_ITEM = 0
 		private const val TYPE_COMMENT_ITEM = 1
+		private const val TYPE_LOADING_ITEM = 2
 	}
 }

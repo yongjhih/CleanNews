@@ -61,7 +61,16 @@ class ItemDetailView : RelativeLayout {
 
 		sinks.comments
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe { adapter.setItems(it) }
+				.subscribe(
+						{
+							adapter.setItems(it)
+							adapter.setLoading(true)
+						},
+						{},
+						{
+							adapter.setLoading(false)
+						}
+				)
 				.addTo(subscriptions)
 	}
 
