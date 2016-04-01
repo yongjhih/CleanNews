@@ -63,12 +63,6 @@ class CommentItemView : RelativeLayout, Bindable<Item> {
 		textView.visibility = if (collapsed) GONE else VISIBLE
 	}
 
-	fun setVisible(visible: Boolean) {
-		bylineTextView.visibility = if (visible) VISIBLE else GONE
-		textView.visibility = if (visible) VISIBLE else GONE
-		dividerView.visibility = if (visible) VISIBLE else GONE
-	}
-
 	override fun bindType(): Class<Item> {
 		return Item::class.java
 	}

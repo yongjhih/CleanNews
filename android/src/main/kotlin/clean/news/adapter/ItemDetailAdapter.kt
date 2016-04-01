@@ -46,14 +46,13 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	private fun toggleCollapsed(node: Node) {
 		node.collapsed = !node.collapsed
-		node.setChildrenCollapsed(node.collapsed)
 		buildCaches()
 		notifyDataSetChanged()
 	}
 
 	private fun buildCaches() {
-		treeList = tree.getList().filter { !it.parentCollapsed }.map { it.data }
-		treeMap = tree.getMap().filter { !it.value.parentCollapsed }
+		treeList = tree.getList().map { it.data }
+		treeMap = tree.getMap()
 	}
 
 	private fun createItem(item: Item): AbsItem {
@@ -89,11 +88,8 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 			val node = treeMap[item.item.id]
 			if (node != null) {
 				val commentItemView = itemView as CommentItemView
-				val parentCollapsed = node.parentCollapsed
 				val collapsed = node.collapsed
-
-				commentItemView.setVisible(!parentCollapsed)
-				commentItemView.setCollapsed(parentCollapsed || collapsed)
+				commentItemView.setCollapsed(collapsed)
 				commentItemView.setCollapseClickListener { toggleCollapsed(node) }
 			}
 		}
@@ -126,27 +122,23 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 			var data: AbsItem,
 			var parent: Node?,
 			var children: List<Node>? = null,
-			var parentCollapsed: Boolean = false,
 			var collapsed: Boolean = false) {
-
-		fun setChildrenCollapsed(collapsed: Boolean) {
-			children?.forEach {
-				it.parentCollapsed = collapsed
-				it.setChildrenCollapsed(collapsed)
-			}
-		}
 
 		fun getList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
 			return items.apply {
 				add(this@Node)
-				children?.map { it.getList(this) }
+				if (!collapsed) {
+					children?.map { it.getList(this) }
+				}
 			}
 		}
 
 		fun getMap(map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
 			return map.apply {
 				put(data.item.id, this@Node)
-				children?.map { it.getMap(this) }
+				if (!collapsed) {
+					children?.map { it.getMap(this) }
+				}
 			}
 		}
 
