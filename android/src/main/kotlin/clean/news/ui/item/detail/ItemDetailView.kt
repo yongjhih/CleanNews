@@ -9,7 +9,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
-import clean.news.adapter.CommentAdapter
+import clean.news.adapter.ItemDetailAdapter
 import clean.news.app.util.addTo
 import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemDetailViewModel
@@ -29,13 +29,13 @@ class ItemDetailView : RelativeLayout {
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
 	private val commentRecyclerView: RecyclerView by bindView(R.id.comment_recycler_view)
 
-	private val commentAdapter: CommentAdapter
+	private val adapter: ItemDetailAdapter
 	private val subscriptions = CompositeSubscription()
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
 		ComponentService.getService<ItemDetailComponent>(context)?.inject(this)
-		commentAdapter = CommentAdapter(context)
+		adapter = ItemDetailAdapter(context)
 	}
 
 	override fun onFinishInflate() {
@@ -44,7 +44,7 @@ class ItemDetailView : RelativeLayout {
 		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha)
 
 		commentRecyclerView.layoutManager = LinearLayoutManager(context)
-		commentRecyclerView.adapter = commentAdapter
+		commentRecyclerView.adapter = adapter
 	}
 
 	override fun onAttachedToWindow() {
@@ -61,7 +61,7 @@ class ItemDetailView : RelativeLayout {
 
 		sinks.comments
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe { commentAdapter.setItems(it) }
+				.subscribe { adapter.setItems(it) }
 				.addTo(subscriptions)
 	}
 
