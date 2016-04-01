@@ -37,12 +37,10 @@ class ItemUrlViewModel @Inject constructor(
 	override fun onDetach() {
 		subscriptions.clear()
 	}
-
-	// Sources
+	
 	class Sources(
 			val backClicks: Observable<Unit>,
 			val detailClicks: Observable<Unit>) : Model.Sources
 
-	// Sinks
 	class Sinks(val item: Observable<Item>) : Model.Sinks
 }

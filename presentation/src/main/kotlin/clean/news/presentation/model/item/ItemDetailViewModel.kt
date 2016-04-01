@@ -1,29 +1,46 @@
 package clean.news.presentation.model.item
 
 import clean.news.app.usecase.item.GetComments
+import clean.news.app.util.addTo
 import clean.news.core.entity.Item
+import clean.news.presentation.model.Model
+import clean.news.presentation.model.item.ItemDetailViewModel.Sinks
+import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
 import rx.Observable
-import rx.subjects.PublishSubject
+import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemDetailViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
 		private val getComments: GetComments,
-		item: Item) {
+		private val item: Item) : Model<Sources, Sinks> {
 
-	val backClicks = PublishSubject.create<Void>()
-	val urlClicks = PublishSubject.create<Void>()
+	private val subscriptions = CompositeSubscription()
 
-	val item = Observable.just(item)
-	val comments = getComments.execute(item)
-			.replay(1)
-			.autoConnect()
+	override fun onAttach(sources: Sources): Sinks {
+		sources.backClicks.subscribe { navService.goBack() }.addTo(subscriptions)
+		sources.urlClicks.subscribe { navService.replaceTo(navFactory.url(item)) }.addTo(subscriptions)
 
-	init {
-		backClicks.subscribe { navService.goBack() }
-		urlClicks.subscribe { navService.replaceTo(navFactory.url(item)) }
+		return Sinks(
+				Observable.just(item),
+				getComments.execute(item)
+						.replay(1)
+						.autoConnect()
+		)
 	}
+
+	override fun onDetach() {
+		subscriptions.clear()
+	}
+
+	class Sources(
+			val backClicks: Observable<Unit>,
+			val urlClicks: Observable<Unit>) : Model.Sources
+
+	class Sinks(
+			val item: Observable<Item>,
+			val comments: Observable<List<Item>>) : Model.Sinks
 }
