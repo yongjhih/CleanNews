@@ -21,9 +21,15 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	fun setItems(items: List<Item>) {
 		tree = createTree(items.map { createItem(it) })
+		for ((k, v) in tree.getMap()) {
+			v.collapsed = treeMap[k]?.collapsed ?: false
+		}
+
 		buildCaches()
 		notifyDataSetChanged()
 	}
+
+	// Overrides
 
 	override fun onBindViewHolder(viewHolder: AbsViewHolder<AbsItem>, position: Int) {
 		viewHolder.bind(position, treeList[position])
@@ -57,7 +63,7 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	private fun createItem(item: Item): AbsItem {
 		return when (item.type) {
-			Item.Type.STORY -> CommentItem(item)
+			Item.Type.STORY -> CommentItem(item) // TODO: Story Item
 			else -> CommentItem(item)
 		}
 	}
@@ -75,9 +81,7 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	// Adapter items
 
 	private class CommentItem(item: Item) : AbsItem(item) {
-		override fun getType(): Int {
-			return TYPE_STORY_ITEM
-		}
+		override fun getType() = TYPE_COMMENT_ITEM
 	}
 
 	// View holders
@@ -149,5 +153,6 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	companion object {
 		private const val TYPE_STORY_ITEM = 0
+		private const val TYPE_COMMENT_ITEM = 1
 	}
 }
