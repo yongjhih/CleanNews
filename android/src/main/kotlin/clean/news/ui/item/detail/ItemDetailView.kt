@@ -67,6 +67,7 @@ class ItemDetailView : RelativeLayout {
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
+		model.onDetach()
 		super.onDetachedFromWindow()
 	}
 }
