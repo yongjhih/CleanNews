@@ -19,13 +19,15 @@ data class Item(
 		val descendants: Int?,
 		val level: Int = 0) {
 
-	val hasParent = parent != null
-
 	enum class Type(val canComment: Boolean) {
-		JOB(false), STORY(true), COMMENT(true), POLL(true), POLLOPT(true)
+		JOB(false), STORY(true), COMMENT(true), POLL(true), POLLOPT(true), NONE(false)
 	}
 
 	enum class ListType {
 		TOP, NEW, SHOW, ASK, JOBS
+	}
+
+	companion object {
+		val EMPTY = Item(-1, null, Type.NONE, null, Date(0), null, null, null, null, null, null, null, null, null, -1)
 	}
 }

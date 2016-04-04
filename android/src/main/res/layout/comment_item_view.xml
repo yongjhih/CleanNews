@@ -47,8 +47,26 @@
 			android:layout_alignStart="@id/byline_text_view"
 			android:layout_below="@id/byline_text_view"
 			android:layout_marginBottom="16dp"
+			android:autoLink="all"
 			tools:text="Cras felis odio, pellentesque eget neque at, varius tempus ex. Sed eget mattis dui. Mauris ac efficitur justo. Nullam pulvinar posuere sapien, in accumsan justo tempor at. In vehicula consequat nibh a ornare. Etiam mattis, nunc et tincidunt eleifend, est orci tempus nisi, id viverra purus dolor gravida ipsum. Nulla elementum arcu id mi ultricies cursus. Curabitur sed eros vitae ipsum tempor facilisis."
 			style="@style/TextAppearance.AppCompat.Body1"
+			/>
+
+	<View
+			android:id="@+id/collapse_button_bottom_anchor"
+			android:layout_below="@id/byline_text_view"
+			android:layout_width="match_parent"
+			android:layout_height="0dp" />
+
+	<View
+			android:id="@+id/collapse_button"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_alignBottom="@id/collapse_button_bottom_anchor"
+			android:layout_alignParentTop="true"
+			android:layout_toEndOf="@id/indent_view"
+			android:layout_toRightOf="@id/indent_view"
+			android:background="?attr/selectableItemBackground"
 			/>
 
 	<View
