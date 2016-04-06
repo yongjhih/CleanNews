@@ -30,4 +30,6 @@ data class Item(
 	companion object {
 		val EMPTY = Item(-1, null, Type.NONE, null, Date(0), null, null, null, null, null, null, null, null, null, -1)
 	}
+
+	fun threadUrl(): String = "https://news.ycombinator.com/item?id=${this.id}"
 }

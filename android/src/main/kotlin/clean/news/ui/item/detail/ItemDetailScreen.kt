@@ -9,6 +9,8 @@ import clean.news.flow.WithTransition
 import clean.news.presentation.inject.ClassScope
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
+import clean.news.ui.item.share.ItemShareIntent.ItemDetailShareComponent
+import clean.news.ui.item.share.ItemShareIntent.ItemDetailShareModule
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
 import dagger.Module
@@ -41,6 +43,8 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
 	interface ItemDetailComponent {
 		fun inject(view: ItemDetailView)
+
+		fun plus(module: ItemDetailShareModule): ItemDetailShareComponent
 	}
 
 	@Module

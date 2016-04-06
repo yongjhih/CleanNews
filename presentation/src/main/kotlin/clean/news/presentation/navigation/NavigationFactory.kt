@@ -9,9 +9,13 @@ interface NavigationFactory {
 
 	interface ItemUrlKey
 
+	interface ItemShareKey
+
 	fun main(): MainKey
 
 	fun itemDetail(item: Item): ItemDetailKey
 
 	fun url(item: Item): ItemUrlKey
+
+	fun share(item: Item): ItemShareKey
 }
