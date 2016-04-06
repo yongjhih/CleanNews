@@ -42,7 +42,8 @@ class ItemDetailViewModel @Inject constructor(
 
 	class Sources(
 			val backClicks: Observable<Unit>,
-			val urlClicks: Observable<Unit>) : Model.Sources
+			val urlClicks: Observable<Unit>,
+			val shareClicks: Observable<Unit>) : Model.Sources
 
 	class Sinks(
 			val item: Observable<Item>,
