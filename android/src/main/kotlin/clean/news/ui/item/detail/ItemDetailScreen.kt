@@ -6,6 +6,8 @@ import clean.news.core.entity.Item
 import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
 import clean.news.flow.WithTransition
+import clean.news.presentation.inject.ClassScope
+import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
@@ -35,6 +37,7 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 
 	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(item))
 
+	@ClassScope(ItemDetailViewModel::class)
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
 	interface ItemDetailComponent {
 		fun inject(view: ItemDetailView)
