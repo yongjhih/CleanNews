@@ -1,14 +1,14 @@
 language: android
 
 android:
-	components:
-    	- tools
-		- build-tools-23.0.3
-		- android-23
-		- extra-android-m2repository
+  components:
+    - tools
+    - build-tools-23.0.3
+    - android-23
+    - extra-android-m2repository
 
 cache:
-	directories:
-		- $HOME/.m2
+  directories:
+    - $HOME/.m2
 
 script: ./gradlew check
