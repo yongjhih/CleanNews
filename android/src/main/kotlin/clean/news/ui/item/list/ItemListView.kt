@@ -46,7 +46,7 @@ class ItemListView : RecyclerView {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val sinks = model.onAttach(Sources(
+		val sinks = model.setUp(Sources(
 				itemUrlClicks,
 				itemDetailClicks
 		))
@@ -59,7 +59,7 @@ class ItemListView : RecyclerView {
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.onDetach()
+		model.tearDown()
 		super.onDetachedFromWindow()
 	}
 

@@ -55,7 +55,7 @@ class ItemUrlView : RelativeLayout {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val sinks = model.onAttach(Sources(
+		val sinks = model.setUp(Sources(
 				toolbar.navigationClicks(),
 				toolbar.itemClicks()
 						.filter { it.itemId == R.id.item_details }
@@ -67,7 +67,7 @@ class ItemUrlView : RelativeLayout {
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.onDetach()
+		model.tearDown()
 		super.onDetachedFromWindow()
 	}
 

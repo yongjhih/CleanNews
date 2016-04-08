@@ -4,9 +4,9 @@ import clean.news.presentation.model.Model.Sinks
 import clean.news.presentation.model.Model.Sources
 
 interface Model<I : Sources, O : Sinks> {
-	fun onAttach(sources: I): O
+	fun setUp(sources: I): O
 
-	fun onDetach()
+	fun tearDown()
 
 	interface Sources
 

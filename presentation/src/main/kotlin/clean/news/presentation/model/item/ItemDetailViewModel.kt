@@ -26,7 +26,7 @@ class ItemDetailViewModel @Inject constructor(
 			.replay(1)
 			.autoConnect()
 
-	override fun onAttach(sources: Sources): Sinks {
+	override fun setUp(sources: Sources): Sinks {
 		sources.backClicks.subscribe { navService.goBack() }.addTo(subscriptions)
 		sources.urlClicks.subscribe { navService.replaceTo(navFactory.url(item)) }.addTo(subscriptions)
 
@@ -36,7 +36,7 @@ class ItemDetailViewModel @Inject constructor(
 		)
 	}
 
-	override fun onDetach() {
+	override fun tearDown() {
 		subscriptions.clear()
 	}
 
