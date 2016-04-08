@@ -56,8 +56,6 @@ dependencies {
 	compile rxBindingSupportV4
 	compile rxBindingAppCompatV7
 	compile rxJava
-	provided rxJoinCompiler
-	compile rxJoin
 }
 
 kapt {
