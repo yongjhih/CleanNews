@@ -22,12 +22,14 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	private val loadingItem = LoadingItem()
 	private var loading = false
 
+	private val restoredCollapsedIds = mutableListOf<Long>()
+
 	// Public functions
 
 	fun setItems(items: List<Item>) {
 		tree = createTree(items.map { createItem(it) })
-		for ((k, v) in tree.getMap()) {
-			v.collapsed = treeMap[k]?.collapsed ?: false
+		for ((k, v) in tree.getVisibleMap()) {
+			v.collapsed = treeMap[k]?.collapsed ?: restoredCollapsedIds.remove(k)
 		}
 
 		buildCaches()
@@ -38,6 +40,17 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		if (this.loading != loading) {
 			this.loading = loading
 		}
+	}
+
+	fun getCollapsedIds(): LongArray {
+		return tree.toList()
+				.filter { it.collapsed }
+				.map { it.data.item.id }
+				.toLongArray()
+	}
+
+	fun setCollapsedIds(ids: LongArray) {
+		restoredCollapsedIds.addAll(ids.toList())
 	}
 
 	// Overrides
@@ -78,8 +91,8 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	private fun buildCaches() {
-		treeList = tree.getList().map { it.data }.toMutableList()
-		treeMap = tree.getMap()
+		treeList = tree.getVisibleList().map { it.data }.toMutableList()
+		treeMap = tree.getVisibleMap()
 	}
 
 	private fun createItem(item: Item): ItemItem {
@@ -161,6 +174,7 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	// Tree implementation
+	// TODO: I'm sure a lot of this could be faster, but it's fast enough for me to be lazy right now.
 
 	private class Node(
 			var data: ItemItem,
@@ -168,20 +182,27 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 			var children: List<Node>? = null,
 			var collapsed: Boolean = false) {
 
-		fun getList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
+		fun toList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
+			return items.apply {
+				add(this@Node)
+				children?.map { it.toList(this) }
+			}
+		}
+
+		fun getVisibleList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
 			return items.apply {
 				add(this@Node)
 				if (!collapsed) {
-					children?.map { it.getList(this) }
+					children?.map { it.getVisibleList(this) }
 				}
 			}
 		}
 
-		fun getMap(map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
+		fun getVisibleMap(map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
 			return map.apply {
 				put(data.item.id, this@Node)
 				if (!collapsed) {
-					children?.map { it.getMap(this) }
+					children?.map { it.getVisibleMap(this) }
 				}
 			}
 		}
