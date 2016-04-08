@@ -18,7 +18,7 @@ class ItemUrlViewModel @Inject constructor(
 
 	private val subscriptions = CompositeSubscription()
 
-	override fun onAttach(sources: Sources): Sinks {
+	override fun setUp(sources: Sources): Sinks {
 		sources.backClicks
 				.subscribe { navService.goBack() }
 				.addTo(subscriptions)
@@ -34,7 +34,7 @@ class ItemUrlViewModel @Inject constructor(
 		)
 	}
 
-	override fun onDetach() {
+	override fun tearDown() {
 		subscriptions.clear()
 	}
 
