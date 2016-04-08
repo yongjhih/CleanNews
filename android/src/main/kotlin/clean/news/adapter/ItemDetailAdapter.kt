@@ -9,7 +9,7 @@ import clean.news.R
 import clean.news.adapter.ItemDetailAdapter.AbsItem
 import clean.news.adapter.ItemDetailAdapter.AbsViewHolder
 import clean.news.core.entity.Item
-import clean.news.ui.item.list.CommentItemView
+import clean.news.ui.item.detail.CommentItemView
 
 
 class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<AbsItem>>() {
@@ -27,8 +27,10 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	// Public functions
 
 	fun setItems(items: List<Item>) {
-		tree = createTree(items.map { createItem(it) })
-		for ((k, v) in tree.getVisibleMap()) {
+		val adapterItems = items.map { CommentItem(it) }
+		tree = createTree(adapterItems)
+
+		for ((k, v) in tree.getVisibleCommentMap()) {
 			v.collapsed = treeMap[k]?.collapsed ?: restoredCollapsedIds.remove(k)
 		}
 
@@ -43,7 +45,7 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	fun getCollapsedIds(): LongArray {
-		return tree.toList()
+		return tree.toCommentList()
 				.filter { it.collapsed }
 				.map { it.data.item.id }
 				.toLongArray()
@@ -63,7 +65,6 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 		val type = getItemViewType(position)
 		@Suppress("UNCHECKED_CAST")
 		return when (type) {
-			TYPE_STORY_ITEM,
 			TYPE_COMMENT_ITEM -> {
 				CommentViewHolder(inflater.inflate(R.layout.comment_item_view, parent, false) as CommentItemView)
 			}
@@ -91,15 +92,8 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	private fun buildCaches() {
-		treeList = tree.getVisibleList().map { it.data }.toMutableList()
-		treeMap = tree.getVisibleMap()
-	}
-
-	private fun createItem(item: Item): ItemItem {
-		return when (item.type) {
-			Item.Type.STORY -> CommentItem(item) // TODO: Story Item
-			else -> CommentItem(item)
-		}
+		treeList = tree.getVisibleCommentList().map { it.data }.toMutableList()
+		treeMap = tree.getVisibleCommentMap()
 	}
 
 	private fun createTree(items: List<ItemItem>): Node {
@@ -114,10 +108,6 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 
 	// Adapter items
 
-	private class StoryItem(item: Item) : ItemItem(item) {
-		override fun getType() = TYPE_STORY_ITEM
-	}
-
 	private class CommentItem(item: Item) : ItemItem(item) {
 		override fun getType() = TYPE_COMMENT_ITEM
 	}
@@ -127,8 +117,6 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	// View holders
-
-	private class StoryViewHolder(view: View) : ItemViewHolder<StoryItem>(view)
 
 	private inner class CommentViewHolder(view: CommentItemView) : ItemViewHolder<CommentItem>(view) {
 		override fun bind(position: Int, item: CommentItem) {
@@ -182,27 +170,33 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 			var children: List<Node>? = null,
 			var collapsed: Boolean = false) {
 
-		fun toList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
+		fun toCommentList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
 			return items.apply {
-				add(this@Node)
-				children?.map { it.toList(this) }
+				if (this@Node.data.item.type == Item.Type.COMMENT) {
+					add(this@Node)
+				}
+				children?.map { it.toCommentList(this) }
 			}
 		}
 
-		fun getVisibleList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
+		fun getVisibleCommentList(items: MutableList<Node> = arrayListOf()): MutableList<Node> {
 			return items.apply {
-				add(this@Node)
+				if (this@Node.data.item.type == Item.Type.COMMENT) {
+					add(this@Node)
+				}
 				if (!collapsed) {
-					children?.map { it.getVisibleList(this) }
+					children?.map { it.getVisibleCommentList(this) }
 				}
 			}
 		}
 
-		fun getVisibleMap(map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
+		fun getVisibleCommentMap(map: MutableMap<Long, Node> = mutableMapOf()): MutableMap<Long, Node> {
 			return map.apply {
-				put(data.item.id, this@Node)
+				if (this@Node.data.item.type == Item.Type.COMMENT) {
+					put(data.item.id, this@Node)
+				}
 				if (!collapsed) {
-					children?.map { it.getVisibleMap(this) }
+					children?.map { it.getVisibleCommentMap(this) }
 				}
 			}
 		}
@@ -213,8 +207,7 @@ class ItemDetailAdapter(context: Context) : RecyclerView.Adapter<AbsViewHolder<A
 	}
 
 	companion object {
-		private const val TYPE_STORY_ITEM = 0
-		private const val TYPE_COMMENT_ITEM = 1
-		private const val TYPE_LOADING_ITEM = 2
+		private const val TYPE_COMMENT_ITEM = 0
+		private const val TYPE_LOADING_ITEM = 1
 	}
 }

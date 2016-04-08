@@ -1,4 +1,4 @@
-package clean.news.ui.item.list
+package clean.news.ui.item.detail
 
 import android.content.Context
 import android.text.Html
@@ -9,6 +9,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
+import clean.news.R.array
+import clean.news.R.dimen
+import clean.news.R.string
 import clean.news.adapter.Bindable
 import clean.news.core.entity.Item
 import com.squareup.phrase.Phrase
@@ -26,8 +29,8 @@ class CommentItemView : RelativeLayout, Bindable<Item> {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
-		indentWidth = resources.getDimensionPixelSize(R.dimen.comment_indent_width)
-		val colors = resources.obtainTypedArray(R.array.comment_indent_colors)
+		indentWidth = resources.getDimensionPixelSize(dimen.comment_indent_width)
+		val colors = resources.obtainTypedArray(array.comment_indent_colors)
 		indentColors = (0..colors.length() - 1).map { colors.getColor(it, 0) }.toIntArray()
 		colors.recycle()
 	}
@@ -47,7 +50,7 @@ class CommentItemView : RelativeLayout, Bindable<Item> {
 		}
 
 		val timeText = DateUtils.getRelativeTimeSpanString(item.time.time)
-		bylineTextView.text = Phrase.from(this, R.string.comment_byline_template)
+		bylineTextView.text = Phrase.from(this, string.comment_byline_template)
 				.put("by", item.by)
 				.put("time", timeText)
 				.format()
