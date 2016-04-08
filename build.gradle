@@ -47,7 +47,6 @@ ext {
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
 	rxJavaVersion = '1.1.1'
-	rxJoinVersion = '1.0.0-SNAPSHOT'
 
 	// Testing
 
@@ -89,8 +88,6 @@ ext {
 	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:$rxBindingVersion"
 	rxBindingAppCompatV7 = "com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
 	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
-	rxJoin = "ai.notion:rxjoin:$rxJoinVersion"
-	rxJoinCompiler = "ai.notion:rxjoin-compiler:$rxJoinVersion"
 
 	// Testing
 
