@@ -24,7 +24,7 @@ ext {
 
 	// Android
 
-	androidBuildToolsVersion = '23.0.1'
+	androidBuildToolsVersion = '23.0.3'
 	androidCompileSdkVersion = 23
 	androidMinSdkVersion = 16
 	androidTargetSdkVersion = 23
@@ -33,7 +33,7 @@ ext {
 
 	// Libraries
 
-	androidSupportVersion = '23.1.1'
+	androidSupportVersion = '23.2.1'
 	daggerVersion = '2.0.2'
 	flowVersion = '1.0.0-alpha'
 	javaxAnnotationVersion = '10.0-b28'
