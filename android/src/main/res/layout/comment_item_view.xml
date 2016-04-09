@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<clean.news.ui.item.list.CommentItemView xmlns:android="http://schemas.android.com/apk/res/android"
+<clean.news.ui.item.detail.CommentItemView xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:tools="http://schemas.android.com/tools"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:background="@android:color/white"
 		>
 
@@ -54,9 +54,10 @@
 
 	<View
 			android:id="@+id/collapse_button_bottom_anchor"
-			android:layout_below="@id/byline_text_view"
 			android:layout_width="match_parent"
-			android:layout_height="0dp" />
+			android:layout_height="0dp"
+			android:layout_below="@id/byline_text_view"
+			/>
 
 	<View
 			android:id="@+id/collapse_button"
@@ -79,4 +80,4 @@
 			android:background="#24000000"
 			/>
 
-</clean.news.ui.item.list.CommentItemView>
+</clean.news.ui.item.detail.CommentItemView>
