@@ -26,8 +26,7 @@ class ItemShareIntent(val item: Item) : ClassKey(),
 
 	override fun getParentKey() = ItemDetailScreen(item)
 
-	override fun createComponent(parent: ItemDetailComponent) = parent.plus(
-			ItemDetailShareModule(item))
+	override fun createComponent(parent: ItemDetailComponent) = parent.plus(ItemDetailShareModule(item))
 
 	override fun intent(): Intent {
 		val shareIntent = Intent(Intent.ACTION_SEND)
