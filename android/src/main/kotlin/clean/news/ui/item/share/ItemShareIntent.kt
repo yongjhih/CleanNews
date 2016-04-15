@@ -2,6 +2,7 @@ package clean.news.ui.item.share
 
 import android.content.Intent
 import clean.news.core.entity.Item
+import clean.news.data.retrofit.threadUrl
 import clean.news.flow.WithComponent
 import clean.news.flow.WithIntent
 import clean.news.presentation.navigation.NavigationFactory.ItemShareKey
