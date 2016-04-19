@@ -1,12 +1,11 @@
-package clean.news.ui.item.share
+package clean.news.ui.item.detail
 
 import android.content.Intent
 import clean.news.core.entity.Item
 import clean.news.data.retrofit.threadUrl
 import clean.news.flow.WithComponent
 import clean.news.flow.WithIntent
-import clean.news.presentation.navigation.NavigationFactory.ItemShareKey
-import clean.news.ui.item.detail.ItemDetailScreen
+import clean.news.presentation.navigation.NavigationFactory.ItemShareDetailKey
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
 import dagger.Module
 import dagger.Provides
@@ -17,9 +16,9 @@ import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemShareIntent(val item: Item) : ClassKey(),
+class ItemDetailShareScreen(val item: Item) : ClassKey(),
 		TreeKey,
-		ItemShareKey,
+		ItemShareDetailKey,
 		WithIntent,
 		WithComponent<ItemDetailComponent>,
 		PaperParcelable {

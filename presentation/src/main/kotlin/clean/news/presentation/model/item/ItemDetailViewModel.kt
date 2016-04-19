@@ -29,7 +29,7 @@ class ItemDetailViewModel @Inject constructor(
 	override fun setUp(sources: Sources): Sinks {
 		sources.backClicks.subscribe { navService.goBack() }.addTo(subscriptions)
 		sources.urlClicks.subscribe { navService.replaceTo(navFactory.url(item)) }.addTo(subscriptions)
-		sources.shareClicks.subscribe { navService.goTo(navFactory.share(item)) }.addTo(subscriptions)
+		sources.shareClicks.subscribe { navService.goTo(navFactory.shareDetail(item)) }.addTo(subscriptions)
 
 		return Sinks(
 				Observable.just(item),

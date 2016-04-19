@@ -9,7 +9,9 @@ interface NavigationFactory {
 
 	interface ItemUrlKey
 
-	interface ItemShareKey
+	interface ItemShareDetailKey
+
+	interface ItemShareUrlKey
 
 	fun main(): MainKey
 
@@ -17,5 +19,7 @@ interface NavigationFactory {
 
 	fun url(item: Item): ItemUrlKey
 
-	fun share(item: Item): ItemShareKey
+	fun shareDetail(item: Item): ItemShareDetailKey
+
+	fun shareUrl(item: Item): ItemShareUrlKey
 }

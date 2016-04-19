@@ -27,6 +27,10 @@ class ItemUrlViewModel @Inject constructor(
 				.subscribe { navService.replaceTo(navFactory.itemDetail(item)) }
 				.addTo(subscriptions)
 
+		sources.shareClicks
+				.subscribe { navService.goTo(navFactory.shareUrl(item)) }
+				.addTo(subscriptions)
+
 		return Sinks(
 				Observable.just(item)
 						.replay(1)
@@ -40,7 +44,8 @@ class ItemUrlViewModel @Inject constructor(
 
 	class Sources(
 			val backClicks: Observable<Unit>,
-			val detailClicks: Observable<Unit>) : Model.Sources
+			val detailClicks: Observable<Unit>,
+			val shareClicks: Observable<Unit>) : Model.Sources
 
 	class Sinks(val item: Observable<Item>) : Model.Sinks
 }
