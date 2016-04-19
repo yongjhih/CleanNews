@@ -59,6 +59,9 @@ class ItemUrlView : RelativeLayout {
 				toolbar.navigationClicks(),
 				toolbar.itemClicks()
 						.filter { it.itemId == R.id.item_details }
+						.map { Unit },
+				toolbar.itemClicks()
+						.filter {it.itemId == R.id.item_share }
 						.map { Unit }
 		))
 

@@ -19,6 +19,7 @@ import clean.news.flow.ComponentService
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
+import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
@@ -46,17 +47,19 @@ class ItemDetailView : RelativeLayout {
 		super.onFinishInflate()
 
 		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha)
-
+		toolbar.inflateMenu(R.menu.item_detail_view)
 		commentRecyclerView.layoutManager = LinearLayoutManager(context)
 		commentRecyclerView.adapter = adapter
 	}
 
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
-
 		val sinks = model.setUp(Sources(
 				toolbar.navigationClicks(),
-				Observable.empty()
+				Observable.empty(),
+				toolbar.itemClicks()
+						.filter {it.itemId == R.id.item_share }
+						.map { Unit }
 		))
 
 		sinks.item

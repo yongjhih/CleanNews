@@ -7,6 +7,7 @@ import clean.news.flow.WithComponent
 import clean.news.flow.WithLayout
 import clean.news.flow.WithTransition
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlKey
+import clean.news.ui.item.url.ItemUrlShareScreen.ItemUrlShareModule
 import clean.news.ui.main.MainScreen
 import clean.news.ui.main.MainScreen.MainComponent
 import dagger.Module
@@ -38,6 +39,8 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 	@Subcomponent(modules = arrayOf(ItemUrlModule::class))
 	interface ItemUrlComponent {
 		fun inject(view: ItemUrlView)
+
+		fun plus(shareScreen: ItemUrlShareModule)
 	}
 
 	@Module
