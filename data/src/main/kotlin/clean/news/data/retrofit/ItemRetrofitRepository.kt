@@ -9,7 +9,7 @@ import javax.inject.Inject
 class ItemRetrofitRepository @Inject constructor(
 		private val itemService: ItemService) : ItemNetworkRepository {
 
-	private val BUFFER = 10
+	private val BUFFER = 5
 
 	override fun getTopStories(): Observable<List<Item>> {
 		return streamItems(itemService.getTopStories())
