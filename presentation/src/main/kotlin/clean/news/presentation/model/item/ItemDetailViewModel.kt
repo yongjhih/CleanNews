@@ -1,6 +1,7 @@
 package clean.news.presentation.model.item
 
 import clean.news.app.usecase.item.GetComments
+import clean.news.app.usecase.item.GetComments.Request
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.presentation.inject.ClassScope
@@ -22,7 +23,8 @@ class ItemDetailViewModel @Inject constructor(
 
 	private val subscriptions = CompositeSubscription()
 
-	private val comments = getComments.execute(item)
+	private val comments = getComments.execute(Request(item))
+			.map { it.items }
 			.replay(1)
 			.autoConnect()
 

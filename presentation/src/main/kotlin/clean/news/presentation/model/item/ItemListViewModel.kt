@@ -1,10 +1,7 @@
 package clean.news.presentation.model.item
 
-import clean.news.app.usecase.item.GetAskStories
-import clean.news.app.usecase.item.GetJobStories
-import clean.news.app.usecase.item.GetNewStories
-import clean.news.app.usecase.item.GetShowStories
-import clean.news.app.usecase.item.GetTopStories
+import clean.news.app.usecase.item.*
+import clean.news.app.usecase.item.AbsGetItems.Request
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.presentation.model.Model
@@ -38,15 +35,15 @@ class ItemListViewModel @Inject constructor(
 				.subscribe { navService.goTo(navFactory.itemDetail(it)) }
 				.addTo(subscriptions)
 
-		val items = when (listType) {
-			Item.ListType.TOP -> getTopStories.execute()
-			Item.ListType.NEW -> getNewStories.execute()
-			Item.ListType.SHOW -> getShowStories.execute()
-			Item.ListType.ASK -> getAskStories.execute()
-			Item.ListType.JOBS -> getJobStories.execute()
+		val response = when (listType) {
+			Item.ListType.TOP -> getTopStories.execute(Request())
+			Item.ListType.NEW -> getNewStories.execute(Request())
+			Item.ListType.SHOW -> getShowStories.execute(Request())
+			Item.ListType.ASK -> getAskStories.execute(Request())
+			Item.ListType.JOBS -> getJobStories.execute(Request())
 		}
 
-		return Sinks(items)
+		return Sinks(response.map { it.items })
 	}
 
 	override fun tearDown() {
