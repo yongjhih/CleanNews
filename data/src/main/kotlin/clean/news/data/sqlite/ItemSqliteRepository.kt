@@ -25,7 +25,7 @@ class ItemSqliteRepository : ItemDiskRepository {
 		return Observable.empty()
 	}
 
-	override fun getComments(item: Item): Observable<List<Item>> {
+	override fun getChildren(item: Item): Observable<List<Item>> {
 		return Observable.empty()
 	}
 
