@@ -31,8 +31,8 @@ class ItemLruRepository : ItemMemoryRepository {
 		return Observable.just(lru.snapshot().values.filter { it.type == Type.JOB })
 	}
 
-	override fun getComments(item: Item): Observable<List<Item>> {
-		return getCommentsObservable(item, 0)
+	override fun getChildren(item: Item): Observable<List<Item>> {
+		return getChildrenObservable(item, 0)
 				.buffer(BUFFER)
 				.scan { prev: List<Item>, next: List<Item> -> prev + next }
 	}
@@ -53,10 +53,10 @@ class ItemLruRepository : ItemMemoryRepository {
 
 	// Private functions
 
-	private fun getCommentsObservable(item: Item, level: Int): Observable<Item> {
+	private fun getChildrenObservable(item: Item, level: Int): Observable<Item> {
 		return Observable.from(item.kids.orEmpty())
 				.concatMapEager { getById(it) }
 				.map { it.copy(level = level) }
-				.concatMapEager { getCommentsObservable(it, level + 1) }
+				.concatMapEager { getChildrenObservable(it, level + 1) }
 	}
 }

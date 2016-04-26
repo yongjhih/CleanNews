@@ -31,8 +31,8 @@ class ItemRetrofitRepository @Inject constructor(
 		return streamItems(itemService.getJobStories())
 	}
 
-	override fun getComments(item: Item): Observable<List<Item>> {
-		return getCommentsObservable(item)
+	override fun getChildren(item: Item): Observable<List<Item>> {
+		return getChildrenObservable(item)
 				.buffer(BUFFER)
 				.scan { prev: List<Item>, next: List<Item> -> prev + next }
 	}
@@ -52,7 +52,7 @@ class ItemRetrofitRepository @Inject constructor(
 
 	// Private functions
 
-	private fun getCommentsObservable(item: Item, level: Int = 0): Observable<Item> {
+	private fun getChildrenObservable(item: Item, level: Int = 0): Observable<Item> {
 		val kids = item.kids
 		if (kids == null || kids.isEmpty()) {
 			return Observable.just(item)
@@ -62,7 +62,7 @@ class ItemRetrofitRepository @Inject constructor(
 				.concatMapEager { getById(it) }
 				.map { it.copy(level = level) }
 				.filter { it.deleted != true }
-				.concatMapEager { getCommentsObservable(it, level + 1) }
+				.concatMapEager { getChildrenObservable(it, level + 1) }
 
 		return Observable.just(item)
 				.concatWith(childObservable)

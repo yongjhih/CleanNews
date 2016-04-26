@@ -66,7 +66,7 @@ class ItemDetailView : RelativeLayout {
 				.subscribe { titleTextView.text = it.title }
 				.addTo(subscriptions)
 
-		sinks.comments
+		sinks.children
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
 						{

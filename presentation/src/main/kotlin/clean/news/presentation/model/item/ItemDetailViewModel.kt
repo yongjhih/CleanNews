@@ -1,7 +1,7 @@
 package clean.news.presentation.model.item
 
-import clean.news.app.usecase.item.GetComments
-import clean.news.app.usecase.item.GetComments.Request
+import clean.news.app.usecase.item.GetChildren
+import clean.news.app.usecase.item.GetChildren.Request
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.presentation.inject.ClassScope
@@ -18,12 +18,12 @@ import javax.inject.Inject
 class ItemDetailViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
-		private val getComments: GetComments,
+		private val getChildren: GetChildren,
 		private val item: Item) : Model<Sources, Sinks> {
 
 	private val subscriptions = CompositeSubscription()
 
-	private val comments = getComments.execute(Request(item))
+	private val children = getChildren.execute(Request(item))
 			.map { it.items }
 			.replay(1)
 			.autoConnect()
@@ -35,7 +35,7 @@ class ItemDetailViewModel @Inject constructor(
 
 		return Sinks(
 				Observable.just(item),
-				comments
+				children
 		)
 	}
 
@@ -50,5 +50,5 @@ class ItemDetailViewModel @Inject constructor(
 
 	class Sinks(
 			val item: Observable<Item>,
-			val comments: Observable<List<Item>>) : Model.Sinks
+			val children: Observable<List<Item>>) : Model.Sinks
 }
