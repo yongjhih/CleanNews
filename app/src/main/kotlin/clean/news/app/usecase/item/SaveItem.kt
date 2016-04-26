@@ -24,7 +24,7 @@ class SaveItem @Inject constructor(
 		return observable.map { Response(it) }
 	}
 
-	class Request(val item: Item, val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(val item: Item, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val success: Boolean) : UseCase.Response
 }

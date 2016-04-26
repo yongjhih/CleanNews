@@ -25,6 +25,8 @@ class Strategy(private val flag: Int) {
 		return Observable.merge(observables)
 	}
 
+	abstract class Request(val flags: Int) : UseCase.Request
+
 	companion object {
 		const val DISK = 1
 		const val MEMORY = 2

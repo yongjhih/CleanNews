@@ -28,7 +28,7 @@ abstract class AbsGetItems(
 		}
 	}
 
-	class Request(val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val items: List<Item>) : UseCase.Response
 }

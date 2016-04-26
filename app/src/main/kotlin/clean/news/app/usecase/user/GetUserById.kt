@@ -32,7 +32,7 @@ class GetUserById @Inject constructor(
 		saveUser.execute(SaveUser.Request(user)).subscribe()
 	}
 
-	class Request(val id: String, val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(val id: String, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val user: User) : UseCase.Response
 }

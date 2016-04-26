@@ -34,7 +34,7 @@ class GetItemById @Inject constructor(
 		saveItem.execute(SaveItem.Request(item)).subscribe()
 	}
 
-	class Request(val id: Long, val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(val id: Long, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val item: Item) : UseCase.Response
 }

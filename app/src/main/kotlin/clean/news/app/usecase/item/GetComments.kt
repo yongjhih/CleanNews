@@ -36,7 +36,7 @@ class GetComments @Inject constructor(
 		}
 	}
 
-	class Request(val item: Item, val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(val item: Item, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val items: List<Item>) : UseCase.Response
 }

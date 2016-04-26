@@ -23,7 +23,7 @@ class SaveUser(
 		return observable.map { Response(it) }
 	}
 
-	class Request(val user: User, val flags: Int = Strategy.WARM) : UseCase.Request
+	class Request(val user: User, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
 	class Response(val success: Boolean) : UseCase.Response
 }
