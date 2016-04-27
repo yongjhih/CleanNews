@@ -1,6 +1,6 @@
 package clean.news.core.entity
 
-import java.util.Date
+import java.util.*
 
 data class Item(
 		val id: Long,
@@ -24,7 +24,7 @@ data class Item(
 	}
 
 	enum class ListType {
-		TOP, NEW, SHOW, ASK, JOBS
+		TOP, NEW, SHOW, ASK, JOB
 	}
 
 	companion object {

@@ -2,6 +2,7 @@ package clean.news.data.retrofit
 
 import clean.news.app.repository.item.ItemNetworkRepository
 import clean.news.core.entity.Item
+import clean.news.core.entity.Item.ListType
 import clean.news.data.retrofit.service.ItemService
 import rx.Observable
 import javax.inject.Inject
@@ -11,24 +12,15 @@ class ItemRetrofitRepository @Inject constructor(
 
 	private val BUFFER = 5
 
-	override fun getTopStories(): Observable<List<Item>> {
-		return streamItems(itemService.getTopStories())
-	}
-
-	override fun getNewStories(): Observable<List<Item>> {
-		return streamItems(itemService.getNewStories())
-	}
-
-	override fun getAskStories(): Observable<List<Item>> {
-		return streamItems(itemService.getAskStories())
-	}
-
-	override fun getShowStories(): Observable<List<Item>> {
-		return streamItems(itemService.getShowStories())
-	}
-
-	override fun getJobStories(): Observable<List<Item>> {
-		return streamItems(itemService.getJobStories())
+	override fun getItems(listType: ListType): Observable<List<Item>> {
+		val items = when (listType) {
+			Item.ListType.TOP -> itemService.getTopStories()
+			Item.ListType.NEW -> itemService.getNewStories()
+			Item.ListType.SHOW -> itemService.getShowStories()
+			Item.ListType.ASK -> itemService.getAskStories()
+			Item.ListType.JOB -> itemService.getJobStories()
+		}
+		return streamItems(items)
 	}
 
 	override fun getChildren(item: Item): Observable<List<Item>> {

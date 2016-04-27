@@ -1,7 +1,7 @@
 package clean.news.presentation.model.item
 
-import clean.news.app.usecase.item.*
-import clean.news.app.usecase.item.AbsGetItems.Request
+import clean.news.app.usecase.item.GetItemsByListType
+import clean.news.app.usecase.item.GetItemsByListType.Request
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.presentation.model.Model
@@ -17,13 +17,8 @@ class ItemListViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
 		private val listType: Item.ListType,
-		private val getTopStories: GetTopStories,
-		private val getNewStories: GetNewStories,
-		private val getShowStories: GetShowStories,
-		private val getAskStories: GetAskStories,
-		private val getJobStories: GetJobStories) : Model<Sources, Sinks> {
-
-
+		private val getItemsByListType: GetItemsByListType) : Model<Sources, Sinks> {
+	
 	private val subscriptions = CompositeSubscription()
 
 	override fun setUp(sources: Sources): Sinks {
@@ -35,15 +30,9 @@ class ItemListViewModel @Inject constructor(
 				.subscribe { navService.goTo(navFactory.itemDetail(it)) }
 				.addTo(subscriptions)
 
-		val response = when (listType) {
-			Item.ListType.TOP -> getTopStories.execute(Request())
-			Item.ListType.NEW -> getNewStories.execute(Request())
-			Item.ListType.SHOW -> getShowStories.execute(Request())
-			Item.ListType.ASK -> getAskStories.execute(Request())
-			Item.ListType.JOBS -> getJobStories.execute(Request())
-		}
-
-		return Sinks(response.map { it.items })
+		return Sinks(
+				getItemsByListType.execute(Request(listType)).map { it.items }
+		)
 	}
 
 	override fun tearDown() {

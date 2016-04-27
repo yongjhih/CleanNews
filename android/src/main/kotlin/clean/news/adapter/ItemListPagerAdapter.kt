@@ -17,7 +17,7 @@ class ItemListPagerAdapter(context: Context) : ViewStatePagerAdapter() {
 			ItemListScreen(Item.ListType.NEW),
 			ItemListScreen(Item.ListType.SHOW),
 			ItemListScreen(Item.ListType.ASK),
-			ItemListScreen(Item.ListType.JOBS)
+			ItemListScreen(Item.ListType.JOB)
 	)
 
 	override fun createView(container: ViewGroup, position: Int): View {
