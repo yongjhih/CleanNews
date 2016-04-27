@@ -3,6 +3,7 @@ package clean.news.data.lru
 import android.util.LruCache
 import clean.news.app.repository.item.ItemMemoryRepository
 import clean.news.core.entity.Item
+import clean.news.core.entity.Item.ListType
 import clean.news.core.entity.Item.Type
 import rx.Observable
 
@@ -11,24 +12,11 @@ class ItemLruRepository : ItemMemoryRepository {
 
 	private val lru = LruCache<Long, Item>(512)
 
-	override fun getTopStories(): Observable<List<Item>> {
-		return Observable.empty()
-	}
-
-	override fun getNewStories(): Observable<List<Item>> {
-		return Observable.empty()
-	}
-
-	override fun getAskStories(): Observable<List<Item>> {
-		return Observable.empty()
-	}
-
-	override fun getShowStories(): Observable<List<Item>> {
-		return Observable.empty()
-	}
-
-	override fun getJobStories(): Observable<List<Item>> {
-		return Observable.just(lru.snapshot().values.filter { it.type == Type.JOB })
+	override fun getItems(listType: ListType): Observable<List<Item>> {
+		return when (listType) {
+			Item.ListType.JOB -> Observable.just(lru.snapshot().values.filter { it.type == Type.JOB })
+			else -> Observable.empty()
+		}
 	}
 
 	override fun getChildren(item: Item): Observable<List<Item>> {
