@@ -1,7 +1,7 @@
 package clean.news.app.usecase.item
 
-import clean.news.app.repository.item.ItemDiskRepository
-import clean.news.app.repository.item.ItemMemoryRepository
+import clean.news.app.data.item.ItemDiskDataSource
+import clean.news.app.data.item.ItemMemoryDataSource
 import clean.news.app.usecase.Strategy
 import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.item.SaveItem.Request
@@ -11,8 +11,8 @@ import rx.Observable
 import javax.inject.Inject
 
 class SaveItem @Inject constructor(
-		private val disk: ItemDiskRepository,
-		private val memory: ItemMemoryRepository) : UseCase<Request, Response> {
+		private val disk: ItemDiskDataSource,
+		private val memory: ItemMemoryDataSource) : UseCase<Request, Response> {
 
 	override fun execute(request: Request): Observable<Response> {
 		val strategy = Strategy(request.flags)

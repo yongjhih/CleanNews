@@ -1,0 +1,12 @@
+package clean.news.app.data.item
+
+import clean.news.app.data.DataSource
+import clean.news.core.entity.Item
+import clean.news.core.entity.Item.ListType
+import rx.Observable
+
+interface ItemDataSource : DataSource<Item, Long> {
+	fun getItems(listType: ListType): Observable<List<Item>>
+
+	fun getChildren(item: Item): Observable<List<Item>>
+}
