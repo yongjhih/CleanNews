@@ -1,14 +1,14 @@
 package clean.news.data.retrofit
 
-import clean.news.app.repository.item.ItemNetworkRepository
+import clean.news.app.data.item.ItemNetworkDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
 import clean.news.data.retrofit.service.ItemService
 import rx.Observable
 import javax.inject.Inject
 
-class ItemRetrofitRepository @Inject constructor(
-		private val itemService: ItemService) : ItemNetworkRepository {
+class ItemRetrofitDataSource @Inject constructor(
+		private val itemService: ItemService) : ItemNetworkDataSource {
 
 	private val BUFFER = 5
 

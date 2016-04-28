@@ -1,8 +1,8 @@
-package clean.news.app.repository
+package clean.news.app.data
 
 import rx.Observable
 
-interface Repository<T, ID> {
+interface DataSource<T, ID> {
 	fun getAll(): Observable<List<T>>
 
 	fun getById(id: ID): Observable<T>

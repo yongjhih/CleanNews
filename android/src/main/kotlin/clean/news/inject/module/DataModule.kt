@@ -1,21 +1,21 @@
 package clean.news.inject.module
 
-import clean.news.app.repository.item.ItemDiskRepository
-import clean.news.app.repository.item.ItemMemoryRepository
-import clean.news.app.repository.item.ItemNetworkRepository
-import clean.news.app.repository.user.UserDiskRepository
-import clean.news.app.repository.user.UserMemoryRepository
-import clean.news.app.repository.user.UserNetworkRepository
-import clean.news.data.lru.ItemLruRepository
-import clean.news.data.lru.UserLruRepository
-import clean.news.data.retrofit.ItemRetrofitRepository
-import clean.news.data.retrofit.UserRetrofitRepository
+import clean.news.app.data.item.ItemDiskDataSource
+import clean.news.app.data.item.ItemMemoryDataSource
+import clean.news.app.data.item.ItemNetworkDataSource
+import clean.news.app.data.user.UserDiskDataSource
+import clean.news.app.data.user.UserMemoryDataSource
+import clean.news.app.data.user.UserNetworkDataSource
+import clean.news.data.lru.ItemLruDataSource
+import clean.news.data.lru.UserLruDataSource
+import clean.news.data.retrofit.ItemRetrofitDataSource
+import clean.news.data.retrofit.UserRetrofitDataSource
 import clean.news.data.retrofit.moshi.adapter.ItemTypeAdapter
 import clean.news.data.retrofit.moshi.adapter.UnixTimeAdapter
 import clean.news.data.retrofit.service.ItemService
 import clean.news.data.retrofit.service.UserService
-import clean.news.data.sqlite.ItemSqliteRepository
-import clean.news.data.sqlite.UserSqliteRepository
+import clean.news.data.sqlite.ItemSqliteDataSource
+import clean.news.data.sqlite.UserSqliteDataSource
 import clean.news.presentation.inject.ApplicationScope
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -76,39 +76,39 @@ class DataModule {
 
 	@Provides
 	@ApplicationScope
-	fun itemDiskRepository(): ItemDiskRepository {
-		return ItemSqliteRepository()
+	fun itemDiskDataSource(): ItemDiskDataSource {
+		return ItemSqliteDataSource()
 	}
 
 	@Provides
 	@ApplicationScope
-	fun itemMemoryRepository(): ItemMemoryRepository {
-		return ItemLruRepository()
+	fun itemMemoryDataSource(): ItemMemoryDataSource {
+		return ItemLruDataSource()
 	}
 
 	@Provides
 	@ApplicationScope
-	fun itemNetworkRepository(itemService: ItemService): ItemNetworkRepository {
-		return ItemRetrofitRepository(itemService)
+	fun itemNetworkDataSource(itemService: ItemService): ItemNetworkDataSource {
+		return ItemRetrofitDataSource(itemService)
 	}
 
 	// User
 
 	@Provides
 	@ApplicationScope
-	fun userDiskRepository(): UserDiskRepository {
-		return UserSqliteRepository()
+	fun userDiskDataSource(): UserDiskDataSource {
+		return UserSqliteDataSource()
 	}
 
 	@Provides
 	@ApplicationScope
-	fun userMemoryRepository(): UserMemoryRepository {
-		return UserLruRepository()
+	fun userMemoryDataSource(): UserMemoryDataSource {
+		return UserLruDataSource()
 	}
 
 	@Provides
 	@ApplicationScope
-	fun userNetworkRepository(userService: UserService): UserNetworkRepository {
-		return UserRetrofitRepository(userService)
+	fun userNetworkDataSource(userService: UserService): UserNetworkDataSource {
+		return UserRetrofitDataSource(userService)
 	}
 }

@@ -1,11 +1,11 @@
 package clean.news.data.sqlite
 
-import clean.news.app.repository.item.ItemDiskRepository
+import clean.news.app.data.item.ItemDiskDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
 import rx.Observable
 
-class ItemSqliteRepository : ItemDiskRepository {
+class ItemSqliteDataSource : ItemDiskDataSource {
 	override fun getItems(listType: ListType): Observable<List<Item>> {
 		return Observable.empty()
 	}

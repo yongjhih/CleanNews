@@ -1,7 +1,7 @@
 package clean.news.app.usecase.user
 
-import clean.news.app.repository.user.UserDiskRepository
-import clean.news.app.repository.user.UserMemoryRepository
+import clean.news.app.data.user.UserDiskDataSource
+import clean.news.app.data.user.UserMemoryDataSource
 import clean.news.app.usecase.Strategy
 import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.user.SaveUser.Request
@@ -10,8 +10,8 @@ import clean.news.core.entity.User
 import rx.Observable
 
 class SaveUser(
-		private val disk: UserDiskRepository,
-		private val memory: UserMemoryRepository) : UseCase<Request, Response> {
+		private val disk: UserDiskDataSource,
+		private val memory: UserMemoryDataSource) : UseCase<Request, Response> {
 
 	override fun execute(request: Request): Observable<Response> {
 		val strategy = Strategy(request.flags)

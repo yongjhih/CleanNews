@@ -1,11 +1,11 @@
 package clean.news.data.lru
 
 import android.util.LruCache
-import clean.news.app.repository.user.UserMemoryRepository
+import clean.news.app.data.user.UserMemoryDataSource
 import clean.news.core.entity.User
 import rx.Observable
 
-class UserLruRepository : UserMemoryRepository {
+class UserLruDataSource : UserMemoryDataSource {
 	val lru = LruCache<String, User>(512)
 
 	override fun getAll(): Observable<List<User>> {

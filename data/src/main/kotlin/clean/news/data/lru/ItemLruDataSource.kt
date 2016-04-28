@@ -1,13 +1,13 @@
 package clean.news.data.lru
 
 import android.util.LruCache
-import clean.news.app.repository.item.ItemMemoryRepository
+import clean.news.app.data.item.ItemMemoryDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
 import clean.news.core.entity.Item.Type
 import rx.Observable
 
-class ItemLruRepository : ItemMemoryRepository {
+class ItemLruDataSource : ItemMemoryDataSource {
 	private val BUFFER = 10
 
 	private val lru = LruCache<Long, Item>(512)

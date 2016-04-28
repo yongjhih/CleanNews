@@ -11,10 +11,10 @@ Hacker News client written with Clean Architecture and Reactive Presentation Mod
 
 #### App
 * Application logic
-* Repository interfaces
+* DataSource interfaces
 
 #### Data
-* Repository implementations
+* DataSource implementations
 
 #### Presentation
 * Presentation models

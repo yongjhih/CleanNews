@@ -1,8 +1,8 @@
 package clean.news.app.usecase.item
 
-import clean.news.app.repository.item.ItemDiskRepository
-import clean.news.app.repository.item.ItemMemoryRepository
-import clean.news.app.repository.item.ItemNetworkRepository
+import clean.news.app.data.item.ItemDiskDataSource
+import clean.news.app.data.item.ItemMemoryDataSource
+import clean.news.app.data.item.ItemNetworkDataSource
 import clean.news.app.usecase.Strategy
 import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.item.GetItemsByListType.Request
@@ -14,9 +14,9 @@ import javax.inject.Inject
 
 
 class GetItemsByListType @Inject constructor(
-		private val disk: ItemDiskRepository,
-		private val memory: ItemMemoryRepository,
-		private val network: ItemNetworkRepository,
+		private val disk: ItemDiskDataSource,
+		private val memory: ItemMemoryDataSource,
+		private val network: ItemNetworkDataSource,
 		private val saveItem: SaveItem) : UseCase<Request, Response> {
 
 	override fun execute(request: Request): Observable<Response> {

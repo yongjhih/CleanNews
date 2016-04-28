@@ -1,8 +1,8 @@
 package clean.news.app.usecase.user
 
-import clean.news.app.repository.user.UserDiskRepository
-import clean.news.app.repository.user.UserMemoryRepository
-import clean.news.app.repository.user.UserNetworkRepository
+import clean.news.app.data.user.UserDiskDataSource
+import clean.news.app.data.user.UserMemoryDataSource
+import clean.news.app.data.user.UserNetworkDataSource
 import clean.news.app.usecase.Strategy
 import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.user.GetUserById.Request
@@ -12,9 +12,9 @@ import rx.Observable
 import javax.inject.Inject
 
 class GetUserById @Inject constructor(
-		private val disk: UserDiskRepository,
-		private val memory: UserMemoryRepository,
-		private val network: UserNetworkRepository,
+		private val disk: UserDiskDataSource,
+		private val memory: UserMemoryDataSource,
+		private val network: UserNetworkDataSource,
 		private val saveUser: SaveUser) : UseCase<Request, Response> {
 
 	override fun execute(request: Request): Observable<Response> {

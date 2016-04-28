@@ -1,13 +1,13 @@
 package clean.news.data.retrofit
 
-import clean.news.app.repository.user.UserNetworkRepository
+import clean.news.app.data.user.UserNetworkDataSource
 import clean.news.core.entity.User
 import clean.news.data.retrofit.service.UserService
 import rx.Observable
 import javax.inject.Inject
 
-class UserRetrofitRepository @Inject constructor(
-		private val userService: UserService) : UserNetworkRepository {
+class UserRetrofitDataSource @Inject constructor(
+		private val userService: UserService) : UserNetworkDataSource {
 
 	override fun getAll(): Observable<List<User>> {
 		throw UnsupportedOperationException("Cannot get all users from network API.")
