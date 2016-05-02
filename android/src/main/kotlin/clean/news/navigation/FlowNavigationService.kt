@@ -7,7 +7,7 @@ import flow.Flow
 import flow.History
 import java.lang.ref.WeakReference
 
-class FlowNavigationService : NavigationService {
+open class FlowNavigationService : NavigationService {
 	private var contextRef = WeakReference<Context>(null)
 
 	override fun goBack(): Boolean {
