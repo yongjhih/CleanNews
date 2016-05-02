@@ -3,8 +3,8 @@ package clean.news.ui.item.detail
 import android.content.Intent
 import clean.news.core.entity.Item
 import clean.news.data.retrofit.threadUrl
+import clean.news.flow.WithActivity
 import clean.news.flow.WithComponent
-import clean.news.flow.WithIntent
 import clean.news.presentation.navigation.NavigationFactory.ItemShareDetailKey
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
 import dagger.Module
@@ -19,7 +19,7 @@ import nz.bradcampbell.paperparcel.PaperParcelable
 class ItemDetailShareScreen(val item: Item) : ClassKey(),
 		TreeKey,
 		ItemShareDetailKey,
-		WithIntent,
+		WithActivity,
 		WithComponent<ItemDetailComponent>,
 		PaperParcelable {
 
@@ -27,7 +27,7 @@ class ItemDetailShareScreen(val item: Item) : ClassKey(),
 
 	override fun createComponent(parent: ItemDetailComponent) = parent.plus(ItemDetailShareModule(item))
 
-	override fun intent(): Intent {
+	override fun createIntent(): Intent {
 		val shareIntent = Intent(Intent.ACTION_SEND)
 		shareIntent.type = "text/plain"
 		shareIntent.putExtra(Intent.EXTRA_SUBJECT, "${item.title}")

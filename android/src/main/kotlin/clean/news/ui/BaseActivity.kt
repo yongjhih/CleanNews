@@ -5,13 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import clean.news.CleanNewsApplication
 import clean.news.R
-import clean.news.flow.PaperKeyParceler
-import clean.news.flow.ComponentService
-import clean.news.flow.CompositeDispatcher
-import clean.news.flow.IntentDispatcher
-import clean.news.flow.SceneDispatcher
-import clean.news.flow.WithIntent
-import clean.news.flow.WithLayout
+import clean.news.flow.*
 import clean.news.inject.component.ApplicationComponent
 import clean.news.navigation.FlowNavigationService
 import flow.Flow
@@ -27,7 +21,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
 		val dispatcher = CompositeDispatcher()
 		dispatcher.addDispatcher(WithLayout::class, SceneDispatcher(this))
-		dispatcher.addDispatcher(WithIntent::class, IntentDispatcher(this))
 
 		val context = Flow.configure(newBase, this)
 				.addServicesFactory(ComponentService(applicationComponent))
