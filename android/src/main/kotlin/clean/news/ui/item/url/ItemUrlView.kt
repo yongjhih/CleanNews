@@ -55,14 +55,14 @@ class ItemUrlView : RelativeLayout {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
+		val toolbarItemClicks = toolbar.itemClicks()
+				.publish()
+				.autoConnect()
+
 		val sinks = model.setUp(Sources(
 				toolbar.navigationClicks(),
-				toolbar.itemClicks()
-						.filter { it.itemId == R.id.item_details }
-						.map { Unit },
-				toolbar.itemClicks()
-						.filter {it.itemId == R.id.item_share }
-						.map { Unit }
+				toolbarItemClicks.filter { it.itemId == R.id.item_details },
+				toolbarItemClicks.filter { it.itemId == R.id.item_share }
 		))
 
 		sinks.item.subscribe(itemSubscriber).addTo(subscriptions)

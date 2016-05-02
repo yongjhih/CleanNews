@@ -57,9 +57,7 @@ class ItemDetailView : RelativeLayout {
 		val sinks = model.setUp(Sources(
 				toolbar.navigationClicks(),
 				Observable.empty(),
-				toolbar.itemClicks()
-						.filter {it.itemId == R.id.item_share }
-						.map { Unit }
+				toolbar.itemClicks().filter {it.itemId == R.id.item_share }
 		))
 
 		sinks.item
