@@ -7,10 +7,10 @@ import flow.TraversalCallback
 import kotlin.reflect.KClass
 
 class CompositeDispatcher : KeyChanger() {
-	private val dispatchers = mutableMapOf<KClass<*>, KeyChanger>()
+	private val dispatchers = mutableMapOf<KClass<out Any>, KeyChanger>()
 
-	fun addDispatcher(clz: KClass<*>, dispatcher: KeyChanger) {
-		dispatchers.put(clz, dispatcher)
+	fun addDispatcher(cls: KClass<out Any>, dispatcher: KeyChanger) {
+		dispatchers.put(cls, dispatcher)
 	}
 
 	override fun changeKey(
@@ -20,17 +20,11 @@ class CompositeDispatcher : KeyChanger() {
 			incomingContexts: MutableMap<Any, Context>,
 			callback: TraversalCallback) {
 
-		val destination: Any = incomingState.getKey()
+		val destination = incomingState.getKey<Any>()
 
 		for ((cls, dispatcher) in dispatchers) {
 			if (cls.java.isAssignableFrom(destination.javaClass)) {
-				dispatcher.changeKey(
-						outgoingState,
-						incomingState,
-						direction,
-						incomingContexts,
-						callback)
-				return
+				dispatcher.changeKey(outgoingState, incomingState, direction, incomingContexts, callback)
 			}
 		}
 	}
