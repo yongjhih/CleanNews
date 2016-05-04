@@ -3,9 +3,9 @@ package clean.news.ui.item.url
 import android.transition.ChangeBounds
 import clean.news.R
 import clean.news.core.entity.Item
-import clean.news.flow.WithComponent
-import clean.news.flow.WithLayout
-import clean.news.flow.WithTransition
+import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
+import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
+import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlKey
 import clean.news.ui.item.url.ItemUrlShareScreen.ItemUrlShareModule
 import clean.news.ui.main.MainScreen
@@ -25,7 +25,7 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 		ItemUrlKey,
 		WithLayout,
 		WithTransition,
-		WithComponent<MainComponent>,
+		WithComponent,
 		PaperParcelable {
 
 	override fun getParentKey() = MainScreen()
@@ -34,7 +34,12 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 
 	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds().setDuration(200)
 
-	override fun createComponent(parent: MainComponent) = parent.plus(ItemUrlModule(item))
+	override fun createComponent(parent: Any): Any {
+		if (parent !is MainComponent) {
+			throw IllegalArgumentException()
+		}
+		return parent.plus(ItemUrlModule(item))
+	}
 
 	@Subcomponent(modules = arrayOf(ItemUrlModule::class))
 	interface ItemUrlComponent {
@@ -48,4 +53,5 @@ class ItemUrlScreen(val item: Item) : ClassKey(),
 		@Provides
 		fun urlItem(): Item = item
 	}
+
 }

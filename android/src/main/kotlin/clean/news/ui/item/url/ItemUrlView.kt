@@ -14,7 +14,7 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
-import clean.news.flow.ComponentService
+import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemUrlViewModel
 import clean.news.presentation.model.item.ItemUrlViewModel.Sources
 import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
@@ -36,7 +36,7 @@ class ItemUrlView : RelativeLayout {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
-		ComponentService.getService<ItemUrlComponent>(context)?.inject(this)
+		DaggerService.get<ItemUrlComponent>(context)?.inject(this)
 	}
 
 	override fun onFinishInflate() {

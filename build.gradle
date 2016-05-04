@@ -40,6 +40,7 @@ ext {
 	javaxInjectVersion = '1'
 	kotlinVersion = '1.0.1'
 	kotterKnifeVersion = '0.1.0-SNAPSHOT'
+	mortarVersion = '0.20'
 	okHttpVersion = '3.2.0'
 	paperParcelVersion = '1.0.0-beta8'
 	phraseVersion = '1.1.0'
@@ -75,6 +76,7 @@ ext {
 	javaxInject = "javax.inject:javax.inject:$javaxInjectVersion"
 	kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	kotterKnife = "com.jakewharton:kotterknife:$kotterKnifeVersion"
+	mortar = "com.squareup.mortar:mortar:$mortarVersion"
 	okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
 	paperParcel = "com.github.grandstaish.paperparcel:paperparcel-kotlin:$paperParcelVersion"
 	paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"

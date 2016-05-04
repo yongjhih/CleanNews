@@ -2,9 +2,9 @@ package clean.news.ui.main
 
 import android.transition.ChangeBounds
 import clean.news.R
-import clean.news.flow.WithComponent
-import clean.news.flow.WithLayout
-import clean.news.flow.WithTransition
+import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
+import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
+import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.inject.component.ApplicationComponent
 import clean.news.presentation.inject.ActivityScope
 import clean.news.presentation.navigation.NavigationFactory.MainKey
@@ -25,14 +25,19 @@ class MainScreen : ClassKey(),
 		MainKey,
 		WithLayout,
 		WithTransition,
-		WithComponent<ApplicationComponent>,
+		WithComponent,
 		PaperParcelable {
 
 	override fun getLayoutResId() = R.layout.main_view
 
 	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds().setDuration(200)
 
-	override fun createComponent(parent: ApplicationComponent) = parent.mainComponent()
+	override fun createComponent(parent: Any): Any {
+		if (parent !is ApplicationComponent) {
+			throw IllegalArgumentException()
+		}
+		return parent.mainComponent()
+	}
 
 	@ActivityScope
 	@Subcomponent
@@ -45,4 +50,5 @@ class MainScreen : ClassKey(),
 
 		fun plus(itemUrlModule: ItemUrlModule): ItemUrlComponent
 	}
+
 }
