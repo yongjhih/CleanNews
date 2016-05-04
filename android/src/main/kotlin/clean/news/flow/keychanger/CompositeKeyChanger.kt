@@ -1,4 +1,4 @@
-package clean.news.flow
+package clean.news.flow.keychanger
 
 import android.content.Context
 import flow.Direction
@@ -6,7 +6,8 @@ import flow.KeyChanger
 import flow.TraversalCallback
 import kotlin.reflect.KClass
 
-class CompositeDispatcher : KeyChanger() {
+class CompositeKeyChanger : KeyChanger() {
+
 	private val dispatchers = mutableMapOf<KClass<out Any>, KeyChanger>()
 
 	fun addDispatcher(cls: KClass<out Any>, dispatcher: KeyChanger) {
@@ -28,4 +29,5 @@ class CompositeDispatcher : KeyChanger() {
 			}
 		}
 	}
+
 }

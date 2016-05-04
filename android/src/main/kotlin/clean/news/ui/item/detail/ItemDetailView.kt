@@ -15,7 +15,7 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.ItemDetailAdapter
 import clean.news.app.util.addTo
-import clean.news.flow.ComponentService
+import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
@@ -39,7 +39,7 @@ class ItemDetailView : RelativeLayout {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
-		ComponentService.getService<ItemDetailComponent>(context)?.inject(this)
+		DaggerService.get<ItemDetailComponent>(context)?.inject(this)
 		adapter = ItemDetailAdapter(context)
 	}
 

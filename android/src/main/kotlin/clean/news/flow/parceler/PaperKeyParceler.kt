@@ -1,4 +1,4 @@
-package clean.news.flow
+package clean.news.flow.parceler
 
 import android.os.Parcelable
 import flow.KeyParceler

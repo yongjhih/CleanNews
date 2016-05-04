@@ -7,7 +7,7 @@ import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
-import clean.news.flow.ComponentService
+import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.presentation.model.item.ItemListViewModel.Sources
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
@@ -64,7 +64,7 @@ class ItemListView : RecyclerView {
 	}
 
 	fun inject(module: ItemListModule) {
-		Flow.getService<MainComponent>(ComponentService.NAME, context)
+		Flow.getService<MainComponent>(DaggerService.NAME, context)
 				?.plus(module)
 				?.inject(this)
 	}

@@ -3,9 +3,9 @@ package clean.news.ui.item.detail
 import android.transition.ChangeBounds
 import clean.news.R
 import clean.news.core.entity.Item
-import clean.news.flow.WithComponent
-import clean.news.flow.WithLayout
-import clean.news.flow.WithTransition
+import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
+import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
+import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.presentation.inject.ClassScope
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailKey
@@ -28,7 +28,7 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 		ItemDetailKey,
 		WithLayout,
 		WithTransition,
-		WithComponent<MainComponent>,
+		WithComponent,
 		PaperParcelable {
 
 	override fun getParentKey() = MainScreen()
@@ -37,7 +37,12 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 
 	override fun createTransition(fromKey: Any?, toKey: Any, direction: Direction) = ChangeBounds().setDuration(200)
 
-	override fun createComponent(parent: MainComponent) = parent.plus(ItemDetailModule(item))
+	override fun createComponent(parent: Any): Any {
+		if (parent !is MainComponent) {
+			throw IllegalArgumentException()
+		}
+		return parent.plus(ItemDetailModule(item))
+	}
 
 	@ClassScope(ItemDetailViewModel::class)
 	@Subcomponent(modules = arrayOf(ItemDetailModule::class))
@@ -52,4 +57,5 @@ class ItemDetailScreen(val item: Item) : ClassKey(),
 		@Provides
 		fun detailItem(): Item = item
 	}
+
 }

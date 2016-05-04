@@ -1,8 +1,9 @@
 package clean.news.navigation
 
-import clean.news.flow.WithActivity
+import android.content.Intent
 
 class AppNavigationService : FlowNavigationService() {
+
 	override fun goTo(newTop: Any) {
 		navigate(newTop) { super.goTo(newTop) }
 	}
@@ -21,4 +22,9 @@ class AppNavigationService : FlowNavigationService() {
 			else -> default()
 		}
 	}
+
+	interface WithActivity {
+		fun createIntent(): Intent
+	}
+
 }

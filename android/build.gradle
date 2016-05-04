@@ -43,6 +43,7 @@ dependencies {
 	compile javaxInject
 	compile kotlinStdLib
 	compile kotterKnife
+	compile mortar
 	compile okHttpLoggingInterceptor
 	compile paperParcel
 	compile phrase

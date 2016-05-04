@@ -5,28 +5,33 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import clean.news.CleanNewsApplication
 import clean.news.R
-import clean.news.flow.*
-import clean.news.inject.component.ApplicationComponent
+import clean.news.flow.keychanger.CompositeKeyChanger
+import clean.news.flow.keychanger.SceneKeyChanger
+import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
+import clean.news.flow.parceler.PaperKeyParceler
+import clean.news.flow.service.DaggerService
+import clean.news.flow.service.MortarService
 import clean.news.navigation.FlowNavigationService
 import flow.Flow
 import flow.KeyDispatcher
 
 abstract class BaseActivity : AppCompatActivity() {
+
 	abstract fun getDefaultKey(): Any
 
-	private lateinit var applicationComponent: ApplicationComponent
-
 	override fun attachBaseContext(newBase: Context) {
-		applicationComponent = CleanNewsApplication.get(newBase).component()
+		val applicationComponent = CleanNewsApplication.get(newBase).component()
+		val scope = CleanNewsApplication.get(newBase).scope()
 
-		val dispatcher = CompositeDispatcher()
-		dispatcher.addDispatcher(WithLayout::class, SceneDispatcher(this))
+		val keyChanger = CompositeKeyChanger()
+		keyChanger.addDispatcher(WithLayout::class, SceneKeyChanger(this))
 
 		val context = Flow.configure(newBase, this)
-				.addServicesFactory(ComponentService(applicationComponent))
-				.dispatcher(KeyDispatcher.configure(this, dispatcher).build())
 				.keyParceler(PaperKeyParceler())
+				.dispatcher(KeyDispatcher.configure(this, keyChanger).build())
 				.defaultKey(getDefaultKey())
+				.addServicesFactory(DaggerService(applicationComponent))
+				.addServicesFactory(MortarService(scope))
 				.install()
 
 		super.attachBaseContext(context)
@@ -39,11 +44,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
 	override fun onResume() {
 		super.onResume()
+		val applicationComponent = CleanNewsApplication.get(this).component()
 		val navigationService = applicationComponent.navigationService() as FlowNavigationService
 		navigationService.setContext(this)
 	}
 
 	override fun onPause() {
+		val applicationComponent = CleanNewsApplication.get(this).component()
 		val navigationService = applicationComponent.navigationService() as FlowNavigationService
 		navigationService.removeContext()
 		super.onPause()
@@ -54,4 +61,5 @@ abstract class BaseActivity : AppCompatActivity() {
 			super.onBackPressed()
 		}
 	}
+
 }
