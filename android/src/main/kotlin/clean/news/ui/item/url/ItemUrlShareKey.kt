@@ -4,8 +4,8 @@ import android.content.Intent
 import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.navigation.AppNavigationService.WithActivity
-import clean.news.presentation.navigation.NavigationFactory.ItemShareUrlKey
-import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
+import clean.news.presentation.navigation.NavigationFactory.ItemShareUrlScreen
+import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -15,14 +15,14 @@ import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemUrlShareScreen(val item: Item) : ClassKey(),
+class ItemUrlShareKey(val item: Item) : ClassKey(),
 		TreeKey,
-		ItemShareUrlKey,
+		ItemShareUrlScreen,
 		WithActivity,
 		WithComponent,
 		PaperParcelable {
 
-	override fun getParentKey() = ItemUrlScreen(item)
+	override fun getParentKey() = ItemUrlKey(item)
 
 	override fun createComponent(parent: Any): Any {
 		if (parent !is ItemUrlComponent) {

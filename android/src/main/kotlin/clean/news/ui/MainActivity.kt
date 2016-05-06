@@ -1,7 +1,7 @@
 package clean.news.ui
 
-import clean.news.ui.main.MainScreen
+import clean.news.ui.main.MainKey
 
 class MainActivity : BaseActivity() {
-	override fun getDefaultKey() = MainScreen()
+	override fun getDefaultKey() = MainKey()
 }

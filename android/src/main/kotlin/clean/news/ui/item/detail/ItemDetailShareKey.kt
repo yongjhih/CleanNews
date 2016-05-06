@@ -5,8 +5,8 @@ import clean.news.core.entity.Item
 import clean.news.data.retrofit.threadUrl
 import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.navigation.AppNavigationService.WithActivity
-import clean.news.presentation.navigation.NavigationFactory.ItemShareDetailKey
-import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
+import clean.news.presentation.navigation.NavigationFactory.ItemShareDetailScreen
+import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -16,14 +16,14 @@ import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemDetailShareScreen(val item: Item) : ClassKey(),
+class ItemDetailShareKey(val item: Item) : ClassKey(),
 		TreeKey,
-		ItemShareDetailKey,
+		ItemShareDetailScreen,
 		WithActivity,
 		WithComponent,
 		PaperParcelable {
 
-	override fun getParentKey() = ItemDetailScreen(item)
+	override fun getParentKey() = ItemDetailKey(item)
 
 	override fun createComponent(parent: Any): Any {
 		if (parent !is ItemDetailComponent) {

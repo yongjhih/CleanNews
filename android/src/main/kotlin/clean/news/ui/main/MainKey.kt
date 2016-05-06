@@ -7,13 +7,13 @@ import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
 import clean.news.flow.service.DaggerService.WithComponent
 import clean.news.inject.component.ApplicationComponent
 import clean.news.presentation.inject.ActivityScope
-import clean.news.presentation.navigation.NavigationFactory.MainKey
-import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
-import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailModule
+import clean.news.presentation.navigation.NavigationFactory.MainScreen
+import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
+import clean.news.ui.item.detail.ItemDetailKey.ItemDetailModule
 import clean.news.ui.item.list.ItemListScreen.ItemListComponent
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
-import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
-import clean.news.ui.item.url.ItemUrlScreen.ItemUrlModule
+import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
+import clean.news.ui.item.url.ItemUrlKey.ItemUrlModule
 import dagger.Subcomponent
 import flow.ClassKey
 import flow.Direction
@@ -21,8 +21,8 @@ import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class MainScreen : ClassKey(),
-		MainKey,
+class MainKey : ClassKey(),
+		MainScreen,
 		WithLayout,
 		WithTransition,
 		WithComponent,

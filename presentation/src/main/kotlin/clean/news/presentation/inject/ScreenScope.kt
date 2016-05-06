@@ -6,4 +6,4 @@ import kotlin.reflect.KClass
 
 @Scope
 @Retention(RUNTIME)
-annotation class ClassScope(val value: KClass<*>)
+annotation class ScreenScope(val value: KClass<*>)

@@ -4,7 +4,7 @@ import clean.news.R
 import clean.news.core.entity.Item
 import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
 import clean.news.flow.service.DaggerService.WithComponent
-import clean.news.ui.main.MainScreen.MainComponent
+import clean.news.ui.main.MainKey.MainComponent
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent

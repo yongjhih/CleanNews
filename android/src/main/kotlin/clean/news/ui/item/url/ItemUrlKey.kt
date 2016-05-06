@@ -6,10 +6,10 @@ import clean.news.core.entity.Item
 import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
 import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
 import clean.news.flow.service.DaggerService.WithComponent
-import clean.news.presentation.navigation.NavigationFactory.ItemUrlKey
-import clean.news.ui.item.url.ItemUrlShareScreen.ItemUrlShareModule
-import clean.news.ui.main.MainScreen
-import clean.news.ui.main.MainScreen.MainComponent
+import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
+import clean.news.ui.item.url.ItemUrlShareKey.ItemUrlShareModule
+import clean.news.ui.main.MainKey
+import clean.news.ui.main.MainKey.MainComponent
 import dagger.Module
 import dagger.Provides
 import dagger.Subcomponent
@@ -20,15 +20,15 @@ import nz.bradcampbell.paperparcel.PaperParcel
 import nz.bradcampbell.paperparcel.PaperParcelable
 
 @PaperParcel
-class ItemUrlScreen(val item: Item) : ClassKey(),
+class ItemUrlKey(val item: Item) : ClassKey(),
 		TreeKey,
-		ItemUrlKey,
+		ItemUrlScreen,
 		WithLayout,
 		WithTransition,
 		WithComponent,
 		PaperParcelable {
 
-	override fun getParentKey() = MainScreen()
+	override fun getParentKey() = MainKey()
 
 	override fun getLayoutResId() = R.layout.item_url_view
 
