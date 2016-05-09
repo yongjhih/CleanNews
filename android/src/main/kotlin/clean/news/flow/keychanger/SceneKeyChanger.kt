@@ -32,7 +32,7 @@ class SceneKeyChanger(private val activity: Activity) : KeyChanger() {
 
 		outgoingState?.save(frame.getChildAt(0))
 
-		val scene = Scene.getSceneForLayout(frame, layout, context)
+		val scene = Scene(frame, incomingView)
 		val transition = if (destination is WithTransition) {
 			destination.createTransition(outgoingState?.getKey(), incomingState.getKey(), direction)
 		}

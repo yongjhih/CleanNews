@@ -18,7 +18,7 @@ import clean.news.app.util.addTo
 import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.model.item.ItemDetailViewModel.Sources
-import clean.news.ui.item.detail.ItemDetailScreen.ItemDetailComponent
+import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
 import rx.Observable

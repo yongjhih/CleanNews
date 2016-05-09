@@ -4,17 +4,18 @@ import clean.news.app.usecase.item.GetChildren
 import clean.news.app.usecase.item.GetChildren.Request
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
-import clean.news.presentation.inject.ClassScope
+import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.model.Model
 import clean.news.presentation.model.item.ItemDetailViewModel.Sinks
 import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.presentation.navigation.NavigationFactory
+import clean.news.presentation.navigation.NavigationFactory.ItemDetailScreen
 import clean.news.presentation.navigation.NavigationService
 import rx.Observable
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-@ClassScope(ItemDetailViewModel::class)
+@ScreenScope(ItemDetailScreen::class)
 class ItemDetailViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,

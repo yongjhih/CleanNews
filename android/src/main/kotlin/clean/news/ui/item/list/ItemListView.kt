@@ -11,7 +11,7 @@ import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.presentation.model.item.ItemListViewModel.Sources
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
-import clean.news.ui.main.MainScreen.MainComponent
+import clean.news.ui.main.MainKey.MainComponent
 import flow.Flow
 import rx.android.schedulers.AndroidSchedulers
 import rx.subjects.PublishSubject

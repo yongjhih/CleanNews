@@ -17,7 +17,7 @@ import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemUrlViewModel
 import clean.news.presentation.model.item.ItemUrlViewModel.Sources
-import clean.news.ui.item.url.ItemUrlScreen.ItemUrlComponent
+import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
 import rx.subscriptions.CompositeSubscription

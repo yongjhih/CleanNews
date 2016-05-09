@@ -2,21 +2,20 @@ package clean.news.navigation
 
 import clean.news.core.entity.Item
 import clean.news.presentation.navigation.NavigationFactory
-import clean.news.presentation.navigation.NavigationFactory.ItemShareUrlKey
-import clean.news.ui.item.detail.ItemDetailScreen
-import clean.news.ui.item.detail.ItemDetailShareScreen
-import clean.news.ui.item.url.ItemUrlScreen
-import clean.news.ui.item.url.ItemUrlShareScreen
-import clean.news.ui.main.MainScreen
+import clean.news.ui.item.detail.ItemDetailKey
+import clean.news.ui.item.detail.ItemDetailShareKey
+import clean.news.ui.item.url.ItemUrlKey
+import clean.news.ui.item.url.ItemUrlShareKey
+import clean.news.ui.main.MainKey
 
 class FlowNavigationFactory : NavigationFactory {
-	override fun main() = MainScreen()
+	override fun main() = MainKey()
 
-	override fun itemDetail(item: Item) = ItemDetailScreen(item)
+	override fun itemDetail(item: Item) = ItemDetailKey(item)
 
-	override fun url(item: Item) = ItemUrlScreen(item)
+	override fun url(item: Item) = ItemUrlKey(item)
 
-	override fun shareDetail(item: Item) = ItemDetailShareScreen(item)
+	override fun shareDetail(item: Item) = ItemDetailShareKey(item)
 
-	override fun shareUrl(item: Item): ItemShareUrlKey = ItemUrlShareScreen(item)
+	override fun shareUrl(item: Item) = ItemUrlShareKey(item)
 }

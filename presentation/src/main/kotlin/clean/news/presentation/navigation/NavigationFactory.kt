@@ -3,23 +3,23 @@ package clean.news.presentation.navigation
 import clean.news.core.entity.Item
 
 interface NavigationFactory {
-	interface MainKey
+	interface MainScreen
 
-	interface ItemDetailKey
+	interface ItemDetailScreen
 
-	interface ItemUrlKey
+	interface ItemUrlScreen
 
-	interface ItemShareDetailKey
+	interface ItemShareDetailScreen
 
-	interface ItemShareUrlKey
+	interface ItemShareUrlScreen
 
-	fun main(): MainKey
+	fun main(): MainScreen
 
-	fun itemDetail(item: Item): ItemDetailKey
+	fun itemDetail(item: Item): ItemDetailScreen
 
-	fun url(item: Item): ItemUrlKey
+	fun url(item: Item): ItemUrlScreen
 
-	fun shareDetail(item: Item): ItemShareDetailKey
+	fun shareDetail(item: Item): ItemShareDetailScreen
 
-	fun shareUrl(item: Item): ItemShareUrlKey
+	fun shareUrl(item: Item): ItemShareUrlScreen
 }
