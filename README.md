@@ -4,6 +4,10 @@
 # CleanNews
 Hacker News client written with [Clean Architecture](https://blog.8thlight.com/uncle-bob/2012/08/13/the-clean-architecture.html) and [Reactive Presentation Model](http://cycle.js.org/).
 
+Written as an example application for these talks:
+* https://speakerdeck.com/pardom/clean-architecture
+* https://speakerdeck.com/kevc/mv-wtf
+
 ## Project structure
 
 #### Core
