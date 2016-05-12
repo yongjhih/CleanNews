@@ -10,15 +10,19 @@ class UserRetrofitDataSource @Inject constructor(
 		private val userService: UserService) : UserNetworkDataSource {
 
 	override fun getAll(): Observable<List<User>> {
-		throw UnsupportedOperationException("Cannot get all users from network API.")
+		throw UnsupportedOperationException("Cannot get all users from the network.")
 	}
 
-	override fun getById(id: String): Observable<User> {
-		return userService.getById(id)
+	override fun get(key: String): Observable<User> {
+		return userService.getById(key)
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(user: User): Observable<Boolean> {
-		throw UnsupportedOperationException("Cannot save a user to the network API.")
+	override fun put(key: String, value: User): Observable<User> {
+		throw UnsupportedOperationException("Cannot put a user to the network.")
 	}
+
+	override fun remove(key: String): Observable<User> {
+		throw UnsupportedOperationException("Cannot remove a user from the network.")
+	}
+
 }

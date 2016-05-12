@@ -8,6 +8,7 @@ import clean.news.core.entity.Item.Type
 import rx.Observable
 
 class ItemLruDataSource : ItemMemoryDataSource {
+
 	private val BUFFER = 10
 
 	private val lru = LruCache<Long, Item>(512)
@@ -29,22 +30,25 @@ class ItemLruDataSource : ItemMemoryDataSource {
 		return Observable.just(lru.snapshot().values.toList())
 	}
 
-	override fun getById(id: Long): Observable<Item> {
-		return lru[id]?.let { Observable.just(it) } ?: Observable.empty()
+	override fun get(key: Long): Observable<Item> {
+		return lru[key]?.let { Observable.just(it) } ?: Observable.empty()
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(item: Item): Observable<Boolean> {
-		lru.put(item.id, item)
-		return Observable.just(true)
+	override fun put(key: Long, value: Item): Observable<Item> {
+		return Observable.just(lru.put(key, value))
+	}
+
+	override fun remove(key: Long): Observable<Item> {
+		return Observable.just(lru.remove(key))
 	}
 
 	// Private functions
 
 	private fun getChildrenObservable(item: Item, level: Int): Observable<Item> {
 		return Observable.from(item.kids.orEmpty())
-				.concatMapEager { getById(it) }
+				.concatMapEager { get(it) }
 				.map { it.copy(level = level) }
 				.concatMapEager { getChildrenObservable(it, level + 1) }
 	}
+
 }

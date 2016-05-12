@@ -15,15 +15,15 @@ class SaveUser(
 
 	override fun execute(request: Request): Observable<Response> {
 		val strategy = Strategy(request.flags)
-		val observable = Observable.empty<Boolean>()
+		val observable = Observable.empty<User>()
 
-		if (strategy.useDisk) observable.mergeWith(disk.save(request.user))
-		if (strategy.useMemory) observable.mergeWith(memory.save(request.user))
+		if (strategy.useDisk) observable.mergeWith(disk.put(request.user.id, request.user))
+		if (strategy.useMemory) observable.mergeWith(memory.put(request.user.id, request.user))
 
-		return observable.map { Response(it) }
+		return observable.map { Response() }
 	}
 
 	class Request(val user: User, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
-	class Response(val success: Boolean) : UseCase.Response
+	class Response() : UseCase.Response
 }

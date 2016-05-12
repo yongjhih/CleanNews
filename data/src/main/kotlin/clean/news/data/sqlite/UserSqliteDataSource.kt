@@ -5,16 +5,21 @@ import clean.news.core.entity.User
 import rx.Observable
 
 class UserSqliteDataSource : UserDiskDataSource {
+
 	override fun getAll(): Observable<List<User>> {
 		return Observable.empty()
 	}
 
-	override fun getById(id: String): Observable<User> {
+	override fun get(key: String): Observable<User> {
 		return Observable.empty()
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(user: User): Observable<Boolean> {
+	override fun put(key: String, value: User): Observable<User> {
 		return Observable.empty()
 	}
+
+	override fun remove(key: String): Observable<User> {
+		return Observable.empty()
+	}
+
 }

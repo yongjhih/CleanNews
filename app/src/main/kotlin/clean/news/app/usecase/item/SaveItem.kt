@@ -16,15 +16,15 @@ class SaveItem @Inject constructor(
 
 	override fun execute(request: Request): Observable<Response> {
 		val strategy = Strategy(request.flags)
-		val observable = Observable.empty<Boolean>()
+		val observable = Observable.empty<Item>()
 
-		if (strategy.useDisk) observable.mergeWith(disk.save(request.item))
-		if (strategy.useMemory) observable.mergeWith(memory.save(request.item))
+		if (strategy.useDisk) observable.mergeWith(disk.put(request.item.id, request.item))
+		if (strategy.useMemory) observable.mergeWith(memory.put(request.item.id, request.item))
 
-		return observable.map { Response(it) }
+		return observable.map { Response() }
 	}
 
 	class Request(val item: Item, flags: Int = Strategy.WARM) : Strategy.Request(flags)
 
-	class Response(val success: Boolean) : UseCase.Response
+	class Response() : UseCase.Response
 }
