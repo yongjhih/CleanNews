@@ -21,9 +21,9 @@ class GetItemById @Inject constructor(
 	override fun execute(request: Request): Observable<Response> {
 		return Strategy(request.flags)
 				.execute(
-						disk.getById(request.id),
-						memory.getById(request.id),
-						network.getById(request.id),
+						disk.get(request.id),
+						memory.get(request.id),
+						network.get(request.id),
 						save
 				)
 				.map { Response(it) }

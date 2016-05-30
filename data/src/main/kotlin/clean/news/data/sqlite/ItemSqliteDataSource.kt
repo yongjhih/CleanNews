@@ -6,6 +6,7 @@ import clean.news.core.entity.Item.ListType
 import rx.Observable
 
 class ItemSqliteDataSource : ItemDiskDataSource {
+
 	override fun getItems(listType: ListType): Observable<List<Item>> {
 		return Observable.empty()
 	}
@@ -18,12 +19,16 @@ class ItemSqliteDataSource : ItemDiskDataSource {
 		return Observable.empty()
 	}
 
-	override fun getById(id: Long): Observable<Item> {
+	override fun get(key: Long): Observable<Item> {
 		return Observable.empty()
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(item: Item): Observable<Boolean> {
+	override fun put(key: Long, value: Item): Observable<Item> {
 		return Observable.empty()
 	}
+
+	override fun remove(key: Long): Observable<Item> {
+		return Observable.empty()
+	}
+
 }

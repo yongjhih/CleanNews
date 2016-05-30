@@ -21,6 +21,7 @@ import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
+import com.jakewharton.rxbinding.widget.text
 import rx.Observable
 import rx.android.schedulers.AndroidSchedulers
 import rx.subscriptions.CompositeSubscription
@@ -54,6 +55,7 @@ class ItemDetailView : RelativeLayout {
 
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
+
 		val sinks = model.setUp(Sources(
 				toolbar.navigationClicks(),
 				Observable.empty(),
@@ -61,7 +63,8 @@ class ItemDetailView : RelativeLayout {
 		))
 
 		sinks.item
-				.subscribe { titleTextView.text = it.title }
+				.map { it.title.orEmpty() }
+				.subscribe(titleTextView.text())
 				.addTo(subscriptions)
 
 		sinks.children

@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 class ItemRetrofitDataSource @Inject constructor(
 		private val itemService: ItemService) : ItemNetworkDataSource {
-
 	private val BUFFER = 5
 
 	override fun getItems(listType: ListType): Observable<List<Item>> {
@@ -30,16 +29,19 @@ class ItemRetrofitDataSource @Inject constructor(
 	}
 
 	override fun getAll(): Observable<List<Item>> {
-		throw UnsupportedOperationException("Cannot get all items from network.")
+		throw UnsupportedOperationException("Cannot get all items from the network.")
 	}
 
-	override fun getById(id: Long): Observable<Item> {
-		return itemService.getById(id)
+	override fun get(key: Long): Observable<Item> {
+		return itemService.getById(key)
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(item: Item): Observable<Boolean> {
-		throw UnsupportedOperationException("Cannot save items to network.")
+	override fun put(key: Long, value: Item): Observable<Item> {
+		throw UnsupportedOperationException("Cannot put an item to the network.")
+	}
+
+	override fun remove(key: Long): Observable<Item> {
+		throw UnsupportedOperationException("Cannot remove an item from the network.")
 	}
 
 	// Private functions
@@ -51,7 +53,7 @@ class ItemRetrofitDataSource @Inject constructor(
 		}
 
 		val childObservable = Observable.from(item.kids.orEmpty())
-				.concatMapEager { getById(it) }
+				.concatMapEager { get(it) }
 				.map { it.copy(level = level) }
 				.filter { it.deleted != true }
 				.concatMapEager { getChildrenObservable(it, level + 1) }

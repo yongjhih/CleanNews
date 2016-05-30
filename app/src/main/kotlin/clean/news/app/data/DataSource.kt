@@ -2,10 +2,12 @@ package clean.news.app.data
 
 import rx.Observable
 
-interface DataSource<T, ID> {
-	fun getAll(): Observable<List<T>>
+interface DataSource<K, V> {
+	fun getAll(): Observable<List<V>>
 
-	fun getById(id: ID): Observable<T>
+	fun get(key: K): Observable<V>
 
-	fun save(t: T): Observable<Boolean>
+	fun put(key: K, value: V): Observable<V>
+
+	fun remove(key: K): Observable<V>
 }

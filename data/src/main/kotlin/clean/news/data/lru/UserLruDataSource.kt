@@ -6,19 +6,23 @@ import clean.news.core.entity.User
 import rx.Observable
 
 class UserLruDataSource : UserMemoryDataSource {
+
 	val lru = LruCache<String, User>(512)
 
 	override fun getAll(): Observable<List<User>> {
 		return Observable.just(lru.snapshot().values.toList())
 	}
 
-	override fun getById(id: String): Observable<User> {
-		return Observable.just(lru[id])
+	override fun get(key: String): Observable<User> {
+		return Observable.just(lru[key])
 	}
 
-	@Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-	override fun save(user: User): Observable<Boolean> {
-		lru.put(user.id, user)
-		return Observable.just(true)
+	override fun put(key: String, value: User): Observable<User> {
+		return Observable.just(lru.put(key, value))
 	}
+
+	override fun remove(key: String): Observable<User> {
+		return Observable.just(lru.remove(key))
+	}
+
 }
