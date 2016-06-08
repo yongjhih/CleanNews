@@ -2,46 +2,40 @@ package clean.news.presentation.model.item
 
 import clean.news.app.usecase.item.GetItemsByListType
 import clean.news.app.usecase.item.GetItemsByListType.Request
-import clean.news.app.util.addTo
 import clean.news.core.entity.Item
+import clean.news.presentation.collections.StreamMap
+import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.Model
 import clean.news.presentation.model.item.ItemListViewModel.Sinks
+import clean.news.presentation.model.item.ItemListViewModel.Sinks.ITEMS
 import clean.news.presentation.model.item.ItemListViewModel.Sources
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
-import rx.Observable
-import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemListViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
 		private val listType: Item.ListType,
-		private val getItemsByListType: GetItemsByListType) : Model<Sources, Sinks> {
-	
-	private val subscriptions = CompositeSubscription()
+		private val getItemsByListType: GetItemsByListType) : Model<Sources, Sinks>() {
 
-	override fun setUp(sources: Sources): Sinks {
-		sources.itemUrlClicks
-				.subscribe() { navService.goTo(navFactory.url(it)) }
-				.addTo(subscriptions)
+	override fun bind(sources: StreamMap<Sources>): StreamMap<Sinks> {
+		Sources.ITEM_URL_CLICKS<Item>(sources)
+				.subscribe { navService.goTo(navFactory.url(it)) }
 
-		sources.itemDetailClicks
+		Sources.ITEM_DETAIL_CLICKS<Item>(sources)
 				.subscribe { navService.goTo(navFactory.itemDetail(it)) }
-				.addTo(subscriptions)
 
-		return Sinks(
-				getItemsByListType.execute(Request(listType)).map { it.items }
+		return streamMapOf(
+				ITEMS to getItemsByListType.execute(Request(listType)).map { it.items }
 		)
 	}
 
-	override fun tearDown() {
-		subscriptions.clear()
+	enum class Sources : Key {
+		ITEM_URL_CLICKS, ITEM_DETAIL_CLICKS
 	}
 
-	class Sources(
-			val itemUrlClicks: Observable<Item>,
-			val itemDetailClicks: Observable<Item>) : Model.Sources
-
-	class Sinks(val items: Observable<List<Item>>) : Model.Sinks
+	enum class Sinks : Key {
+		ITEMS
+	}
 }

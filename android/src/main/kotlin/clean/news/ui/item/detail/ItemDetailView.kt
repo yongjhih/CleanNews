@@ -15,8 +15,11 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.ItemDetailAdapter
 import clean.news.app.util.addTo
+import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
+import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemDetailViewModel
+import clean.news.presentation.model.item.ItemDetailViewModel.Sinks
 import clean.news.presentation.model.item.ItemDetailViewModel.Sources
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
@@ -56,18 +59,20 @@ class ItemDetailView : RelativeLayout {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val sinks = model.setUp(Sources(
-				toolbar.navigationClicks(),
-				Observable.empty(),
-				toolbar.itemClicks().filter {it.itemId == R.id.item_share }
+		val sinks = model.attach(streamMapOf(
+				Sources.BACK_CLICKS to toolbar.navigationClicks(),
+				Sources.URL_CLICKS to Observable.empty<Unit>(),
+				Sources.SHARE_CLICKS to toolbar.itemClicks()
+						.filter { it.itemId == R.id.item_share }
+						.map { Unit }
 		))
 
-		sinks.item
+		Sinks.ITEM<Item>(sinks)
 				.map { it.title.orEmpty() }
-				.subscribe(titleTextView.text())
+				.subscribe { titleTextView.text() }
 				.addTo(subscriptions)
 
-		sinks.children
+		Sinks.CHILDREN<List<Item>>(sinks)
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(
 						{
@@ -84,7 +89,7 @@ class ItemDetailView : RelativeLayout {
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.tearDown()
+		model.detach()
 		super.onDetachedFromWindow()
 	}
 
