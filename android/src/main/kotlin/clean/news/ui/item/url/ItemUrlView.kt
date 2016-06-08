@@ -15,7 +15,9 @@ import clean.news.R
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
+import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemUrlViewModel
+import clean.news.presentation.model.item.ItemUrlViewModel.Sinks
 import clean.news.presentation.model.item.ItemUrlViewModel.Sources
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
@@ -59,18 +61,20 @@ class ItemUrlView : RelativeLayout {
 				.publish()
 				.autoConnect()
 
-		val sinks = model.setUp(Sources(
-				toolbar.navigationClicks(),
-				toolbarItemClicks.filter { it.itemId == R.id.item_details },
-				toolbarItemClicks.filter { it.itemId == R.id.item_share }
+		val sinks = model.attach(streamMapOf(
+				Sources.BACK_CLICKS to toolbar.navigationClicks(),
+				Sources.DETAIL_CLICKS to toolbarItemClicks.filter { it.itemId == R.id.item_details },
+				Sources.SHARE_CLICKS to toolbarItemClicks.filter { it.itemId == R.id.item_share }
 		))
 
-		sinks.item.subscribe(itemSubscriber).addTo(subscriptions)
+		Sinks.ITEM<Item>(sinks)
+				.subscribe(itemSubscriber)
+				.addTo(subscriptions)
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.tearDown()
+		model.detach()
 		super.onDetachedFromWindow()
 	}
 

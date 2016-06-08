@@ -1,51 +1,43 @@
 package clean.news.presentation.model.item
 
-import clean.news.app.util.addTo
 import clean.news.core.entity.Item
+import clean.news.presentation.collections.StreamMap
+import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.Model
 import clean.news.presentation.model.item.ItemUrlViewModel.Sinks
 import clean.news.presentation.model.item.ItemUrlViewModel.Sources
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
 import rx.Observable
-import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemUrlViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
-		private val item: Item) : Model<Sources, Sinks> {
+		private val item: Item) : Model<Sources, Sinks>() {
 
-	private val subscriptions = CompositeSubscription()
-
-	override fun setUp(sources: Sources): Sinks {
-		sources.backClicks
+	override fun bind(sources: StreamMap<Sources>): StreamMap<Sinks> {
+		Sources.BACK_CLICKS<Unit>(sources)
 				.subscribe { navService.goBack() }
-				.addTo(subscriptions)
 
-		sources.detailClicks
+		Sources.DETAIL_CLICKS<Unit>(sources)
 				.subscribe { navService.replaceTo(navFactory.itemDetail(item)) }
-				.addTo(subscriptions)
 
-		sources.shareClicks
+		Sources.SHARE_CLICKS<Unit>(sources)
 				.subscribe { navService.goTo(navFactory.shareUrl(item)) }
-				.addTo(subscriptions)
 
-		return Sinks(
-				Observable.just(item)
+		return streamMapOf(
+				Sinks.ITEM to Observable.just(item)
 						.replay(1)
 						.autoConnect()
 		)
 	}
 
-	override fun tearDown() {
-		subscriptions.clear()
+	enum class Sources : Key {
+		BACK_CLICKS, DETAIL_CLICKS, SHARE_CLICKS
 	}
 
-	class Sources(
-			val backClicks: Observable<out Any>,
-			val detailClicks: Observable<out Any>,
-			val shareClicks: Observable<out Any>) : Model.Sources
-
-	class Sinks(val item: Observable<Item>) : Model.Sinks
+	enum class Sinks : Key {
+		ITEM
+	}
 }

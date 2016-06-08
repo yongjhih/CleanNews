@@ -8,7 +8,9 @@ import clean.news.adapter.ItemAdapter
 import clean.news.app.util.addTo
 import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
+import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemListViewModel
+import clean.news.presentation.model.item.ItemListViewModel.Sinks
 import clean.news.presentation.model.item.ItemListViewModel.Sources
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
 import clean.news.ui.main.MainKey.MainComponent
@@ -46,12 +48,12 @@ class ItemListView : RecyclerView {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val sinks = model.setUp(Sources(
-				itemUrlClicks,
-				itemDetailClicks
+		val sinks = model.attach(streamMapOf(
+				Sources.ITEM_URL_CLICKS to itemUrlClicks,
+				Sources.ITEM_DETAIL_CLICKS to itemDetailClicks
 		))
 
-		sinks.items
+		Sinks.ITEMS<List<Item>>(sinks)
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe { adapter.setItems(it) }
 				.addTo(subscriptions)
@@ -59,7 +61,7 @@ class ItemListView : RecyclerView {
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.tearDown()
+		model.detach()
 		super.onDetachedFromWindow()
 	}
 
