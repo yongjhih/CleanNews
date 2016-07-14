@@ -1,43 +1,74 @@
 package clean.news.presentation.model.item
 
 import clean.news.core.entity.Item
-import clean.news.presentation.collections.StreamMap
-import clean.news.presentation.collections.streamMapOf
-import clean.news.presentation.model.Model
-import clean.news.presentation.model.item.ItemUrlViewModel.Sinks
-import clean.news.presentation.model.item.ItemUrlViewModel.Sources
+import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoBack
+import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoToDetails
+import clean.news.presentation.model.item.ItemUrlViewModel.Action.Share
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
-import rx.Observable
+import redux.Dispatcher
+import redux.Middleware
+import redux.Reducer
+import redux.Store
+import redux.logger.Logger
+import redux.logger.Logger.Event
+import redux.logger.LoggerMiddleware
 import javax.inject.Inject
 
 class ItemUrlViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
-		private val item: Item) : Model<Sources, Sinks>() {
+		val item: Item) {
 
-	override fun bind(sources: StreamMap<Sources>): StreamMap<Sinks> {
-		Sources.BACK_CLICKS<Unit>(sources)
-				.subscribe { navService.goBack() }
+	// State
 
-		Sources.DETAIL_CLICKS<Unit>(sources)
-				.subscribe { navService.replaceTo(navFactory.itemDetail(item)) }
+	data class State(val item: Item)
 
-		Sources.SHARE_CLICKS<Unit>(sources)
-				.subscribe { navService.goTo(navFactory.shareUrl(item)) }
+	// Actions
 
-		return streamMapOf(
-				Sinks.ITEM to Observable.just(item)
-						.replay(1)
-						.autoConnect()
-		)
+	sealed class Action {
+		class GoBack() : Action()
+		class GoToDetails() : Action()
+		class Share() : Action()
 	}
 
-	enum class Sources : Key {
-		BACK_CLICKS, DETAIL_CLICKS, SHARE_CLICKS
+	// Reducer
+
+	private val reducer = object : Reducer<State> {
+		override fun reduce(state: State, action: Any): State {
+			return state
+		}
 	}
 
-	enum class Sinks : Key {
-		ITEM
+	//
+
+	private val logger = object : Logger<State> {
+		override fun log(event: Event, action: Any, state: State) {
+		}
 	}
+
+	private val loggerMiddleware = LoggerMiddleware.create(logger)
+	private val navigationMiddleware = object : Middleware<State> {
+		override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
+			when (action) {
+				is GoBack -> navService.goBack()
+				is GoToDetails -> navService.goTo(navFactory.itemDetail(item))
+				is Share -> navService.goTo(navFactory.shareDetail(item))
+			}
+			return action
+		}
+
+	}
+
+	// Store
+
+	val store = Store.create(
+			reducer,
+			State(item),
+			Middleware.apply(
+					loggerMiddleware,
+					navigationMiddleware
+			)
+	)
+
 }

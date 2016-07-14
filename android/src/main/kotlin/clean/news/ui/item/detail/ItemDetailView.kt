@@ -22,6 +22,7 @@ import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
 import redux.Store
+import redux.Store.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
@@ -36,6 +37,7 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 	private val adapter: ItemDetailAdapter
 
 	private val subscriptions = CompositeSubscription()
+	private lateinit var subscription: Subscription
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -63,12 +65,13 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 				.subscribe { model.store.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		model.store.subscribe(this)
+		subscription = model.store.subscribe(this)
 		onStateChanged()
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
+		subscription.unsubscribe()
 		super.onDetachedFromWindow()
 	}
 

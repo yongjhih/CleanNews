@@ -13,28 +13,29 @@ import android.widget.TextView
 import butterknife.bindView
 import clean.news.R
 import clean.news.app.util.addTo
-import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
-import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemUrlViewModel
-import clean.news.presentation.model.item.ItemUrlViewModel.Sinks
-import clean.news.presentation.model.item.ItemUrlViewModel.Sources
+import clean.news.presentation.model.item.ItemUrlViewModel.Action
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
+import redux.Store.Subscriber
+import redux.Store.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemUrlView : RelativeLayout {
+class ItemUrlView : RelativeLayout, Subscriber {
 	@Inject
 	lateinit var model: ItemUrlViewModel
 
 	private val toolbar: Toolbar by bindView(R.id.toolbar)
+
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
 	private val progressBar: ProgressBar by bindView(R.id.progress_bar)
 	private val webView: WebView by bindView(R.id.web_view)
 
 	private val subscriptions = CompositeSubscription()
+	private lateinit var subscription: Subscription
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -57,28 +58,36 @@ class ItemUrlView : RelativeLayout {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
+		toolbar.navigationClicks()
+				.subscribe { model.store.dispatch(Action.GoBack()) }
+				.addTo(subscriptions)
+
 		val toolbarItemClicks = toolbar.itemClicks()
 				.publish()
 				.autoConnect()
 
-		val sinks = model.attach(streamMapOf(
-				Sources.BACK_CLICKS to toolbar.navigationClicks(),
-				Sources.DETAIL_CLICKS to toolbarItemClicks.filter { it.itemId == R.id.item_details },
-				Sources.SHARE_CLICKS to toolbarItemClicks.filter { it.itemId == R.id.item_share }
-		))
-
-		Sinks.ITEM<Item>(sinks)
-				.subscribe(itemSubscriber)
+		toolbarItemClicks.filter { it.itemId == R.id.item_details }
+				.subscribe { model.store.dispatch(Action.GoToDetails()) }
 				.addTo(subscriptions)
+
+		toolbarItemClicks.filter { it.itemId == R.id.item_share }
+				.subscribe { model.store.dispatch(Action.Share()) }
+				.addTo(subscriptions)
+
+		subscription = model.store.subscribe(this)
+		onStateChanged()
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.detach()
+		subscription.unsubscribe()
 		super.onDetachedFromWindow()
 	}
 
-	private val itemSubscriber = { item: Item ->
+	override fun onStateChanged() {
+		val state = model.store.getState()
+		val item = state.item
+
 		toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment
 		titleTextView.text = item.title
 

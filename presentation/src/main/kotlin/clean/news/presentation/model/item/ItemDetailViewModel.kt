@@ -38,8 +38,6 @@ class ItemDetailViewModel @Inject constructor(
 			val children: List<Item>,
 			val loading: Boolean)
 
-	private val initialState = State(item, listOf(item), false)
-
 	// Actions
 
 	sealed class Action {
@@ -65,7 +63,6 @@ class ItemDetailViewModel @Inject constructor(
 
 	private val logger = object : Logger<State> {
 		override fun log(event: Event, action: Any, state: State) {
-
 		}
 	}
 	private val epic = object : Epic<State> {
@@ -97,7 +94,11 @@ class ItemDetailViewModel @Inject constructor(
 
 	val store = Store.create(
 			reducer,
-			initialState,
+			State(
+					item,
+					listOf(item),
+					false
+			),
 			Middleware.apply(
 					loggerMiddleware,
 					epicMiddleware,
