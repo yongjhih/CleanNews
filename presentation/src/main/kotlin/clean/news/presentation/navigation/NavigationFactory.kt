@@ -15,7 +15,7 @@ interface NavigationFactory {
 
 	fun main(): MainScreen
 
-	fun itemDetail(item: Item): ItemDetailScreen
+	fun detail(item: Item): ItemDetailScreen
 
 	fun url(item: Item): ItemUrlScreen
 

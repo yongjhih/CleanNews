@@ -1,41 +1,104 @@
 package clean.news.presentation.model.item
 
 import clean.news.app.usecase.item.GetItemsByListType
-import clean.news.app.usecase.item.GetItemsByListType.Request
 import clean.news.core.entity.Item
-import clean.news.presentation.collections.StreamMap
-import clean.news.presentation.collections.streamMapOf
-import clean.news.presentation.model.Model
-import clean.news.presentation.model.item.ItemListViewModel.Sinks
-import clean.news.presentation.model.item.ItemListViewModel.Sinks.ITEMS
-import clean.news.presentation.model.item.ItemListViewModel.Sources
+import clean.news.presentation.model.item.ItemListViewModel.Action.GoToDetail
+import clean.news.presentation.model.item.ItemListViewModel.Action.GoToUrl
+import clean.news.presentation.model.item.ItemListViewModel.Action.ShowItems
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
+import redux.Dispatcher
+import redux.Middleware
+import redux.Reducer
+import redux.Store
+import redux.logger.Logger
+import redux.logger.Logger.Event
+import redux.logger.LoggerMiddleware
+import redux.observable.Epic
+import redux.observable.EpicMiddleware
+import rx.Observable
+import rx.Scheduler
 import javax.inject.Inject
 
 class ItemListViewModel @Inject constructor(
+		private val observeScheduler: Scheduler,
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,
 		private val listType: Item.ListType,
-		private val getItemsByListType: GetItemsByListType) : Model<Sources, Sinks>() {
+		private val getItemsByListType: GetItemsByListType) {
 
-	override fun bind(sources: StreamMap<Sources>): StreamMap<Sinks> {
-		Sources.ITEM_URL_CLICKS<Item>(sources)
-				.subscribe { navService.goTo(navFactory.url(it)) }
+	// State
 
-		Sources.ITEM_DETAIL_CLICKS<Item>(sources)
-				.subscribe { navService.goTo(navFactory.itemDetail(it)) }
+	data class State(
+			val items: List<Item>,
+			val loading: Boolean)
 
-		return streamMapOf(
-				ITEMS to getItemsByListType.execute(Request(listType)).map { it.items }
-		)
+	// Actions
+
+	sealed class Action {
+		class GetItems() : Action()
+		class ShowItems(val items: List<Item>) : Action()
+		class GoToDetail(val item: Item) : Action()
+		class GoToUrl(val item: Item) : Action()
 	}
 
-	enum class Sources : Key {
-		ITEM_URL_CLICKS, ITEM_DETAIL_CLICKS
+	// Reducer
+
+	private val reducer = object : Reducer<State> {
+		override fun reduce(state: State, action: Any): State {
+			return when (action) {
+				is ShowItems -> state.copy(items = action.items)
+				else -> state
+			}
+		}
 	}
 
-	enum class Sinks : Key {
-		ITEMS
+	// Middleware
+
+	private val logger = object : Logger<State> {
+		override fun log(event: Event, action: Any, state: State) {
+		}
+	}
+	private val epic = object : Epic<State> {
+		override fun map(actions: Observable<out Any>, store: Store<State>): Observable<out Any> {
+			return actions.ofType(Action.GetItems::class.java)
+					.flatMap {
+						getItemsByListType.execute(GetItemsByListType.Request(listType))
+								.observeOn(observeScheduler)
+					}
+					.map { Action.ShowItems(it.items) }
+		}
+	}
+
+	private val loggerMiddleware = LoggerMiddleware.create(logger)
+	private val epicMiddleware = EpicMiddleware.create(epic)
+	private val navigationMiddleware = object : Middleware<State> {
+		override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
+			when (action) {
+				is GoToUrl -> navService.goTo(navFactory.url(action.item))
+				is GoToDetail -> navService.goTo(navFactory.detail(action.item))
+			}
+			return action
+		}
+
+	}
+
+	// Store
+
+	val store = Store.create(
+			reducer,
+			State(
+					emptyList(),
+					false
+			),
+			Middleware.apply(
+					loggerMiddleware,
+					epicMiddleware,
+					navigationMiddleware
+			)
+	)
+
+	init {
+		store.dispatch(Action.GetItems())
 	}
 }

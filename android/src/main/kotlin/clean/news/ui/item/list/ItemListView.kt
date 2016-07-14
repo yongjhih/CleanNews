@@ -5,30 +5,26 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
-import clean.news.app.util.addTo
-import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
-import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemListViewModel
-import clean.news.presentation.model.item.ItemListViewModel.Sinks
-import clean.news.presentation.model.item.ItemListViewModel.Sources
+import clean.news.presentation.model.item.ItemListViewModel.Action
 import clean.news.ui.item.list.ItemListScreen.ItemListModule
 import clean.news.ui.main.MainKey.MainComponent
 import flow.Flow
-import rx.android.schedulers.AndroidSchedulers
-import rx.subjects.PublishSubject
+import redux.Store
+import redux.Store.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemListView : RecyclerView {
+class ItemListView : RecyclerView, Store.Subscriber {
+
 	@Inject
 	lateinit var model: ItemListViewModel
 
 	private val adapter: ItemAdapter
 
-	private val itemUrlClicks = PublishSubject.create<Item>()
-	private val itemDetailClicks = PublishSubject.create<Item>()
 	private val subscriptions = CompositeSubscription()
+	private lateinit var subscription: Subscription
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -39,30 +35,27 @@ class ItemListView : RecyclerView {
 	override fun onFinishInflate() {
 		super.onFinishInflate()
 
-		adapter.itemUrlClickListener = { itemUrlClicks.onNext(it) }
-		adapter.itemDetailClickListener = { itemDetailClicks.onNext(it) }
+		adapter.itemUrlClickListener = { model.store.dispatch(Action.GoToUrl(it)) }
+		adapter.itemDetailClickListener = { model.store.dispatch(Action.GoToDetail(it)) }
 
 		setAdapter(adapter)
 	}
 
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
-
-		val sinks = model.attach(streamMapOf(
-				Sources.ITEM_URL_CLICKS to itemUrlClicks,
-				Sources.ITEM_DETAIL_CLICKS to itemDetailClicks
-		))
-
-		Sinks.ITEMS<List<Item>>(sinks)
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe { adapter.setItems(it) }
-				.addTo(subscriptions)
+		subscription = model.store.subscribe(this)
+		onStateChanged()
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.detach()
+		subscription.unsubscribe()
 		super.onDetachedFromWindow()
+	}
+
+	override fun onStateChanged() {
+		val state = model.store.getState()
+		adapter.setItems(state.items)
 	}
 
 	fun inject(module: ItemListModule) {

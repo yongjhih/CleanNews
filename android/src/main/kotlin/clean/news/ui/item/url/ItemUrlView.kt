@@ -19,12 +19,12 @@ import clean.news.presentation.model.item.ItemUrlViewModel.Action
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import redux.Store.Subscriber
+import redux.Store
 import redux.Store.Subscription
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemUrlView : RelativeLayout, Subscriber {
+class ItemUrlView : RelativeLayout, Store.Subscriber {
 	@Inject
 	lateinit var model: ItemUrlViewModel
 

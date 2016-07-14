@@ -11,7 +11,7 @@ import clean.news.ui.main.MainKey
 class FlowNavigationFactory : NavigationFactory {
 	override fun main() = MainKey()
 
-	override fun itemDetail(item: Item) = ItemDetailKey(item)
+	override fun detail(item: Item) = ItemDetailKey(item)
 
 	override fun url(item: Item) = ItemUrlKey(item)
 

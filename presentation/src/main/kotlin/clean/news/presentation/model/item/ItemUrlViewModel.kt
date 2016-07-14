@@ -52,7 +52,7 @@ class ItemUrlViewModel @Inject constructor(
 		override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
 			when (action) {
 				is GoBack -> navService.goBack()
-				is GoToDetails -> navService.goTo(navFactory.itemDetail(item))
+				is GoToDetails -> navService.goTo(navFactory.detail(item))
 				is Share -> navService.goTo(navFactory.shareDetail(item))
 			}
 			return action
