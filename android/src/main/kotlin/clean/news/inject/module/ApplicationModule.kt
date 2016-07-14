@@ -6,6 +6,8 @@ import clean.news.presentation.inject.ApplicationScope
 import clean.news.util.AndroidLogger
 import dagger.Module
 import dagger.Provides
+import rx.Scheduler
+import rx.android.schedulers.AndroidSchedulers
 
 @Module(includes = arrayOf(DataModule::class, PresentationModule::class))
 class ApplicationModule(private val application: Application) {
@@ -19,5 +21,11 @@ class ApplicationModule(private val application: Application) {
 	@ApplicationScope
 	fun logger(): Logger {
 		return AndroidLogger()
+	}
+
+	@Provides
+	@ApplicationScope
+	fun observeScheduler(): Scheduler {
+		return AndroidSchedulers.mainThread()
 	}
 }

@@ -1,5 +1,5 @@
 buildscript {
-	ext.kotlinVersion = '1.0.1'
+	ext.kotlinVersion = '1.0.3'
 	repositories {
 		jcenter()
 		maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -90,6 +90,10 @@ ext {
 	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:$rxBindingVersion"
 	rxBindingAppCompatV7 = "com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
 	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
+
+	reduxKotlin = "com.github.pardom:redux-kotlin:-SNAPSHOT"
+	reduxLoggerKotlin = "com.github.pardom:redux-logger-kotlin:-SNAPSHOT"
+	reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:-SNAPSHOT"
 
 	// Testing
 

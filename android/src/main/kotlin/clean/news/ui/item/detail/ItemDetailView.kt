@@ -15,30 +15,26 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.ItemDetailAdapter
 import clean.news.app.util.addTo
-import clean.news.core.entity.Item
 import clean.news.flow.service.DaggerService
-import clean.news.presentation.collections.streamMapOf
 import clean.news.presentation.model.item.ItemDetailViewModel
-import clean.news.presentation.model.item.ItemDetailViewModel.Sinks
-import clean.news.presentation.model.item.ItemDetailViewModel.Sources
+import clean.news.presentation.model.item.ItemDetailViewModel.Action
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import com.jakewharton.rxbinding.widget.text
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
+import redux.Store
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemDetailView : RelativeLayout {
+class ItemDetailView : RelativeLayout, Store.Subscriber {
 	@Inject
 	lateinit var model: ItemDetailViewModel
 
 	private val toolbar: Toolbar by bindView(R.id.toolbar)
+
 	private val titleTextView: TextView by bindView(R.id.title_text_view)
 	private val commentRecyclerView: RecyclerView by bindView(R.id.comment_recycler_view)
-
 	private val adapter: ItemDetailAdapter
+
 	private val subscriptions = CompositeSubscription()
 
 	@JvmOverloads
@@ -59,37 +55,20 @@ class ItemDetailView : RelativeLayout {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val sinks = model.attach(streamMapOf(
-				Sources.BACK_CLICKS to toolbar.navigationClicks(),
-				Sources.URL_CLICKS to Observable.empty<Unit>(),
-				Sources.SHARE_CLICKS to toolbar.itemClicks()
-						.filter { it.itemId == R.id.item_share }
-						.map { Unit }
-		))
-
-		Sinks.ITEM<Item>(sinks)
-				.map { it.title.orEmpty() }
-				.subscribe { titleTextView.text() }
+		toolbar.navigationClicks()
+				.subscribe { model.store.dispatch(Action.GoBack()) }
 				.addTo(subscriptions)
 
-		Sinks.CHILDREN<List<Item>>(sinks)
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(
-						{
-							adapter.setItems(it)
-							adapter.setLoading(true)
-						},
-						{},
-						{
-							adapter.setLoading(false)
-						}
-				)
+		toolbar.itemClicks().filter { it.itemId == R.id.item_share }
+				.subscribe { model.store.dispatch(Action.Share()) }
 				.addTo(subscriptions)
+
+		model.store.subscribe(this)
+		onStateChanged()
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		model.detach()
 		super.onDetachedFromWindow()
 	}
 
@@ -106,6 +85,14 @@ class ItemDetailView : RelativeLayout {
 		val savedState = state as SavedState
 		super.onRestoreInstanceState(state.superState)
 		adapter.setCollapsedIds(savedState.collapsedIds)
+	}
+
+	override fun onStateChanged() {
+		val state = model.store.getState()
+		toolbar.title = state.item.title
+		titleTextView.text = state.item.title
+		adapter.setItems(state.children)
+		adapter.setLoading(state.loading)
 	}
 
 	class SavedState : BaseSavedState {

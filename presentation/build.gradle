@@ -1,9 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
 sourceSets {
 	main.java.srcDirs += 'src/main/kotlin'
 	test.java.srcDirs += 'src/test/kotlin'
@@ -16,4 +13,13 @@ dependencies {
 	compile javaxInject
 	compile kotlinStdLib
 	compile rxJava
+
+	compile(reduxKotlin) { changing = true }
+	compile(reduxLoggerKotlin) { changing = true }
+	compile(reduxObservableKotlin) { changing = true }
+}
+
+configurations.all {
+	resolutionStrategy.cacheDynamicVersionsFor 5, 'minutes'
+	resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
