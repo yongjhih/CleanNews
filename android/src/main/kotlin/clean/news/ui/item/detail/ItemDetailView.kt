@@ -58,14 +58,14 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 		super.onAttachedToWindow()
 
 		toolbar.navigationClicks()
-				.subscribe { model.store.dispatch(Action.GoBack()) }
+				.subscribe { model.dispatch(Action.GoBack()) }
 				.addTo(subscriptions)
 
 		toolbar.itemClicks().filter { it.itemId == R.id.item_share }
-				.subscribe { model.store.dispatch(Action.Share()) }
+				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		subscription = model.store.subscribe(this)
+		subscription = model.subscribe(this)
 		onStateChanged()
 	}
 
@@ -91,7 +91,7 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 	}
 
 	override fun onStateChanged() {
-		val state = model.store.getState()
+		val state = model.getState()
 		toolbar.title = state.item.title
 		titleTextView.text = state.item.title
 		adapter.setItems(state.children)

@@ -59,7 +59,7 @@ class ItemUrlView : RelativeLayout, Store.Subscriber {
 		super.onAttachedToWindow()
 
 		toolbar.navigationClicks()
-				.subscribe { model.store.dispatch(Action.GoBack()) }
+				.subscribe { model.dispatch(Action.GoBack()) }
 				.addTo(subscriptions)
 
 		val toolbarItemClicks = toolbar.itemClicks()
@@ -67,14 +67,14 @@ class ItemUrlView : RelativeLayout, Store.Subscriber {
 				.autoConnect()
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_details }
-				.subscribe { model.store.dispatch(Action.GoToDetails()) }
+				.subscribe { model.dispatch(Action.GoToDetails()) }
 				.addTo(subscriptions)
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_share }
-				.subscribe { model.store.dispatch(Action.Share()) }
+				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		subscription = model.store.subscribe(this)
+		subscription = model.subscribe(this)
 		onStateChanged()
 	}
 
@@ -85,7 +85,7 @@ class ItemUrlView : RelativeLayout, Store.Subscriber {
 	}
 
 	override fun onStateChanged() {
-		val state = model.store.getState()
+		val state = model.getState()
 		val item = state.item
 
 		toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment

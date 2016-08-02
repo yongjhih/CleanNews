@@ -35,15 +35,15 @@ class ItemListView : RecyclerView, Store.Subscriber {
 	override fun onFinishInflate() {
 		super.onFinishInflate()
 
-		adapter.itemUrlClickListener = { model.store.dispatch(Action.GoToUrl(it)) }
-		adapter.itemDetailClickListener = { model.store.dispatch(Action.GoToDetail(it)) }
+		adapter.itemUrlClickListener = { model.dispatch(Action.GoToUrl(it)) }
+		adapter.itemDetailClickListener = { model.dispatch(Action.GoToDetail(it)) }
 
 		setAdapter(adapter)
 	}
 
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
-		subscription = model.store.subscribe(this)
+		subscription = model.subscribe(this)
 		onStateChanged()
 	}
 
@@ -54,7 +54,7 @@ class ItemListView : RecyclerView, Store.Subscriber {
 	}
 
 	override fun onStateChanged() {
-		val state = model.store.getState()
+		val state = model.getState()
 		adapter.setItems(state.items)
 	}
 
