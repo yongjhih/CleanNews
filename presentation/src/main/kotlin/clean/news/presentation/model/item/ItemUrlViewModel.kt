@@ -19,10 +19,12 @@ class ItemUrlViewModel @Inject constructor(
 		private val navFactory: NavigationFactory,
 		val item: Item) : StoreModel<State>() {
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// State
 
 	data class State(val item: Item)
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Actions
 
 	sealed class Action {
@@ -31,35 +33,29 @@ class ItemUrlViewModel @Inject constructor(
 		class Share() : Action()
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Reducer
+
+	fun reducer() = Reducer { state: State, action: Any -> state }
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Middleware
+
+	fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+		val result = next.dispatch(action)
+		when (action) {
+			is GoBack -> navService.goBack()
+			is GoToDetails -> navService.goTo(navFactory.detail(item))
+			is Share -> navService.goTo(navFactory.shareDetail(item))
+		}
+		result
+	}
+
 	override fun createStore(): Store<State> {
-		// Reducer
-
-		val reducer = object : Reducer<State> {
-			override fun reduce(state: State, action: Any): State {
-				return state
-			}
-		}
-
-		// Middleware
-
-		val navigationMiddleware = object : Middleware<State> {
-			override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
-				when (action) {
-					is GoBack -> navService.goBack()
-					is GoToDetails -> navService.goTo(navFactory.detail(item))
-					is Share -> navService.goTo(navFactory.shareDetail(item))
-				}
-				return action
-			}
-
-		}
-
-		// Store
-
 		return Store.create(
-				reducer,
+				reducer(),
 				State(item),
-				Middleware.apply(navigationMiddleware)
+				Middleware.apply(navigationMiddleware())
 		)
 	}
 

@@ -19,12 +19,13 @@ import clean.news.presentation.model.item.ItemUrlViewModel.Action
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import redux.Store
-import redux.Store.Subscription
+import com.jakewharton.rxbinding.view.visible
+import com.jakewharton.rxbinding.widget.text
+import redux.asObservable
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemUrlView : RelativeLayout, Store.Subscriber {
+class ItemUrlView : RelativeLayout {
 	@Inject
 	lateinit var model: ItemUrlViewModel
 
@@ -35,7 +36,6 @@ class ItemUrlView : RelativeLayout, Store.Subscriber {
 	private val webView: WebView by bindView(R.id.web_view)
 
 	private val subscriptions = CompositeSubscription()
-	private lateinit var subscription: Subscription
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -74,26 +74,38 @@ class ItemUrlView : RelativeLayout, Store.Subscriber {
 				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		subscription = model.subscribe(this)
-		onStateChanged()
+		val modelChanges = model.asObservable()
+				.startWith(model.getState())
+				.publish()
+
+		modelChanges
+				.map { it.item.title }
+				.filter { it != null }
+				.cast(String::class.java)
+				.distinctUntilChanged()
+				.subscribe(titleTextView.text())
+				.addTo(subscriptions)
+
+		modelChanges
+				.map { it.item.type.canComment }
+				.distinctUntilChanged()
+				.subscribe(toolbar.menu.findItem(R.id.item_details).visible())
+				.addTo(subscriptions)
+
+		modelChanges
+				.map { it.item.url }
+				.distinctUntilChanged()
+				.subscribe { webView.loadUrl(it) }
+				.addTo(subscriptions)
+
+		modelChanges
+				.connect()
+				.addTo(subscriptions)
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		subscription.unsubscribe()
 		super.onDetachedFromWindow()
-	}
-
-	override fun onStateChanged() {
-		val state = model.getState()
-		val item = state.item
-
-		toolbar.menu.findItem(R.id.item_details).isVisible = item.type.canComment
-		titleTextView.text = item.title
-
-		if (item.url != webView.url) {
-			webView.loadUrl(item.url)
-		}
 	}
 
 	private class LoadingWebChromeClient(private val progressBar: ProgressBar) : WebChromeClient() {
