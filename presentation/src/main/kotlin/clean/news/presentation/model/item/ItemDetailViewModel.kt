@@ -94,16 +94,11 @@ class ItemDetailViewModel @Inject constructor(
 	override fun createStore(): Store<State> {
 		return Store.create(
 				reducer(),
-				State(
-						item,
-						listOf(item),
-						false
-				),
+				State(item, listOf(item), false),
 				Middleware.apply(
 						navigationMiddleware(),
 						EpicMiddleware.create(epic())
-				)
-		)
+				))
 	}
 
 }
