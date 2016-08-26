@@ -13,9 +13,6 @@ import redux.Dispatcher
 import redux.Middleware
 import redux.Reducer
 import redux.Store
-import redux.logger.Logger
-import redux.logger.Logger.Event
-import redux.logger.LoggerMiddleware
 import redux.observable.Epic
 import redux.observable.EpicMiddleware
 import rx.Observable
@@ -58,10 +55,6 @@ class ItemListViewModel @Inject constructor(
 
 		// Middleware
 
-		val logger = object : Logger<State> {
-			override fun log(event: Event, action: Any, state: State) {
-			}
-		}
 		val epic = object : Epic<State> {
 			override fun map(actions: Observable<out Any>, store: Store<State>): Observable<out Any> {
 				return actions.ofType(Action.GetItems::class.java)
@@ -73,7 +66,6 @@ class ItemListViewModel @Inject constructor(
 			}
 		}
 
-		val loggerMiddleware = LoggerMiddleware.create(logger)
 		val epicMiddleware = EpicMiddleware.create(epic)
 		val navigationMiddleware = object : Middleware<State> {
 			override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
@@ -93,7 +85,6 @@ class ItemListViewModel @Inject constructor(
 						false
 				),
 				Middleware.apply(
-						loggerMiddleware,
 						epicMiddleware,
 						navigationMiddleware
 				)

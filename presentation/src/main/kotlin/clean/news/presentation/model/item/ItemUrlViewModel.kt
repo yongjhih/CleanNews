@@ -12,9 +12,6 @@ import redux.Dispatcher
 import redux.Middleware
 import redux.Reducer
 import redux.Store
-import redux.logger.Logger
-import redux.logger.Logger.Event
-import redux.logger.LoggerMiddleware
 import javax.inject.Inject
 
 class ItemUrlViewModel @Inject constructor(
@@ -45,12 +42,6 @@ class ItemUrlViewModel @Inject constructor(
 
 		// Middleware
 
-		val logger = object : Logger<State> {
-			override fun log(event: Event, action: Any, state: State) {
-			}
-		}
-
-		val loggerMiddleware = LoggerMiddleware.create(logger)
 		val navigationMiddleware = object : Middleware<State> {
 			override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
 				when (action) {
@@ -68,10 +59,7 @@ class ItemUrlViewModel @Inject constructor(
 		return Store.create(
 				reducer,
 				State(item),
-				Middleware.apply(
-						loggerMiddleware,
-						navigationMiddleware
-				)
+				Middleware.apply(navigationMiddleware)
 		)
 	}
 
