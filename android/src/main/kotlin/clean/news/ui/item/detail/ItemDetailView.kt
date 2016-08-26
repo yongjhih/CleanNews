@@ -64,11 +64,11 @@ class ItemDetailView : RelativeLayout {
 				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		val modelChanges = model.asObservable()
+		val stateChanges = model.asObservable()
 				.startWith(model.getState())
 				.publish()
 
-		modelChanges
+		stateChanges
 				.map { it.item.title }
 				.filter { it != null }
 				.cast(String::class.java)
@@ -76,19 +76,19 @@ class ItemDetailView : RelativeLayout {
 				.subscribe(titleTextView.text())
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.map { it.children }
 				.distinctUntilChanged()
 				.subscribe { adapter.setItems(it) }
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.map { it.loading }
 				.distinctUntilChanged()
 				.subscribe { adapter.setLoading(it) }
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.connect()
 				.addTo(subscriptions)
 	}

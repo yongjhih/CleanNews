@@ -74,11 +74,11 @@ class ItemUrlView : RelativeLayout {
 				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		val modelChanges = model.asObservable()
+		val stateChanges = model.asObservable()
 				.startWith(model.getState())
 				.publish()
 
-		modelChanges
+		stateChanges
 				.map { it.item.title }
 				.filter { it != null }
 				.cast(String::class.java)
@@ -86,19 +86,19 @@ class ItemUrlView : RelativeLayout {
 				.subscribe(titleTextView.text())
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.map { it.item.type.canComment }
 				.distinctUntilChanged()
 				.subscribe(toolbar.menu.findItem(R.id.item_details).visible())
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.map { it.item.url }
 				.distinctUntilChanged()
 				.subscribe { webView.loadUrl(it) }
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.connect()
 				.addTo(subscriptions)
 	}

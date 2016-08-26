@@ -43,17 +43,17 @@ class ItemListView : RecyclerView {
 	override fun onAttachedToWindow() {
 		super.onAttachedToWindow()
 
-		val modelChanges = model.asObservable()
+		val stateChanges = model.asObservable()
 				.startWith(model.getState())
 				.publish()
 
-		modelChanges
+		stateChanges
 				.map { it.items }
 				.distinctUntilChanged()
 				.subscribe { adapter.setItems(it) }
 				.addTo(subscriptions)
 
-		modelChanges
+		stateChanges
 				.connect()
 				.addTo(subscriptions)
 	}
