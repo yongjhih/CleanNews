@@ -12,11 +12,10 @@ dependencies {
 
 	compile javaxInject
 	compile kotlinStdLib
+	compile reduxKotlin
+	compile reduxObservableKotlin
+	compile reduxRxJavaKotlin
 	compile rxJava
-
-	compile(reduxKotlin) { changing = true }
-	compile(reduxLoggerKotlin) { changing = true }
-	compile(reduxObservableKotlin) { changing = true }
 }
 
 configurations.all {

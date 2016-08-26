@@ -13,9 +13,6 @@ import redux.Dispatcher
 import redux.Middleware
 import redux.Reducer
 import redux.Store
-import redux.logger.Logger
-import redux.logger.Logger.Event
-import redux.logger.LoggerMiddleware
 import redux.observable.Epic
 import redux.observable.EpicMiddleware
 import rx.Observable
@@ -29,12 +26,18 @@ class ItemListViewModel @Inject constructor(
 		private val listType: Item.ListType,
 		private val getItemsByListType: GetItemsByListType) : StoreModel<State>() {
 
+	init {
+		dispatch(Action.GetItems())
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// State
 
 	data class State(
 			val items: List<Item>,
 			val loading: Boolean)
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Actions
 
 	sealed class Action {
@@ -44,63 +47,51 @@ class ItemListViewModel @Inject constructor(
 		class GoToUrl(val item: Item) : Action()
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Reducer
+
+	private fun reducer() = Reducer { state: State, action: Any ->
+		when (action) {
+			is ShowItems -> state.copy(items = action.items)
+			else -> state
+		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Epic
+
+	private fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
+		actions.ofType(Action.GetItems::class.java)
+				.flatMap {
+					getItemsByListType.execute(GetItemsByListType.Request(listType))
+							.observeOn(observeScheduler)
+				}
+				.map { Action.ShowItems(it.items) }
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Navigation Middleware
+
+	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+		val result = next.dispatch(action)
+		when (action) {
+			is GoToUrl -> navService.goTo(navFactory.url(action.item))
+			is GoToDetail -> navService.goTo(navFactory.detail(action.item))
+		}
+		result
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Overrides
+
 	override fun createStore(): Store<State> {
-		// Reducer
-
-		val reducer = object : Reducer<State> {
-			override fun reduce(state: State, action: Any): State {
-				return when (action) {
-					is ShowItems -> state.copy(items = action.items)
-					else -> state
-				}
-			}
-		}
-
-		// Middleware
-
-		val logger = object : Logger<State> {
-			override fun log(event: Event, action: Any, state: State) {
-			}
-		}
-		val epic = object : Epic<State> {
-			override fun map(actions: Observable<out Any>, store: Store<State>): Observable<out Any> {
-				return actions.ofType(Action.GetItems::class.java)
-						.flatMap {
-							getItemsByListType.execute(GetItemsByListType.Request(listType))
-									.observeOn(observeScheduler)
-						}
-						.map { Action.ShowItems(it.items) }
-			}
-		}
-
-		val loggerMiddleware = LoggerMiddleware.create(logger)
-		val epicMiddleware = EpicMiddleware.create(epic)
-		val navigationMiddleware = object : Middleware<State> {
-			override fun dispatch(store: Store<State>, action: Any, next: Dispatcher): Any {
-				when (action) {
-					is GoToUrl -> navService.goTo(navFactory.url(action.item))
-					is GoToDetail -> navService.goTo(navFactory.detail(action.item))
-				}
-				return action
-			}
-
-		}
-
 		return Store.create(
-				reducer,
-				State(
-						emptyList(),
-						false
-				),
+				reducer(),
+				State(emptyList(), false),
 				Middleware.apply(
-						loggerMiddleware,
-						epicMiddleware,
-						navigationMiddleware
-				)
-		)
+						navigationMiddleware(),
+						EpicMiddleware.create(epic())
+				))
 	}
 
-	init {
-		dispatch(Action.GetItems())
-	}
 }

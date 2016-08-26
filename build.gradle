@@ -44,6 +44,7 @@ ext {
 	okHttpVersion = '3.2.0'
 	paperParcelVersion = '1.0.0-beta8'
 	phraseVersion = '1.1.0'
+	reduxKotlinVersion = '1.0.0'
 	retrofitVersion = '2.0.0'
 	rxAndroidVersion = '1.1.0'
 	rxBindingVersion = '0.4.0'
@@ -81,6 +82,9 @@ ext {
 	paperParcel = "com.github.grandstaish.paperparcel:paperparcel-kotlin:$paperParcelVersion"
 	paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"
 	phrase = "com.squareup.phrase:phrase:$phraseVersion"
+	reduxKotlin = "com.github.pardom:redux-kotlin:$reduxKotlinVersion"
+	reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:-SNAPSHOT"
+	reduxRxJavaKotlin = "com.github.pardom:redux-rxjava-kotlin:-SNAPSHOT"
 	retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
 	retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
 	retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
@@ -90,10 +94,6 @@ ext {
 	rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:$rxBindingVersion"
 	rxBindingAppCompatV7 = "com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
 	rxJava = "io.reactivex:rxjava:$rxJavaVersion"
-
-	reduxKotlin = "com.github.pardom:redux-kotlin:-SNAPSHOT"
-	reduxLoggerKotlin = "com.github.pardom:redux-logger-kotlin:-SNAPSHOT"
-	reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:-SNAPSHOT"
 
 	// Testing
 

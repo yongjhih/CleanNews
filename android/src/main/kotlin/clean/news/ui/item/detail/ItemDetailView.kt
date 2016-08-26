@@ -21,12 +21,12 @@ import clean.news.presentation.model.item.ItemDetailViewModel.Action
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import redux.Store
-import redux.Store.Subscription
+import com.jakewharton.rxbinding.widget.text
+import redux.asObservable
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class ItemDetailView : RelativeLayout, Store.Subscriber {
+class ItemDetailView : RelativeLayout {
 	@Inject
 	lateinit var model: ItemDetailViewModel
 
@@ -37,7 +37,6 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 	private val adapter: ItemDetailAdapter
 
 	private val subscriptions = CompositeSubscription()
-	private lateinit var subscription: Subscription
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -65,13 +64,37 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 				.subscribe { model.dispatch(Action.Share()) }
 				.addTo(subscriptions)
 
-		subscription = model.subscribe(this)
-		onStateChanged()
+		val stateChanges = model.asObservable()
+				.startWith(model.getState())
+				.publish()
+
+		stateChanges
+				.map { it.item.title }
+				.filter { it != null }
+				.cast(String::class.java)
+				.distinctUntilChanged()
+				.subscribe(titleTextView.text())
+				.addTo(subscriptions)
+
+		stateChanges
+				.map { it.children }
+				.distinctUntilChanged()
+				.subscribe { adapter.setItems(it) }
+				.addTo(subscriptions)
+
+		stateChanges
+				.map { it.loading }
+				.distinctUntilChanged()
+				.subscribe { adapter.setLoading(it) }
+				.addTo(subscriptions)
+
+		stateChanges
+				.connect()
+				.addTo(subscriptions)
 	}
 
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
-		subscription.unsubscribe()
 		super.onDetachedFromWindow()
 	}
 
@@ -88,14 +111,6 @@ class ItemDetailView : RelativeLayout, Store.Subscriber {
 		val savedState = state as SavedState
 		super.onRestoreInstanceState(state.superState)
 		adapter.setCollapsedIds(savedState.collapsedIds)
-	}
-
-	override fun onStateChanged() {
-		val state = model.getState()
-		toolbar.title = state.item.title
-		titleTextView.text = state.item.title
-		adapter.setItems(state.children)
-		adapter.setLoading(state.loading)
 	}
 
 	class SavedState : BaseSavedState {
