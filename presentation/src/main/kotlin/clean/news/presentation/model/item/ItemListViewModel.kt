@@ -50,7 +50,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Reducer
 
-	fun reducer() = Reducer { state: State, action: Any ->
+	private fun reducer() = Reducer { state: State, action: Any ->
 		when (action) {
 			is ShowItems -> state.copy(items = action.items)
 			else -> state
@@ -60,7 +60,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Epic
 
-	fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
+	private fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
 		actions.ofType(Action.GetItems::class.java)
 				.flatMap {
 					getItemsByListType.execute(GetItemsByListType.Request(listType))
@@ -72,7 +72,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Navigation Middleware
 
-	fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoToUrl -> navService.goTo(navFactory.url(action.item))

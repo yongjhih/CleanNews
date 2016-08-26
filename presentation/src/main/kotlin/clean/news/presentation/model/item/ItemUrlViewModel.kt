@@ -36,12 +36,12 @@ class ItemUrlViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Reducer
 
-	fun reducer() = Reducer { state: State, action: Any -> state }
+	private fun reducer() = Reducer { state: State, action: Any -> state }
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Middleware
 
-	fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()
@@ -50,6 +50,9 @@ class ItemUrlViewModel @Inject constructor(
 		}
 		result
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// Middleware
 
 	override fun createStore(): Store<State> {
 		return Store.create(

@@ -56,7 +56,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Reducer
 
-	fun reducer() = Reducer { state: State, action: Any ->
+	private fun reducer() = Reducer { state: State, action: Any ->
 		when (action) {
 			is ShowChildren -> state.copy(children = action.children)
 			else -> state
@@ -66,7 +66,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Epic
 
-	fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
+	private fun epic() = Epic { actions: Observable<out Any>, store: Store<State> ->
 		actions.ofType(Action.GetChildren::class.java)
 				.flatMap {
 					getChildren.execute(GetChildren.Request(it.item))
@@ -78,7 +78,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Nav
 
-	fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()
