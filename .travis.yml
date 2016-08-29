@@ -1,5 +1,7 @@
 language: android
 
+jdk: oraclejdk8
+
 android:
   components:
     - tools
@@ -7,8 +9,29 @@ android:
     - android-23
     - extra-android-m2repository
 
+env:
+  global:
+    secure: "cnPzBnqXN9BB+rWffIoIjmM7CB25vgoJ2vHb5j3SIx993SCTu2L7/F+kJVqtWYyjmHgcv8RJn+5nrA6JTD53xmJBMtcLBYpA4VNwwQnf3OxrR8eB52MOie5OJ99t5GOt4zLOb+0g9B/1IzSv9U0cLL4r9aeSR5XunHVXs6tzi7NSoqryPvKZ0XMfkYho1bZE3ap7bF6bSGII8bPXEBLGg2aLFutOA5MrQNMRppWEw2/+sbVsCQTpO+kbZbSedWwWG+4gAMi18wZQTIITQOueUW74rPXizhXNwpPUGu8aknocdm5x2DMXsCnxlu1CnSUjn+dJl0pg/yz3mqQWSAjZQDf4W0ys/z8ufPdpssiXyctSNfznRwejirQ5jmkwrQ1fcPyk/jKXlrowtg6xjin8s2qLLietZPgGcz78zTlahLLc03n0aXyCbKrlFE6GVwliJp6yZJaYdw6usNA5+o+ySZ6KrTfEL5Ej9/fEXHb3wsSiqZKWMOu//I9CMGJ4EUMrf6rtGVayZURfprsm7G/jqxAcyukdqyN8PhfOtjRLlHQGVGNm4uFct7313yNUZWsNuC+q/s7jz6nEOG7P22rTeC/uFM3CMul/E+Gk8ILCZjkQfFd6A1m0oJanQToAsMIqJ9uYDG2X+BZPQtcq2gxujhdFyhgigVFs645YC4RGau8="
+    secure: "TDAFI7unQArUiVTAJPai1SwkixPo3Suv8SGgvqYeM2WXJoCqEYyLpzetnFdcG2FkTPVVtVR5f6fnRt+Kis8d/TjAnjelfd1lVqYKZ3g93qflrKJtjD7zqlv1qlREuSrKBlr9MtsgYgG30d8/A3TSgAkT/Z/XDK3ci9Ukd83FuAcEiq5CwLNy3whDfVdqnBeOZZ/sPlq94nBP3wjJyuf4Xra9dBD05SKo6+viDtXKOK4yB+3nZ/vsQvHLp38l2qX8F8P3I/mfx2NJPph62fyBN4yH7g9s4b/5DrgXZc6/4DQHLYIP5G4qsYwmdH7AIqPKWwzVYc6i3QohWZFGguV20UPCEMpAsZzwHMKuidRsiFn57aaZqkR/j2prMKR6hRmAyjFJMOamLYNR1vpq13k0SKpj5BBcaJgfh1ppvMh9MHEN1nvabrHMLZuKCnuw3ALuXpupvx9O7KqXYw64Ezzo6c6MNLE6X469l6HFbU4s4y2SrdRq10oUhHaF5rlCvS7bYtxcw4vkf1bXUZOsH7VSLgTVESAuJIKh9JdwhVri5+u4ymBmk370VEC2MN7n0rdxGdcf4+wQ870jOLGfJ7PZOzlhq2JcHqYOyr96DtBhOqWegGB+gd2TtRwK+rbwQBd8UkIZLYyIfdAIjrLyykBQda0BYRnKbtc4y5wqj/149XU="
+    secure: "PhCivaGjVTTjIn00qZjAsAhr4Bhf3n9wUM/6CmWkh2pojHUNsGP6dj+WFmPjFZbtpG4rnbWP+8Rtj5yFkeEyNc7ihXAxlKBXRJ9lJJI4OWlLINKhZ8QpxoB4qsaRvdiZgUMJeZ8+v0wc8x54UgITlb9CfHNOWeMAeTgEFV3g9q3Ki3a+cWKHMJAXA74j3wP2jS8XdWqlHv0cT2hFqfbqhU/w05D24a5KSRjwrzR2H/Y+YGdr1Sc7iN9z1UofEMVy267q722g9xtbtnWAlEwgAH9ywbu9Rr2zzf/5fOJBPUeKJ5XomWx6HRgIF1jg/M4BlzZYQPXN+qGrSJxpU5Y2nEd8CR9S/kTl6oqGbao6bNtPLLWeprWzE1TLaw/t3RO82AbYT71bfvV1Xq4S7wHgxUO5Iv4QwB3GQCHlM/dYXnD7c/9OCsG/i1bTUsdRasH0igK4ncK4Ms0UY6r2NNdCqsKyLK42ayLYtt0oZaeGZ30cNae6nDgTQT+45jxLdTuSavxRTxZ3+LyNvcsNcYjpwb/lNpt3uJbqjxei8dnRCZzdVr5MJtkljloFlJPaFUDF0ZKOZKtj+vdZgHzNsXFI5Vp7C9heRQ/zU2P6Tb1CxpyTvp+pu9VFdzV0fgluigMxx8Ey/+rywCOtiSldi5v9fF+phWw39JYqIYy2/wSclhE="
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_ce8155ff0faf_key -iv $encrypted_ce8155ff0faf_iv -in .ci/michaelpardo_android.keystore.enc -out .ci/michaelpardo_android.keystore -d
+
+deploy:
+  provider: releases
+  api_key:
+    secure: f6PvCnhLYnwXkLrsp5IBgU7Mi1oW7pWQlyL7FUAhA8TQhyfRqFZJe4FvlSo70OGVv74uX2gr4G09PQRcYqyUY+oKcnkvokMOh4eCUAybmk/HeqNnv/h0tsqsXZV15a5jJQscwM9PEq8DqVuyRjqHjLAATgd9eokIBJ2QHCAsaYIIrggdIkKzUQzM0C1akaKCWr6DIe9rlmejO+khLog04s9RUDipX/LJ9VpRQi0QQqwLRR7Uagarb8Y1Pl2uWZ63D9axwlEJrauiNDZEscZVXud4rtX9pCCAhnTc5vhVzXE35JkTlX28hDMDVfj+Uc9HGxmkWbJpRGvNc6v628mUGX++UfBo30OM612dfyIu05qBIBRaGKMGESVq3LO2CKLP2E61N5tXXZNai2sCywGmrJcLZ7mLLt+J2xv5y4+U32ULk1jSR6YwJx1/H0gKbH5msTunhChOkw32mNCETMew4b2sRt34IYk4Glhn8Npuyh/nJQYoMddzjDNpnpyh20lvGtQHwGabvFtpTsdUfJFRBW9L+9A96dSlqZFz6qUXMAiTT8DQKFuQcFpjMklOFa5p5tTdWwDpxJi3Iohr9P+91TyQQVmczdXU8755+KT5Q7LX147D7CTuubpllAPhC9/DGvYVyhh4vcaX/ig2zwmI7xw/wWthY4CYdmoR0TiV4OQ=
+  file:
+    - android/build/outputs/apk/app-debug.apk
+    - android/build/outputs/apk/app-release.apk
+  on:
+    repo: pardom/CleanNews
+    branch: master
+
 cache:
   directories:
     - $HOME/.m2
-
-script: ./gradlew check
+    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/

@@ -47,7 +47,7 @@ class ItemDetailView : RelativeLayout {
 	override fun onFinishInflate() {
 		super.onFinishInflate()
 
-		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha)
+		toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
 		toolbar.inflateMenu(R.menu.item_detail_view)
 		commentRecyclerView.layoutManager = LinearLayoutManager(context)
 		commentRecyclerView.adapter = adapter
