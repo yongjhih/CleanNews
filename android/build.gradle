@@ -34,7 +34,7 @@ dependencies {
 
 	provided javaxAnnotation
 
-	compile androidSupport
+	compile androidSupportCoreUi
 	compile androidSupportAppCompat
 	compile androidSupportDesign
 	compile androidSupportRecyclerView
