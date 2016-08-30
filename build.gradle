@@ -26,7 +26,9 @@ buildscript {
 		okHttpVersion = '3.2.0'
 		paperParcelVersion = '1.0.0-beta8'
 		phraseVersion = '1.1.0'
-		reduxKotlinVersion = '1.0.0'
+		reduxKotlinVersion = '1.0.1'
+		reduxObservableKotlinVersion = '1.0.0'
+		reduxRxJavaKotlinVersion = '1.0.0'
 		retrofitVersion = '2.0.0'
 		rxAndroidVersion = '1.1.0'
 		rxBindingVersion = '0.4.0'
@@ -65,8 +67,8 @@ buildscript {
 		paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"
 		phrase = "com.squareup.phrase:phrase:$phraseVersion"
 		reduxKotlin = "com.github.pardom:redux-kotlin:$reduxKotlinVersion"
-		reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:-SNAPSHOT"
-		reduxRxJavaKotlin = "com.github.pardom:redux-rxjava-kotlin:-SNAPSHOT"
+		reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:$reduxObservableKotlinVersion"
+		reduxRxJavaKotlin = "com.github.pardom:redux-rxjava-kotlin:$reduxRxJavaKotlinVersion"
 		retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
 		retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
 		retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
