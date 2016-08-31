@@ -14,8 +14,10 @@ import butterknife.bindView
 import clean.news.R
 import clean.news.app.util.addTo
 import clean.news.flow.service.DaggerService
+import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.model.item.ItemUrlViewModel
 import clean.news.presentation.model.item.ItemUrlViewModel.Action
+import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import com.jakewharton.rxbinding.support.v7.widget.itemClicks
 import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
@@ -25,6 +27,7 @@ import redux.asObservable
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
+@ScreenScope(ItemUrlScreen::class)
 class ItemUrlView : RelativeLayout {
 	@Inject
 	lateinit var model: ItemUrlViewModel
@@ -95,7 +98,7 @@ class ItemUrlView : RelativeLayout {
 		stateChanges
 				.map { it.item.url }
 				.distinctUntilChanged()
-				.subscribe { webView.loadUrl(it) }
+				.subscribe { if (webView.url != it) webView.loadUrl(it) }
 				.addTo(subscriptions)
 
 		stateChanges

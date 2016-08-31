@@ -55,7 +55,8 @@ buildscript {
 		// Third-party
 		dagger = "com.google.dagger:dagger:$daggerVersion"
 		daggerCompiler = "com.google.dagger:dagger-compiler:$daggerVersion"
-		flow = "com.squareup.flow:flow:$flowVersion"
+//		flow = "com.squareup.flow:flow:$flowVersion"
+		flow = "com.github.novachevskyi:flow:node_uses_counter_fix-SNAPSHOT"
 		javaxAnnotation = "org.glassfish:javax.annotation:$javaxAnnotationVersion"
 		javaxInject = "javax.inject:javax.inject:$javaxInjectVersion"
 		kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
