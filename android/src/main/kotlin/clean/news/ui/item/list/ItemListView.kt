@@ -7,17 +7,16 @@ import android.util.AttributeSet
 import clean.news.adapter.ItemAdapter
 import clean.news.app.util.addTo
 import clean.news.flow.service.DaggerService
+import clean.news.inject.ModuleContext
 import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.presentation.model.item.ItemListViewModel.Action
-import clean.news.ui.item.list.ItemListScreen.ItemListModule
+import clean.news.ui.item.list.ItemListKey.ItemListModule
 import clean.news.ui.main.MainKey.MainComponent
-import flow.Flow
 import redux.asObservable
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemListView : RecyclerView {
-
 	@Inject
 	lateinit var model: ItemListViewModel
 
@@ -27,6 +26,10 @@ class ItemListView : RecyclerView {
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
+		DaggerService.get<MainComponent>(context)
+				?.plus((ModuleContext.get<ItemListModule>(context)))
+				?.inject(this)
+
 		layoutManager = LinearLayoutManager(context)
 		adapter = ItemAdapter(context)
 	}
@@ -61,11 +64,5 @@ class ItemListView : RecyclerView {
 	override fun onDetachedFromWindow() {
 		subscriptions.unsubscribe()
 		super.onDetachedFromWindow()
-	}
-
-	fun inject(module: ItemListModule) {
-		Flow.getService<MainComponent>(DaggerService.NAME, context)
-				?.plus(module)
-				?.inject(this)
 	}
 }

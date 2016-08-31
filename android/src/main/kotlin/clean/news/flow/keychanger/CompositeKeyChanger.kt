@@ -6,7 +6,7 @@ import flow.KeyChanger
 import flow.TraversalCallback
 import kotlin.reflect.KClass
 
-class CompositeKeyChanger : KeyChanger() {
+class CompositeKeyChanger : KeyChanger {
 
 	private val dispatchers = mutableMapOf<KClass<out Any>, KeyChanger>()
 

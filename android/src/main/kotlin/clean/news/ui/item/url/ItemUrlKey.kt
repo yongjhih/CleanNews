@@ -6,6 +6,7 @@ import clean.news.core.entity.Item
 import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
 import clean.news.flow.keychanger.SceneKeyChanger.WithTransition
 import clean.news.flow.service.DaggerService.WithComponent
+import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
 import clean.news.ui.item.url.ItemUrlShareKey.ItemUrlShareModule
 import clean.news.ui.main.MainKey
@@ -41,6 +42,7 @@ class ItemUrlKey(val item: Item) : ClassKey(),
 		return parent.plus(ItemUrlModule(item))
 	}
 
+	@ScreenScope(ItemUrlScreen::class)
 	@Subcomponent(modules = arrayOf(ItemUrlModule::class))
 	interface ItemUrlComponent {
 		fun inject(view: ItemUrlView)

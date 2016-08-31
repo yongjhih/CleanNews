@@ -1,12 +1,14 @@
 package clean.news.presentation.model.item
 
 import clean.news.core.entity.Item
+import clean.news.presentation.inject.ScreenScope
 import clean.news.presentation.model.StoreModel
 import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoBack
 import clean.news.presentation.model.item.ItemUrlViewModel.Action.GoToDetails
 import clean.news.presentation.model.item.ItemUrlViewModel.Action.Share
 import clean.news.presentation.model.item.ItemUrlViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
+import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
 import clean.news.presentation.navigation.NavigationService
 import redux.Dispatcher
 import redux.Middleware
@@ -14,6 +16,7 @@ import redux.Reducer
 import redux.Store
 import javax.inject.Inject
 
+@ScreenScope(ItemUrlScreen::class)
 class ItemUrlViewModel @Inject constructor(
 		private val navService: NavigationService,
 		private val navFactory: NavigationFactory,

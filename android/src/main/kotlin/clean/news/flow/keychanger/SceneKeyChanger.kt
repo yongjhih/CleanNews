@@ -14,7 +14,7 @@ import flow.KeyChanger
 import flow.State
 import flow.TraversalCallback
 
-class SceneKeyChanger(private val activity: Activity) : KeyChanger() {
+class SceneKeyChanger(private val activity: Activity) : KeyChanger {
 
 	override fun changeKey(
 			outgoingState: State?,

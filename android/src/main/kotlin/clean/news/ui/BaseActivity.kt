@@ -10,7 +10,6 @@ import clean.news.flow.keychanger.SceneKeyChanger
 import clean.news.flow.keychanger.SceneKeyChanger.WithLayout
 import clean.news.flow.parceler.PaperKeyParceler
 import clean.news.flow.service.DaggerService
-import clean.news.flow.service.MortarService
 import clean.news.navigation.FlowNavigationService
 import flow.Flow
 import flow.KeyDispatcher
@@ -21,7 +20,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
 	override fun attachBaseContext(newBase: Context) {
 		val applicationComponent = CleanNewsApplication.get(newBase).component()
-		val scope = CleanNewsApplication.get(newBase).scope()
 
 		val keyChanger = CompositeKeyChanger()
 		keyChanger.addDispatcher(WithLayout::class, SceneKeyChanger(this))
@@ -31,7 +29,6 @@ abstract class BaseActivity : AppCompatActivity() {
 				.dispatcher(KeyDispatcher.configure(this, keyChanger).build())
 				.defaultKey(getDefaultKey())
 				.addServicesFactory(DaggerService(applicationComponent))
-				.addServicesFactory(MortarService(scope))
 				.install()
 
 		super.attachBaseContext(context)

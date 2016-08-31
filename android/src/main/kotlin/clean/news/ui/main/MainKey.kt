@@ -10,8 +10,8 @@ import clean.news.presentation.inject.ActivityScope
 import clean.news.presentation.navigation.NavigationFactory.MainScreen
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailModule
-import clean.news.ui.item.list.ItemListScreen.ItemListComponent
-import clean.news.ui.item.list.ItemListScreen.ItemListModule
+import clean.news.ui.item.list.ItemListKey.ItemListComponent
+import clean.news.ui.item.list.ItemListKey.ItemListModule
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlModule
 import dagger.Subcomponent
