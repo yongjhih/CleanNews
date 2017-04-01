@@ -1,9 +1,9 @@
 package clean.news.data.retrofit.service
 
 import clean.news.core.entity.Item
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Path
-import rx.Observable
 
 interface ItemService {
 	@GET("topstories.json")

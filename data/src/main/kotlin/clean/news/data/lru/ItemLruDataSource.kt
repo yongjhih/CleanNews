@@ -5,7 +5,7 @@ import clean.news.app.data.item.ItemMemoryDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
 import clean.news.core.entity.Item.Type
-import rx.Observable
+import io.reactivex.Observable
 
 class ItemLruDataSource : ItemMemoryDataSource {
 
@@ -45,7 +45,7 @@ class ItemLruDataSource : ItemMemoryDataSource {
 	// Private functions
 
 	private fun getChildrenObservable(item: Item, level: Int): Observable<Item> {
-		return Observable.from(item.kids.orEmpty())
+		return Observable.fromIterable(item.kids.orEmpty())
 				.concatMapEager { get(it) }
 				.map { it.copy(level = level) }
 				.concatMapEager { getChildrenObservable(it, level + 1) }

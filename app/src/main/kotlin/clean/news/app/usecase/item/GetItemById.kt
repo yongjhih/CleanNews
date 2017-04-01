@@ -8,8 +8,8 @@ import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.item.GetItemById.Request
 import clean.news.app.usecase.item.GetItemById.Response
 import clean.news.core.entity.Item
-import rx.Observable
-import rx.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class GetItemById @Inject constructor(

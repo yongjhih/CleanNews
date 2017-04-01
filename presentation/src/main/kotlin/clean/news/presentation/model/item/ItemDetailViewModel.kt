@@ -12,14 +12,13 @@ import clean.news.presentation.model.item.ItemDetailViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationFactory.ItemDetailScreen
 import clean.news.presentation.navigation.NavigationService
-import redux.Dispatcher
-import redux.Middleware
-import redux.Reducer
-import redux.Store
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import redux.api.Dispatcher
+import redux.api.Reducer
+import redux.api.Store
+import redux.api.enhancer.Middleware
 import redux.observable.Epic
-import redux.observable.EpicMiddleware
-import rx.Observable
-import rx.Scheduler
 import javax.inject.Inject
 
 @ScreenScope(ItemDetailScreen::class)
@@ -78,7 +77,7 @@ class ItemDetailViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Nav
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, next: Dispatcher, action: Any ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()
@@ -92,12 +91,12 @@ class ItemDetailViewModel @Inject constructor(
 	// Overrides
 
 	override fun createStore(): Store<State> {
-		return Store.create(
+		return redux.createStore(
 				reducer(),
 				State(item, listOf(item), false),
-				Middleware.apply(
+				redux.applyMiddleware(
 						navigationMiddleware(),
-						EpicMiddleware.create(epic())
+						redux.observable.createEpicMiddleware(epic())
 				))
 	}
 

@@ -4,7 +4,7 @@ import clean.news.app.data.item.ItemNetworkDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
 import clean.news.data.retrofit.service.ItemService
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class ItemRetrofitDataSource @Inject constructor(
@@ -52,7 +52,7 @@ class ItemRetrofitDataSource @Inject constructor(
 			return Observable.just(item)
 		}
 
-		val childObservable = Observable.from(item.kids.orEmpty())
+		val childObservable = Observable.fromIterable(item.kids.orEmpty())
 				.concatMapEager { get(it) }
 				.map { it.copy(level = level) }
 				.filter { it.deleted != true }

@@ -2,7 +2,7 @@ package clean.news.data.sqlite
 
 import clean.news.app.data.user.UserDiskDataSource
 import clean.news.core.entity.User
-import rx.Observable
+import io.reactivex.Observable
 
 class UserSqliteDataSource : UserDiskDataSource {
 

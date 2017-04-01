@@ -9,14 +9,13 @@ import clean.news.presentation.model.item.ItemListViewModel.Action.ShowItems
 import clean.news.presentation.model.item.ItemListViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationService
-import redux.Dispatcher
-import redux.Middleware
-import redux.Reducer
-import redux.Store
+import io.reactivex.Observable
+import io.reactivex.Scheduler
+import redux.api.Dispatcher
+import redux.api.Reducer
+import redux.api.Store
+import redux.api.enhancer.Middleware
 import redux.observable.Epic
-import redux.observable.EpicMiddleware
-import rx.Observable
-import rx.Scheduler
 import javax.inject.Inject
 
 class ItemListViewModel @Inject constructor(
@@ -72,7 +71,7 @@ class ItemListViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Navigation Middleware
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, next: Dispatcher, action: Any ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoToUrl -> navService.goTo(navFactory.url(action.item))
@@ -85,12 +84,12 @@ class ItemListViewModel @Inject constructor(
 	// Overrides
 
 	override fun createStore(): Store<State> {
-		return Store.create(
+		return redux.createStore(
 				reducer(),
 				State(emptyList(), false),
-				Middleware.apply(
+				redux.applyMiddleware(
 						navigationMiddleware(),
-						EpicMiddleware.create(epic())
+						redux.observable.createEpicMiddleware(epic())
 				))
 	}
 

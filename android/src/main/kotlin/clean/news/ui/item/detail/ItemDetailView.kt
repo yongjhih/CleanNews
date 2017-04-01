@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.ItemDetailAdapter
 import clean.news.app.util.addTo
@@ -19,11 +18,12 @@ import clean.news.flow.service.DaggerService
 import clean.news.presentation.model.item.ItemDetailViewModel
 import clean.news.presentation.model.item.ItemDetailViewModel.Action
 import clean.news.ui.item.detail.ItemDetailKey.ItemDetailComponent
-import com.jakewharton.rxbinding.support.v7.widget.itemClicks
-import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import com.jakewharton.rxbinding.widget.text
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import com.jakewharton.rxbinding2.widget.text
+import io.reactivex.disposables.CompositeDisposable
+import kotterknife.bindView
 import redux.asObservable
-import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 class ItemDetailView : RelativeLayout {
@@ -36,7 +36,7 @@ class ItemDetailView : RelativeLayout {
 	private val commentRecyclerView: RecyclerView by bindView(R.id.comment_recycler_view)
 	private val adapter: ItemDetailAdapter
 
-	private val subscriptions = CompositeSubscription()
+	private val disposables = CompositeDisposable()
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -58,14 +58,14 @@ class ItemDetailView : RelativeLayout {
 
 		toolbar.navigationClicks()
 				.subscribe { model.dispatch(Action.GoBack()) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		toolbar.itemClicks().filter { it.itemId == R.id.item_share }
 				.subscribe { model.dispatch(Action.Share()) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		val stateChanges = model.asObservable()
-				.startWith(model.getState())
+				.startWith(model.state)
 				.publish()
 
 		stateChanges
@@ -74,27 +74,27 @@ class ItemDetailView : RelativeLayout {
 				.cast(String::class.java)
 				.distinctUntilChanged()
 				.subscribe(titleTextView.text())
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.map { it.children }
 				.distinctUntilChanged()
 				.subscribe { adapter.setItems(it) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.map { it.loading }
 				.distinctUntilChanged()
 				.subscribe { adapter.setLoading(it) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.connect()
-				.addTo(subscriptions)
+				.addTo(disposables)
 	}
 
 	override fun onDetachedFromWindow() {
-		subscriptions.unsubscribe()
+		disposables.dispose()
 		super.onDetachedFromWindow()
 	}
 

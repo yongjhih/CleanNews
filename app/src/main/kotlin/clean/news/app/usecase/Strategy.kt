@@ -1,6 +1,7 @@
 package clean.news.app.usecase
 
-import rx.Observable
+import io.reactivex.Maybe
+import io.reactivex.Observable
 
 class Strategy(private val flag: Int) {
 	val useDisk: Boolean by lazy { flag and Strategy.Companion.DISK != 0 }
@@ -8,19 +9,19 @@ class Strategy(private val flag: Int) {
 	val useNetwork: Boolean by lazy { flag and Strategy.Companion.NETWORK != 0 }
 
 	fun <T> execute(
-			diskObservable: Observable<T>,
-			memoryObservable: Observable<T>,
-			networkObservable: Observable<T>,
-			save: (T) -> Any?): Observable<T> {
+			diskObservable: Observable<T>, // To Maybe?
+			memoryObservable: Observable<T>, // To Maybe?
+			networkObservable: Observable<T>, // To Maybe?
+			save: (T) -> Any?): Observable<T> { // To Maybe?
 
 		val observables = mutableListOf<Observable<T>>()
-		val network = networkObservable.doOnNext { if (it != null) save(it) }
-		val memory = memoryObservable.single().onErrorResumeNext(Observable.never()).takeUntil(network)
-		val disk = diskObservable.single().onErrorResumeNext(Observable.never()).takeUntil(memory)
+		val network = networkObservable.doOnNext { save(it) }
+		val memory = memoryObservable.singleElement().onErrorResumeNext(Maybe.never()).takeUntil(network.singleElement())
+		val disk = diskObservable.singleElement().onErrorResumeNext(Maybe.never()).takeUntil(memory)
 
-		if (useMemory) observables.add(memory)
-		if (useDisk) observables.add(disk)
-		if (useNetwork) observables.add(network)
+		if (useMemory) observables.add(memory.toObservable()) // To Maybe?
+		if (useDisk) observables.add(disk.toObservable()) // To Maybe?
+		if (useNetwork) observables.add(network) // To Maybe?
 
 		return Observable.merge(observables)
 	}

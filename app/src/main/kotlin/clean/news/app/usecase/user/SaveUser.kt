@@ -7,7 +7,7 @@ import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.user.SaveUser.Request
 import clean.news.app.usecase.user.SaveUser.Response
 import clean.news.core.entity.User
-import rx.Observable
+import io.reactivex.Observable
 
 class SaveUser(
 		private val disk: UserDiskDataSource,

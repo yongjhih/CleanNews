@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.bindView
 import clean.news.R
 import clean.news.R.array
 import clean.news.R.dimen
@@ -15,6 +14,7 @@ import clean.news.R.string
 import clean.news.adapter.Bindable
 import clean.news.core.entity.Item
 import com.squareup.phrase.Phrase
+import kotterknife.bindView
 
 class CommentItemView : RelativeLayout, Bindable<Item> {
 	private val indentView: View by bindView(R.id.indent_view)

@@ -6,8 +6,8 @@ import clean.news.presentation.inject.ApplicationScope
 import clean.news.util.AndroidLogger
 import dagger.Module
 import dagger.Provides
-import rx.Scheduler
-import rx.android.schedulers.AndroidSchedulers
+import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 @Module(includes = arrayOf(DataModule::class, PresentationModule::class))
 class ApplicationModule(private val application: Application) {

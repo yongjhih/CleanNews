@@ -8,8 +8,8 @@ import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.item.GetChildren.Request
 import clean.news.app.usecase.item.GetChildren.Response
 import clean.news.core.entity.Item
-import rx.Observable
-import rx.schedulers.Schedulers
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class GetChildren @Inject constructor(

@@ -12,8 +12,9 @@ import clean.news.presentation.model.item.ItemListViewModel
 import clean.news.presentation.model.item.ItemListViewModel.Action
 import clean.news.ui.item.list.ItemListKey.ItemListModule
 import clean.news.ui.main.MainKey.MainComponent
+import io.reactivex.disposables.CompositeDisposable
 import redux.asObservable
-import rx.subscriptions.CompositeSubscription
+import rx.disposables.CompositeSubscription
 import javax.inject.Inject
 
 class ItemListView : RecyclerView {
@@ -22,7 +23,7 @@ class ItemListView : RecyclerView {
 
 	private val adapter: ItemAdapter
 
-	private val subscriptions = CompositeSubscription()
+	private val disposables = CompositeDisposable()
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -54,15 +55,15 @@ class ItemListView : RecyclerView {
 				.map { it.items }
 				.distinctUntilChanged()
 				.subscribe { adapter.setItems(it) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.connect()
-				.addTo(subscriptions)
+				.addTo(disposables)
 	}
 
 	override fun onDetachedFromWindow() {
-		subscriptions.unsubscribe()
+		disposables.dispose()
 		super.onDetachedFromWindow()
 	}
 }

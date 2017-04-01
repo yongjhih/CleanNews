@@ -3,7 +3,7 @@ package clean.news.data.lru
 import android.util.LruCache
 import clean.news.app.data.user.UserMemoryDataSource
 import clean.news.core.entity.User
-import rx.Observable
+import io.reactivex.Observable
 
 class UserLruDataSource : UserMemoryDataSource {
 

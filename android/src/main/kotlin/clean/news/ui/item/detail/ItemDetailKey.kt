@@ -18,8 +18,8 @@ import dagger.Subcomponent
 import flow.ClassKey
 import flow.Direction
 import flow.TreeKey
-import nz.bradcampbell.paperparcel.PaperParcel
-import nz.bradcampbell.paperparcel.PaperParcelable
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 
 @PaperParcel
 class ItemDetailKey(val item: Item) : ClassKey(),

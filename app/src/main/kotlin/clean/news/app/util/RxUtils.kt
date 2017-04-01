@@ -1,6 +1,6 @@
 package clean.news.app.util
 
-import rx.Subscription
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
-fun Subscription.addTo(compositeSubscription: CompositeSubscription) = apply { compositeSubscription.add(this) }
+fun Disposable.addTo(compositeDisposable: CompositeDisposable) = apply { compositeDisposable.add(this) }

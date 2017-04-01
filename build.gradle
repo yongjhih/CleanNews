@@ -6,32 +6,32 @@ buildscript {
 
 		// Android
 
-		androidBuildToolsVersion = '23.0.3'
-		androidCompileSdkVersion = 23
+		androidBuildToolsVersion = '25.0.2'
+		androidCompileSdkVersion = 25
 		androidMinSdkVersion = 19
-		androidTargetSdkVersion = 23
+		androidTargetSdkVersion = 25
 
 		// Desktop
 
 		// Libraries
 
-		androidSupportVersion = '24.2.0'
-		daggerVersion = '2.0.2'
+		androidSupportVersion = '25.0.1'
+		daggerVersion = '2.8'
 		flowVersion = '1.0.0-alpha'
 		javaxAnnotationVersion = '10.0-b28'
 		javaxInjectVersion = '1'
-		kotlinVersion = '1.0.3'
-		kotterKnifeVersion = '0.1.0-SNAPSHOT'
-		okHttpVersion = '3.2.0'
-		paperParcelVersion = '1.0.0-beta8'
+		kotlinVersion = '1.0.7'
+		kotterKnifeVersion = '-SNAPSHOT'
+		okHttpVersion = '3.5.0'
+		paperParcelVersion = '2.0.0'
 		phraseVersion = '1.1.0'
-		reduxKotlinVersion = '1.0.1'
-		reduxObservableKotlinVersion = '1.0.0'
-		reduxRxJavaKotlinVersion = '1.0.0'
-		retrofitVersion = '2.0.0'
-		rxAndroidVersion = '1.1.0'
-		rxBindingVersion = '0.4.0'
-		rxJavaVersion = '1.1.1'
+		reduxKotlinVersion = '1.2.1'
+		reduxObservableKotlinVersion = '-SNAPSHOT'
+		reduxRxJavaKotlinVersion = '-SNAPSHOT'
+		retrofitVersion = '2.2.0'
+		rxAndroidVersion = '2.0.1'
+		rxBindingVersion = '2.0.0'
+		rxJavaVersion = '2.0.1'
 
 		// Testing
 
@@ -60,23 +60,29 @@ buildscript {
 		javaxAnnotation = "org.glassfish:javax.annotation:$javaxAnnotationVersion"
 		javaxInject = "javax.inject:javax.inject:$javaxInjectVersion"
 		kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-		kotterKnife = "com.jakewharton:kotterknife:$kotterKnifeVersion"
+		kotterKnife = "com.github.jakewharton:kotterknife:$kotterKnifeVersion"
 		okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
-		paperParcel = "com.github.grandstaish.paperparcel:paperparcel-kotlin:$paperParcelVersion"
-		paperParcelCompiler = "com.github.grandstaish.paperparcel:compiler:$paperParcelVersion"
+		paperParcel = "nz.bradcampbell:paperparcel-api:$paperParcelVersion"
+		paperParcelCompiler = "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion"
+		paperParcelKotlin = "nz.bradcampbell:paperparcel-kotlin:$paperParcelVersion"
 		phrase = "com.squareup.phrase:phrase:$phraseVersion"
 		reduxKotlin = "com.github.pardom:redux-kotlin:$reduxKotlinVersion"
-		reduxObservableKotlin = "com.github.pardom:redux-observable-kotlin:$reduxObservableKotlinVersion"
-		reduxRxJavaKotlin = "com.github.pardom:redux-rxjava-kotlin:$reduxRxJavaKotlinVersion"
+		reduxObservableKotlin = "com.github.yongjhih:redux-observable-kotlin:$reduxObservableKotlinVersion"
+		reduxRxJavaKotlin = "com.github.yongjhih:redux-rxjava2-kotlin:$reduxRxJavaKotlinVersion"
+
 		retrofit = "com.squareup.retrofit2:retrofit:$retrofitVersion"
-		retrofitAdapterRxJava = "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
-		retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
-		rxAndroid = "io.reactivex:rxandroid:$rxAndroidVersion"
-		rxBinding = "com.jakewharton.rxbinding:rxbinding-kotlin:$rxBindingVersion"
-		rxBindingDesign = "com.jakewharton.rxbinding:rxbinding-design-kotlin:$rxBindingVersion"
-		rxBindingSupportV4 = "com.jakewharton.rxbinding:rxbinding-support-v4-kotlin:$rxBindingVersion"
-		rxBindingAppCompatV7 = "com.jakewharton.rxbinding:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
-		rxJava = "io.reactivex:rxjava:$rxJavaVersion"
+		retrofitAdapterRxJava = 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+		retrofitConverterMoshi = "com.squareup.retrofit2:converter-moshi:2.2.0"
+
+		rxAndroid = "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+
+		rxBinding = "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingVersion"
+		rxBindingDesign = "com.jakewharton.rxbinding2:rxbinding-design-kotlin:$rxBindingVersion"
+		rxBindingSupportV4 = "com.jakewharton.rxbinding2:rxbinding-support-v4-kotlin:$rxBindingVersion"
+		rxBindingAppCompatV7 = "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingVersion"
+		rxBindingRecyclerViewV7 = "com.jakewharton.rxbinding2:rxbinding-recyclerview-v7-kotlin:$rxBindingVersion"
+
+		rxJava = "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
 		// Testing
 
@@ -91,7 +97,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.2.0-beta3'
+		classpath 'com.android.tools.build:gradle:2.2.2'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 	}
 

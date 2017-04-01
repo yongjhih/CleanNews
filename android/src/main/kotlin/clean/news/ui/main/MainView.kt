@@ -6,9 +6,9 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.ItemListPagerAdapter
+import kotterknife.bindView
 
 class MainView : LinearLayout {
 	private val tabLayout: TabLayout by bindView(R.id.tab_layout)

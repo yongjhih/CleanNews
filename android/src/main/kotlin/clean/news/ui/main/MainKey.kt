@@ -17,8 +17,8 @@ import clean.news.ui.item.url.ItemUrlKey.ItemUrlModule
 import dagger.Subcomponent
 import flow.ClassKey
 import flow.Direction
-import nz.bradcampbell.paperparcel.PaperParcel
-import nz.bradcampbell.paperparcel.PaperParcelable
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 
 @PaperParcel
 class MainKey : ClassKey(),

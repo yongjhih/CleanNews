@@ -3,7 +3,7 @@ package clean.news.data.retrofit
 import clean.news.app.data.user.UserNetworkDataSource
 import clean.news.core.entity.User
 import clean.news.data.retrofit.service.UserService
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class UserRetrofitDataSource @Inject constructor(

@@ -17,6 +17,7 @@ import clean.news.data.retrofit.service.UserService
 import clean.news.data.sqlite.ItemSqliteDataSource
 import clean.news.data.sqlite.UserSqliteDataSource
 import clean.news.presentation.inject.ApplicationScope
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 @Module
@@ -55,7 +55,7 @@ class DataModule {
 		return Retrofit.Builder()
 				.client(client)
 				.baseUrl("https://hacker-news.firebaseio.com/v0/")
-				.addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+				.addCallAdapterFactory(RxJava2CallAdapterFactory.create())
 				.addConverterFactory(MoshiConverterFactory.create(moshi).asLenient())
 				.build()
 	}

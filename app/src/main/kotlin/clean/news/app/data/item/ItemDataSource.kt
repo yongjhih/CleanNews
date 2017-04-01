@@ -3,7 +3,7 @@ package clean.news.app.data.item
 import clean.news.app.data.DataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
-import rx.Observable
+import io.reactivex.Observable
 
 interface ItemDataSource : DataSource<Long, Item> {
 

@@ -8,7 +8,7 @@ import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.user.GetUserById.Request
 import clean.news.app.usecase.user.GetUserById.Response
 import clean.news.core.entity.User
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class GetUserById @Inject constructor(

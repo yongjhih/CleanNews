@@ -12,8 +12,8 @@ import dagger.Provides
 import dagger.Subcomponent
 import flow.ClassKey
 import flow.TreeKey
-import nz.bradcampbell.paperparcel.PaperParcel
-import nz.bradcampbell.paperparcel.PaperParcelable
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 
 @PaperParcel
 class ItemDetailShareKey(val item: Item) : ClassKey(),

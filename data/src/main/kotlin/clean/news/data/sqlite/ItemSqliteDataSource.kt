@@ -3,7 +3,7 @@ package clean.news.data.sqlite
 import clean.news.app.data.item.ItemDiskDataSource
 import clean.news.core.entity.Item
 import clean.news.core.entity.Item.ListType
-import rx.Observable
+import io.reactivex.Observable
 
 class ItemSqliteDataSource : ItemDiskDataSource {
 

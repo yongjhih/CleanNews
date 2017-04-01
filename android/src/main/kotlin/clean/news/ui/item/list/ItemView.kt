@@ -6,11 +6,11 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.bindView
 import clean.news.R
 import clean.news.adapter.Bindable
 import clean.news.core.entity.Item
 import com.squareup.phrase.Phrase
+import kotterknife.bindView
 
 class ItemView : RelativeLayout, Bindable<Item> {
 	private val titleTextView: TextView by bindView(R.id.title_text_view)

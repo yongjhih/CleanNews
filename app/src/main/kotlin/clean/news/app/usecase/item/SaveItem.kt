@@ -7,7 +7,7 @@ import clean.news.app.usecase.UseCase
 import clean.news.app.usecase.item.SaveItem.Request
 import clean.news.app.usecase.item.SaveItem.Response
 import clean.news.core.entity.Item
-import rx.Observable
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class SaveItem @Inject constructor(

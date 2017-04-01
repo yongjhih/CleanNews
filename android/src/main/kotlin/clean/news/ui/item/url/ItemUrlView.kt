@@ -10,7 +10,6 @@ import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
-import butterknife.bindView
 import clean.news.R
 import clean.news.app.util.addTo
 import clean.news.flow.service.DaggerService
@@ -19,12 +18,13 @@ import clean.news.presentation.model.item.ItemUrlViewModel
 import clean.news.presentation.model.item.ItemUrlViewModel.Action
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
 import clean.news.ui.item.url.ItemUrlKey.ItemUrlComponent
-import com.jakewharton.rxbinding.support.v7.widget.itemClicks
-import com.jakewharton.rxbinding.support.v7.widget.navigationClicks
-import com.jakewharton.rxbinding.view.visible
-import com.jakewharton.rxbinding.widget.text
+import com.jakewharton.rxbinding2.support.v7.widget.itemClicks
+import com.jakewharton.rxbinding2.support.v7.widget.navigationClicks
+import com.jakewharton.rxbinding2.view.visible
+import com.jakewharton.rxbinding2.widget.text
+import io.reactivex.disposables.CompositeDisposable
+import kotterknife.bindView
 import redux.asObservable
-import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
 @ScreenScope(ItemUrlScreen::class)
@@ -38,7 +38,7 @@ class ItemUrlView : RelativeLayout {
 	private val progressBar: ProgressBar by bindView(R.id.progress_bar)
 	private val webView: WebView by bindView(R.id.web_view)
 
-	private val subscriptions = CompositeSubscription()
+	private val disposables = CompositeDisposable()
 
 	@JvmOverloads
 	constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : super(context, attrs, defStyle) {
@@ -63,7 +63,7 @@ class ItemUrlView : RelativeLayout {
 
 		toolbar.navigationClicks()
 				.subscribe { model.dispatch(Action.GoBack()) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		val toolbarItemClicks = toolbar.itemClicks()
 				.publish()
@@ -71,11 +71,11 @@ class ItemUrlView : RelativeLayout {
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_details }
 				.subscribe { model.dispatch(Action.GoToDetails()) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_share }
 				.subscribe { model.dispatch(Action.Share()) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		val stateChanges = model.asObservable()
 				.startWith(model.getState())
@@ -87,27 +87,27 @@ class ItemUrlView : RelativeLayout {
 				.cast(String::class.java)
 				.distinctUntilChanged()
 				.subscribe(titleTextView.text())
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.map { it.item.type.canComment }
 				.distinctUntilChanged()
 				.subscribe(toolbar.menu.findItem(R.id.item_details).visible())
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.map { it.item.url }
 				.distinctUntilChanged()
 				.subscribe { if (webView.url != it) webView.loadUrl(it) }
-				.addTo(subscriptions)
+				.addTo(disposables)
 
 		stateChanges
 				.connect()
-				.addTo(subscriptions)
+				.addTo(disposables)
 	}
 
 	override fun onDetachedFromWindow() {
-		subscriptions.unsubscribe()
+		disposables.dispose()
 		super.onDetachedFromWindow()
 	}
 

@@ -1,6 +1,6 @@
 package clean.news.app.data
 
-import rx.Observable
+import io.reactivex.Observable
 
 interface DataSource<K, V> {
 	fun getAll(): Observable<List<V>>

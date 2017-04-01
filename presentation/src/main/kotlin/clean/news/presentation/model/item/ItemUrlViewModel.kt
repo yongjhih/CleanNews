@@ -10,10 +10,10 @@ import clean.news.presentation.model.item.ItemUrlViewModel.State
 import clean.news.presentation.navigation.NavigationFactory
 import clean.news.presentation.navigation.NavigationFactory.ItemUrlScreen
 import clean.news.presentation.navigation.NavigationService
-import redux.Dispatcher
-import redux.Middleware
-import redux.Reducer
-import redux.Store
+import redux.api.Dispatcher
+import redux.api.Reducer
+import redux.api.Store
+import redux.api.enhancer.Middleware
 import javax.inject.Inject
 
 @ScreenScope(ItemUrlScreen::class)
@@ -44,7 +44,7 @@ class ItemUrlViewModel @Inject constructor(
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Middleware
 
-	private fun navigationMiddleware() = Middleware { store: Store<State>, action: Any, next: Dispatcher ->
+	private fun navigationMiddleware() = Middleware { store: Store<State>, next: Dispatcher, action: Any ->
 		val result = next.dispatch(action)
 		when (action) {
 			is GoBack -> navService.goBack()
@@ -58,10 +58,10 @@ class ItemUrlViewModel @Inject constructor(
 	// Middleware
 
 	override fun createStore(): Store<State> {
-		return Store.create(
+		return redux.createStore(
 				reducer(),
 				State(item),
-				Middleware.apply(navigationMiddleware())
+				redux.applyMiddleware(navigationMiddleware())
 		)
 	}
 

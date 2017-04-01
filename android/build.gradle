@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
 	compileSdkVersion androidCompileSdkVersion
@@ -54,6 +55,8 @@ dependencies {
 	compile kotterKnife
 	compile okHttpLoggingInterceptor
 	compile paperParcel
+	compile paperParcelCompiler
+	compile paperParcelKotlin
 	compile phrase
 	compile retrofit
 	compile retrofitAdapterRxJava
@@ -65,8 +68,4 @@ dependencies {
 	compile rxBindingSupportV4
 	compile rxBindingAppCompatV7
 	compile rxJava
-}
-
-kapt {
-	generateStubs = true
 }

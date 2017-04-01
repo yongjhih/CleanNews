@@ -1,8 +1,7 @@
 package clean.news.presentation.model
 
-import redux.Reducer
-import redux.Store
-import redux.Store.Subscriber
+import redux.api.Reducer
+import redux.api.Store
 
 abstract class StoreModel<S : Any> : Store<S> {
 
@@ -10,11 +9,11 @@ abstract class StoreModel<S : Any> : Store<S> {
 
 	abstract fun createStore(): Store<S>
 
-	override fun getState() = store.getState()
+	override fun getState() = store.state
 
 	override fun replaceReducer(reducer: Reducer<S>) = store.replaceReducer(reducer)
 
-	override fun subscribe(subscriber: Subscriber) = store.subscribe(subscriber)
+	override fun subscribe(subscriber: Store.Subscriber) = store.subscribe(subscriber)
 
 	override fun dispatch(action: Any) = store.dispatch(action)
 }
