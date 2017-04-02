@@ -6,7 +6,7 @@ buildscript {
 
 		// Android
 
-		androidBuildToolsVersion = '23.0.3'
+		androidBuildToolsVersion = '25.0.2'
 		androidCompileSdkVersion = 23
 		androidMinSdkVersion = 19
 		androidTargetSdkVersion = 23
@@ -15,7 +15,7 @@ buildscript {
 
 		// Libraries
 
-		androidSupportVersion = '24.2.0'
+		androidSupportVersion = '25.0.1'
 		daggerVersion = '2.0.2'
 		flowVersion = '1.0.0-alpha'
 		javaxAnnotationVersion = '10.0-b28'
@@ -91,7 +91,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.2.0-beta3'
+		classpath 'com.android.tools.build:gradle:2.2.0'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 	}
 
