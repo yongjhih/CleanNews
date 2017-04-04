@@ -14,7 +14,6 @@ import clean.news.ui.item.list.ItemListKey.ItemListModule
 import clean.news.ui.main.MainKey.MainComponent
 import io.reactivex.disposables.CompositeDisposable
 import redux.asObservable
-import rx.disposables.CompositeSubscription
 import javax.inject.Inject
 
 class ItemListView : RecyclerView {
@@ -48,7 +47,7 @@ class ItemListView : RecyclerView {
 		super.onAttachedToWindow()
 
 		val stateChanges = model.asObservable()
-				.startWith(model.getState())
+				.startWith(model.state)
 				.publish()
 
 		stateChanges

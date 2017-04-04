@@ -14,13 +14,11 @@ import flow.TreeKey
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
-@PaperParcel
 class ItemUrlShareKey(val item: Item) : ClassKey(),
 		TreeKey,
 		ItemShareUrlScreen,
 		WithActivity,
-		WithComponent,
-		PaperParcelable {
+		WithComponent {
 
 	override fun getParentKey() = ItemUrlKey(item)
 

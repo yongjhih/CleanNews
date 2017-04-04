@@ -66,6 +66,7 @@ buildscript {
 		paperParcelApi = "nz.bradcampbell:paperparcel-api:$paperParcelVersion"
 		paperParcelCompiler = "nz.bradcampbell:paperparcel-compiler:$paperParcelVersion"
 		paperParcelKotlin = "nz.bradcampbell:paperparcel-kotlin:$paperParcelVersion"
+		paperParcelAnnotations = "nz.bradcampbell:paperparcel-annotations:$paperParcelVersion"
 		phrase = "com.squareup.phrase:phrase:$phraseVersion"
 		reduxKotlin = "com.github.pardom:redux-kotlin:$reduxKotlinVersion"
 		reduxObservableKotlin = "com.github.yongjhih:redux-observable-kotlin:$reduxObservableKotlinVersion"
@@ -98,7 +99,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath 'com.android.tools.build:gradle:2.2.2'
+		classpath 'com.android.tools.build:gradle:2.2.3'
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 	}
 

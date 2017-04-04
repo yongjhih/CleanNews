@@ -9,11 +9,10 @@ import dagger.Subcomponent
 import flow.ClassKey
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
+import paperparcel.ProcessorConfig
 
-@PaperParcel
 class ItemListKey(val listType: Item.ListType) : ClassKey(),
-		WithComponent,
-		PaperParcelable {
+		WithComponent {
 
 	override fun createComponent(parent: Any): Any {
 		if (parent !is MainComponent) {

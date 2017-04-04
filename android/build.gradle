@@ -31,6 +31,9 @@ android {
 		disable 'InvalidPackage'
 		abortOnError false
 	}
+	packagingOptions {
+		exclude 'META-INF/lib_main.kotlin_module'
+	}
 }
 
 dependencies {
@@ -68,4 +71,7 @@ dependencies {
 	compile rxBindingSupportV4
 	compile rxBindingAppCompatV7
 	compile rxJava
+	compile reduxKotlin
+	compile reduxObservableKotlin
+	compile reduxRxJavaKotlin
 }

@@ -20,14 +20,12 @@ import flow.TreeKey
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
-@PaperParcel
 class ItemUrlKey(val item: Item) : ClassKey(),
 		TreeKey,
 		ItemUrlScreen,
 		WithLayout,
 		WithTransition,
-		WithComponent,
-		PaperParcelable {
+		WithComponent {
 
 	override fun getParentKey() = MainKey()
 

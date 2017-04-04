@@ -2,7 +2,7 @@ package clean.news.flow.parceler
 
 import android.os.Parcelable
 import flow.KeyParceler
-import nz.bradcampbell.paperparcel.PaperParcelable
+import paperparcel.PaperParcelable
 
 class PaperKeyParceler : KeyParceler {
 	override fun toParcelable(key: Any): Parcelable {
