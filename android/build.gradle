@@ -55,7 +55,7 @@ dependencies {
 	compile kotterKnife
 	compile okHttpLoggingInterceptor
 	compile paperParcel
-	compile paperParcelCompiler
+	compile paperParcelApi
 	compile paperParcelKotlin
 	compile phrase
 	compile retrofit
