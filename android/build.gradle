@@ -74,4 +74,5 @@ dependencies {
 	compile reduxKotlin
 	compile reduxObservableKotlin
 	compile reduxRxJavaKotlin
+	compile "com.github.akarnokd:rxjava2-extensions:0.16.3"
 }

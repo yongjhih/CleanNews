@@ -7,12 +7,15 @@ import clean.news.inject.component.DaggerApplicationComponent
 import clean.news.inject.module.ApplicationModule
 import clean.news.inject.module.DataModule
 import clean.news.inject.module.PresentationModule
+import hu.akarnokd.rxjava2.debug.RxJavaAssemblyTracking
 
 class CleanNewsApplication : Application() {
 	private lateinit var applicationComponent: ApplicationComponent
 
 	override fun onCreate() {
 		super.onCreate()
+
+		RxJavaAssemblyTracking.enable()
 
 		applicationComponent = DaggerApplicationComponent.builder()
 				.applicationModule(ApplicationModule(this))

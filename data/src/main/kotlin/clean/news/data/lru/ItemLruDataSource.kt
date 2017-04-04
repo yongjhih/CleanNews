@@ -27,7 +27,7 @@ class ItemLruDataSource : ItemMemoryDataSource {
 	}
 
 	override fun getAll(): Observable<List<Item>> {
-		return Observable.just(lru.snapshot().values.toList())
+		return Observable.empty()
 	}
 
 	override fun get(key: Long): Observable<Item> {
@@ -35,11 +35,11 @@ class ItemLruDataSource : ItemMemoryDataSource {
 	}
 
 	override fun put(key: Long, value: Item): Observable<Item> {
-		return Observable.just(lru.put(key, value))
+		return Observable.empty()
 	}
 
 	override fun remove(key: Long): Observable<Item> {
-		return Observable.just(lru.remove(key))
+		return Observable.empty()
 	}
 
 	// Private functions

@@ -32,7 +32,7 @@ class GetItemsByListType @Inject constructor(
 	}
 
 	val save = { items: List<Item> ->
-		items.forEach {
+		items.filter { it != null }.forEach {
 			saveItem.execute(SaveItem.Request(it)).subscribe()
 		}
 	}
