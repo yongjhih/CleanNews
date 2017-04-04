@@ -3,12 +3,10 @@ package clean.news.app.usecase
 import clean.news.app.usecase.Strategy.Companion.DISK
 import clean.news.app.usecase.Strategy.Companion.MEMORY
 import clean.news.app.usecase.Strategy.Companion.NETWORK
+import io.reactivex.Observable
+import io.reactivex.schedulers.TestScheduler
+import io.reactivex.subscribers.TestSubscriber
 import org.junit.Test
-import rx.Observable
-import rx.Observable.empty
-import rx.Observable.just
-import rx.observers.TestSubscriber
-import rx.schedulers.TestScheduler
 import java.util.concurrent.TimeUnit.SECONDS
 
 class StrategyTest {
@@ -17,12 +15,10 @@ class StrategyTest {
 		val (disk, memory, network, scheduler) = createMockObservableSet(DISK or MEMORY or NETWORK)
 		val strategy = Strategy(Strategy.WARM)
 		val observable = strategy.execute(disk, memory, network) {}
-		val subscriber = TestSubscriber.create<Int>()
-
-		observable.subscribe(subscriber)
+		val observer = observable.test()
 
 		scheduler.advanceTimeBy(networkDelay, SECONDS)
-		subscriber.assertValues(memoryValue, networkValue)
+		observer.assertValues(memoryValue, networkValue)
 	}
 
 	@Test
@@ -30,12 +26,10 @@ class StrategyTest {
 		val (disk, memory, network, scheduler) = createMockObservableSet(DISK or NETWORK)
 		val strategy = Strategy(Strategy.WARM)
 		val observable = strategy.execute(disk, memory, network) {}
-		val subscriber = TestSubscriber.create<Int>()
-
-		observable.subscribe(subscriber)
+		val observer = observable.test()
 
 		scheduler.advanceTimeBy(networkDelay, SECONDS)
-		subscriber.assertValues(diskValue, networkValue)
+		observer.assertValues(diskValue, networkValue)
 	}
 
 	private fun createMockObservableSet(
@@ -46,9 +40,9 @@ class StrategyTest {
 
 		val strategy = Strategy(sourceFlags)
 		val scheduler = TestScheduler()
-		val disk = if (strategy.useDisk) just(diskValue).delay(diskDelay, SECONDS, scheduler) else empty()
-		val memory = if (strategy.useMemory) just(memoryValue).delay(memoryDelay, SECONDS, scheduler) else empty()
-		val network = if (strategy.useNetwork) just(networkValue).delay(networkDelay, SECONDS, scheduler) else empty()
+		val disk = if (strategy.useDisk) Observable.just(diskValue).delay(diskDelay, SECONDS, scheduler) else Observable.empty()
+		val memory = if (strategy.useMemory) Observable.just(memoryValue).delay(memoryDelay, SECONDS, scheduler) else Observable.empty()
+		val network = if (strategy.useNetwork) Observable.just(networkValue).delay(networkDelay, SECONDS, scheduler) else Observable.empty()
 
 		return StrategyTest.MockSet(disk, memory, network, scheduler)
 	}

@@ -32,8 +32,8 @@ class GetItemsByListType @Inject constructor(
 	}
 
 	val save = { items: List<Item> ->
-		items.filter { it != null }.forEach {
-			saveItem.execute(SaveItem.Request(it)).subscribe()
+		items.forEach {
+			saveItem.execute(SaveItem.Request(it)).subscribe({}, { e -> e.printStackTrace() })
 		}
 	}
 

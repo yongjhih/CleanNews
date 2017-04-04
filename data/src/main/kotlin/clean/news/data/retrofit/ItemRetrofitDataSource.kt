@@ -13,11 +13,11 @@ class ItemRetrofitDataSource @Inject constructor(
 
 	override fun getItems(listType: ListType): Observable<List<Item>> {
 		val items = when (listType) {
-			Item.ListType.TOP -> itemService.getTopStories()
-			Item.ListType.NEW -> itemService.getNewStories()
-			Item.ListType.SHOW -> itemService.getShowStories()
-			Item.ListType.ASK -> itemService.getAskStories()
-			Item.ListType.JOB -> itemService.getJobStories()
+			Item.ListType.TOP -> itemService.getTopStories().toObservable()
+			Item.ListType.NEW -> itemService.getNewStories().toObservable()
+			Item.ListType.SHOW -> itemService.getShowStories().toObservable()
+			Item.ListType.ASK -> itemService.getAskStories().toObservable()
+			Item.ListType.JOB -> itemService.getJobStories().toObservable()
 		}
 		return streamItems(items)
 	}
@@ -33,7 +33,7 @@ class ItemRetrofitDataSource @Inject constructor(
 	}
 
 	override fun get(key: Long): Observable<Item> {
-		return itemService.getById(key)
+		return itemService.getById(key).toObservable()
 	}
 
 	override fun put(key: Long, value: Item): Observable<Item> {
@@ -65,7 +65,7 @@ class ItemRetrofitDataSource @Inject constructor(
 	private fun streamItems(itemIdResponse: Observable<List<Long>>): Observable<List<Item>> {
 		return itemIdResponse
 				.flatMapIterable { it }
-				.concatMapEager { itemService.getById(it) }
+				.concatMapEager { itemService.getById(it).toObservable() }
 				.buffer(BUFFER)
 				.scan { prev: List<Item>, next: List<Item> -> prev + next }
 	}

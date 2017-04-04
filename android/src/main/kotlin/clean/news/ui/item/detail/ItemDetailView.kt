@@ -57,11 +57,11 @@ class ItemDetailView : RelativeLayout {
 		super.onAttachedToWindow()
 
 		toolbar.navigationClicks()
-				.subscribe { model.dispatch(Action.GoBack()) }
+				.subscribe({ model.dispatch(Action.GoBack()) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		toolbar.itemClicks().filter { it.itemId == R.id.item_share }
-				.subscribe { model.dispatch(Action.Share()) }
+				.subscribe({ model.dispatch(Action.Share()) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		val stateChanges = model.asObservable()
@@ -79,13 +79,13 @@ class ItemDetailView : RelativeLayout {
 		stateChanges
 				.map { it.children }
 				.distinctUntilChanged()
-				.subscribe { adapter.setItems(it) }
+				.subscribe({ adapter.setItems(it) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		stateChanges
 				.map { it.loading }
 				.distinctUntilChanged()
-				.subscribe { adapter.setLoading(it) }
+				.subscribe({ adapter.setLoading(it) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		stateChanges

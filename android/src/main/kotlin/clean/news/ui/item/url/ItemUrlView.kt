@@ -62,7 +62,7 @@ class ItemUrlView : RelativeLayout {
 		super.onAttachedToWindow()
 
 		toolbar.navigationClicks()
-				.subscribe { model.dispatch(Action.GoBack()) }
+				.subscribe({ model.dispatch(Action.GoBack()) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		val toolbarItemClicks = toolbar.itemClicks()
@@ -70,11 +70,11 @@ class ItemUrlView : RelativeLayout {
 				.autoConnect()
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_details }
-				.subscribe { model.dispatch(Action.GoToDetails()) }
+				.subscribe({ model.dispatch(Action.GoToDetails()) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		toolbarItemClicks.filter { it.itemId == R.id.item_share }
-				.subscribe { model.dispatch(Action.Share()) }
+				.subscribe({ model.dispatch(Action.Share()) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		val stateChanges = model.asObservable()
@@ -98,7 +98,7 @@ class ItemUrlView : RelativeLayout {
 		stateChanges
 				.map { it.item.url }
 				.distinctUntilChanged()
-				.subscribe { if (webView.url != it) webView.loadUrl(it) }
+				.subscribe({ if (webView.url != it) webView.loadUrl(it) }, { e -> e.printStackTrace() })
 				.addTo(disposables)
 
 		stateChanges

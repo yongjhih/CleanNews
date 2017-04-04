@@ -29,7 +29,7 @@ class GetUserById @Inject constructor(
 	}
 
 	private val save = { user: User ->
-		saveUser.execute(SaveUser.Request(user)).subscribe()
+		saveUser.execute(SaveUser.Request(user)).subscribe({}, { e -> e.printStackTrace() })
 	}
 
 	class Request(val id: String, flags: Int = Strategy.WARM) : Strategy.Request(flags)

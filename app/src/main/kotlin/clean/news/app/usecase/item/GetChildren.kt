@@ -32,7 +32,7 @@ class GetChildren @Inject constructor(
 
 	val save = { items: List<Item> ->
 		items.forEach {
-			saveItem.execute(SaveItem.Request(it)).subscribe()
+			saveItem.execute(SaveItem.Request(it)).subscribe({}, { e -> e.printStackTrace() })
 		}
 	}
 

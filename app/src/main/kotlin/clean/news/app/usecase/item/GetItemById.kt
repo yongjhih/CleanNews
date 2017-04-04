@@ -31,7 +31,7 @@ class GetItemById @Inject constructor(
 	}
 
 	private val save = { item: Item ->
-		saveItem.execute(SaveItem.Request(item)).subscribe()
+		saveItem.execute(SaveItem.Request(item)).subscribe({}, { e -> e.printStackTrace() })
 	}
 
 	class Request(val id: Long, flags: Int = Strategy.WARM) : Strategy.Request(flags)

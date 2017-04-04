@@ -15,8 +15,6 @@ class CleanNewsApplication : Application() {
 	override fun onCreate() {
 		super.onCreate()
 
-		RxJavaAssemblyTracking.enable()
-
 		applicationComponent = DaggerApplicationComponent.builder()
 				.applicationModule(ApplicationModule(this))
 				.presentationModule(PresentationModule())

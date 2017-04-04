@@ -14,7 +14,7 @@ class UserRetrofitDataSource @Inject constructor(
 	}
 
 	override fun get(key: String): Observable<User> {
-		return userService.getById(key)
+		return userService.getById(key).toObservable()
 	}
 
 	override fun put(key: String, value: User): Observable<User> {
